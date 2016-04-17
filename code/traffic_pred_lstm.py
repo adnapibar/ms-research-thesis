@@ -92,9 +92,10 @@ def run_network(mdl=None, data=None):
 
 
 def plot_predictions(y_test, predicted):
-    x = np.arange(y_test.size)
-    plt.plot(x, y_test)
-    plt.plot(x, predicted)
+    x = np.arange(1000)
+    plt.plot(x, y_test[:1000], label='Actual')
+    plt.plot(x, predicted[:1000], label='Predicted')
+    plt.legend(loc=2)
     plt.savefig('../plots/lstm.pdf')
 
 
