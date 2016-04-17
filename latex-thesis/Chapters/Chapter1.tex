@@ -1,0 +1,60 @@
+
+% Chapter 1
+
+\chapter{Introduction} % Main chapter title
+
+\label{Chapter1} % For referencing the chapter elsewhere, use \ref{Chapter1}
+
+% This is for the header on each page - perhaps a shortened title
+\lhead{Chapter 1. \emph{Introduction}}
+
+% Quotation
+{``As a reader I loathe introductions...Introductions inhibit pleasure, they kill the joy of
+anticipation, they frustrate curiosity."}
+\begin{flushright}
+Harper Lee, \textit{To Kill a Mockingbird} (1960)
+\end{flushright}
+
+\section{Background}
+Road traffic congestion is a serious global issue, resulting in significant wastage of resources.
+While improving and extending the road infrastructure has reduced the issue to some extent, this is
+time consuming and limited. Thus in last few decades, for better planning and control of road
+traffic, adaptive traffic control systems have been deployed around the world. Still the role of
+adaptive control systems is not fully realised without predictive capabilities in the short term. A
+lot of research has gone into proposing short term traffic prediction models, yet none of those
+models can be claimed to be perfect due to the nature of traffic data and the variable factors that
+affect it.
+
+\section{Objectives and scope}
+
+\textbf{Research objective} is to propose a new model that can use the large amount of available
+traffic data to predict the traffic in the short term. More importantly this research tries to answer the following questions -
+
+\begin{itemize}
+\item Can we design a deep neural network for traffic flow prediction.
+\item Are we confident that the proposed model is better than existing models?
+\end{itemize}
+
+\textbf{Research scope} - There are several traffic characterstics that can be predicted such travel time and traffic volume. The scope of this research is limited to only traffic volume. While doing so, we are only taking the past data into consideration and ignoring other external factors such as weather, public events etc.
+
+
+\section{Thesis outline}
+
+\textbf{Chapters} -- This thesis is divided into six chapters.
+
+\begin{itemize}
+\item Chapter 1: Introduction - In this chapter we present the background and research context,
+research objectives and scope.
+
+\item Chapter 2: Traffic Prediction: Literature Review - In this chapter we review
+the past research done in the area of short-term traffic flow forecasting.
+
+\item Chapter 3: SCATS Traffic Volume Data - In this chapter we present the traffic volume data
+collected by VicRoads using the SCATS volume data.
+
+\item Chapter 4: A Deep Recurrent Network for Traffic Flow Prediction - In this chapter we propose a model that can be used in forecasting short-term traffic flow.
+
+\item Chapter 5: Evaluation of the Model - In this chapter we evaluate the model.
+
+\item Chapter 6: Conclusions and Future Directions - Finally we conclude
+\end{itemize}

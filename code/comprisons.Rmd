@@ -1,0 +1,171 @@
+---
+title: "Methods for road traffic forecasting"
+author: "Rabi Panda"
+date: "12 February 2016"
+output: pdf_document
+---
+
+```{r, echo=FALSE}
+# Reqiuired libraries
+library(xts)
+library(lubridate)
+library(forecast)
+library(caret)
+library(ggplot2)
+# Read the volume data from the csv into a dataframe, where
+# rows as observations and columns as locations.
+volume.data <- read.csv('../data/volume_data.csv', header = FALSE)
+
+# Select the site where we need to forecast
+site.data <- volume.data[,1]
+avg <- mean(site.data) 
+site.data[site.data==0] <- avg
+```
+
+# DATA
+The VicRoads volume data is a time series data that is collected using road traffic sensors at a 15 minutes interval. The data we have is for 1084 locations over the period starting from 2008-01-01 to 2013-07-26, a total of 195168 observations. 
+
+```{r}
+train.winsize = 96 * 28  # size of the training window, 96 observations per day for 28 days
+test.winsize = 1         # forecast next one observation
+slide.by = 96 * 21       # slide the training window by 21 days
+
+time.slices = createTimeSlices(1:length(site.data), train.winsize, test.winsize, skip = slide.by)
+train.slices = time.slices[[1]]
+test.slices = time.slices[[2]]
+rm(train.winsize, test.winsize, time.slices, slide.by)
+```
+
+# FORECASTING MODELS
+
+There are several existing methods that have been used in predicting the short term traffic flow. In this experiment we evaluate some of those models. We will first use a univariate time series at one location.To use all the data, we will use multi-step forecasts with re-estimation (time-series cross validation) to create training and test data. Each traing window is of 30 days long and the test data will be next 1 observation. Then we will move the window forward to 20 days and repeat the process. In the end we will plot the mean RMSE for each of the models.
+
+```{r}
+n <- length(train.slices)
+rmse1 <- matrix(NA, n, 3)   # Record the error for each iteration
+# Actual observations
+actual <- list()
+for(i in 1:n){
+  actual[i] <- site.data[test.slices[[i]]]
+}
+
+```
+
+
+## Linear Regression
+
+```{r}
+train.start.idx <- 1
+lm.forecast <- list()
+for(i in 1:n){
+  train.site.data <- ts(site.data[train.slices[[i]]], start = c(train.start.idx,1), frequency = 7*96)
+  test.start.idx <- end(train.site.data)[1]+1
+  test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = 7*96)
+ 
+  # Linear Regression
+  lmfit <- tslm(train.site.data~trend)
+  fc <- forecast(lmfit, h = 1)
+  
+  # Find out how to collect the point forcasts 
+  lm.forecast[i] <- fc$mean[1]
+  
+  acc <- data.frame(accuracy(fc, test.site.data))
+  rmse1[i,1] <- acc$RMSE[2]
+  
+  # Slide the training window
+  train.start.idx <- train.start.idx + 3
+}
+
+# Plot the actual vs forecast values
+plot(1:n,actual, type='l', col=2, xlab='Iteration', ylab='Traffic Volume (15 min)')
+lines(1:n, lm.forecast, type='l',col=3)
+legend("topleft",legend=c("Actual","Linear Regression"),col=2:3,lty=1)
+```
+
+
+## ARIMA
+
+```{r}
+train.start.idx <- 1
+arima.forecast <- list()
+for(i in 1:n){
+  train.site.data <- ts(site.data[train.slices[[i]]], start = c(train.start.idx,1), frequency = 7*96)
+  
+  test.start.idx <- end(train.site.data)[1]+1
+  test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = 7*96)
+  
+  # ARIMA
+  arima.model <- Arima(train.site.data, order=c(5,0,3))
+  fc <- forecast(arima.model, h = 1)
+  
+  # Find out how to collect the point forcasts 
+  arima.forecast[i] <- fc$mean[1]
+  
+  acc <- data.frame(accuracy(fc, test.site.data))
+  rmse1[i,2] <- acc$RMSE[2]
+  
+  # Slide the training window
+  train.start.idx <- train.start.idx + 3
+}
+
+# Plot the actual vs forecast values
+plot(1:n,actual, type='l', col=2, xlab='Iteration', ylab='Traffic Volume (15 min)')
+lines(1:n, arima.forecast, type='l',col=3)
+legend("topleft",legend=c("Actual","ARIMA"),col=2:3,lty=1)
+```
+
+## Feed Forward Neural Network
+
+```{r}
+train.start.idx <- 1
+nn.forecast <- list()
+for(i in 1:n){
+  train.site.data <- ts(site.data[train.slices[[i]]], start = c(train.start.idx,1), frequency = 7*96)
+  
+  test.start.idx <- end(train.site.data)[1]+1
+  test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = 7*96)
+  
+  # Feed-forward neural networks with a single hidden layer and lagged inputs for forecasting univariate time series.
+  nnfit <- nnetar(train.site.data)
+  fc <- forecast(nnfit, h = 1)
+  
+  # Find out how to collect the point forcasts 
+  nn.forecast[i] <- fc$mean[1]
+  
+  acc <- data.frame(accuracy(fc, test.site.data))
+  rmse1[i,3] <- acc$RMSE[2]
+  
+  # Slide the training window
+  train.start.idx <- train.start.idx + 3
+}
+# Plot the actual vs forecast values
+plot(1:n,actual, type='l', col=2, xlab='Iteration', ylab='Traffic Volume (15 min)')
+lines(1:n, nn.forecast, type='l',col=3)
+legend("topleft",legend=c("Actual","Neural Network"),col=2:3,lty=1)
+```
+
+## Comprision of the models
+
+```{r, echo=FALSE}
+# Plot the RMSE for each of the models
+plot(1:n, rmse1[,1], type="l", col=2, xlab="Iteration", ylab="RMSE")
+lines(1:n, rmse1[,2], type="l", col=3)
+lines(1:n, rmse1[,3], type="l", col=4)
+
+legend("topleft",legend=c("LM","ARIMA", "BPNN"),col=2:4,lty=1)
+```
+
+We evlauated three models in this experiment- linear regression, ARIMA and Feed-forward neural network with a single hidden layer. The RMSE errors during the iterations are plotted in the above figure. We can see that the ARIMA model has better accuracy compared to the other two models. The mean RMSE for the three models are 
+
+```{r}
+# Mean RMSE 
+mean(rmse1[,1])  # Linear Regression
+mean(rmse1[,2])  # ARIMA
+mean(rmse1[,3])  # Feed-Forward Neural Network with one hidden layer
+```
+
+
+```{r, echo=FALSE}
+# Clean up the intermediate variables
+rm(lmfit, arima.model, nnfit, acc, i, n, train.start.idx, test.start.idx, test.site.data, train.site.data, rmse1)
+```
