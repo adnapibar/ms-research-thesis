@@ -95,7 +95,7 @@ def plot_predictions(y_test, predicted):
     x = np.arange(y_test.size)
     plt.plot(x, y_test)
     plt.plot(x, predicted)
-    plt.show()
+    plt.savefig('../plots/lstm.pdf')
 
 
 if __name__ == '__main__':
