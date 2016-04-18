@@ -7,7 +7,7 @@ library(caret)
 library(ggplot2)
 
 # Figures directory
-plots.dir <- "plots/"
+plots.dir <- "latex-thesis/Figures/"
 
 # The VicRoads volume data is a time series data that is 
 # collected using road traffic sensors at a 15 minutes interval. 

@@ -13,5 +13,3 @@ thesis. The project root directory is structured into following sub-directories.
         value is 0, that could be because of a malfunction in the sensor.
 
 - latex-thesis: This directory contains the LaTex code for the thesis
-
-- plots: As the name suggests this directory contains various plots as part of the analysis.
