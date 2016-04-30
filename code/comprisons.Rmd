@@ -2,7 +2,7 @@
 title: "Methods for road traffic forecasting"
 author: "Rabi Panda"
 date: "12 February 2016"
-output: pdf_document
+output: html_document
 ---
 
 ```{r, echo=FALSE}
@@ -14,7 +14,7 @@ library(caret)
 library(ggplot2)
 # Read the volume data from the csv into a dataframe, where
 # rows as observations and columns as locations.
-volume.data <- read.csv('../data/volume_data.csv', header = FALSE)
+volume.data <- read.csv('../data/volume_data_sm.csv', header = FALSE)
 
 # Select the site where we need to forecast
 site.data <- volume.data[,1]

@@ -38,19 +38,26 @@ def train_test_traffic_data(sitenum, sequence_length=50):
 
 def build_model():
     mdl = Sequential()
+    # a network with 1-dimensional input,
+    # two hidden layers of sizes 50 and 100
+    # and eventually a 1-dimensional output layer
     layers = [1, 50, 100, 1]
 
+    # We also add 20% Dropout in this layer.
     mdl.add(LSTM(
         input_dim=layers[0],
         output_dim=layers[1],
         return_sequences=True))
     mdl.add(Dropout(0.2))
 
+    # 2nd hidden layer
     mdl.add(LSTM(
         layers[2],
         return_sequences=False))
     mdl.add(Dropout(0.2))
 
+    # last layer we use is a Dense layer ( = feedforward).
+    # Since we are doing a regression, its activation is linear
     mdl.add(Dense(
         output_dim=layers[3]))
     mdl.add(Activation("linear"))
