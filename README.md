@@ -1,8 +1,12 @@
-# Research project - masters thesis
+## Masters Thesis
 
 
-This project contains the source code and data of my research project done as part of my masters
-thesis. The project root directory is structured into following sub-directories.
+This repository contains the source code of my thesis and research project done as part of it.
+The aim of the project was to use the VicRoads traffic volume data using the SCATS system for
+making future predictions.
+
+
+The project root directory is structured into following sub-directories.
 
 - code: This directory contains the code for the project. The code mainly consists of individual
         scripts written in Python, R and MATLAB.
