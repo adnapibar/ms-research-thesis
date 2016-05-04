@@ -20,34 +20,65 @@ Stephen Hawking, \textit{Black Holes and Baby Universes} (1993)
 %	CONTENT
 %---------------------------------------------------------------------------------------------------
 \section{Introduction}
-The goal of this chapter is to provide a thorough review of prior work in the area of traffic flow
-prediction. In this context we are only interested in the short term traffic forecasting where the
-duration is of few minutes. The various methods that have been applied in the area of traffic
-prediction can be in general categorised as parametric and nonparametric methods. The parametric
-metric methods include linear and non-linear regression, Kalman filter and ARIMA and its
-variants. The nonparametric methods include nonparametric regression, support vector machines and neural networks.
+This objective of this chapter is to provide a reasonably complete review of existing literature on
+short term traffic flow prediction. In the context of traffic congestion the the forecasting window
+of traffic flow is very important.
+
+After three decades of intensive research, short term traffic flow prediction is still a subject of
+interest for many professionals around the world.  The various methods that have been applied in
+the area of traffic prediction can be in general categorised as parametric and nonparametric
+methods. The parametric metric methods include linear and non-linear regression, Kalman filter and
+ARIMA and its variants. The nonparametric methods include nonparametric regression, support vector
+machines and neural networks.
 
 \section{Parametric models}
-In parametric models, estimation of parameters are
+In parametric models, we estimate the parameters from the training dataset to determine the
+function that classifies new unseen data. The number of parameters are fixed. The advantage of
+parametric models are that these perform quite well in situations where the large amount of data
+is not available. Some of the typical examples of parametric models include time series
+regression, ARIMA models, Kalman filter, linear SVM etc.
 
-\subsection{Linear and non-linear regression}
-~\citet{hogberg1976estimation} proposed applying a non-linear regression model in prediction traffic flow.
+\subsection{Linear regression}
+In machine learning and statistical applications, the use of linear models are predominant. These
+models are also important in time series domains such as traffic flow prediction. The primary
+idea behind the regression is to express the output variable as a linear combination of input
+vectors. We can express the linear regression in time series as an ouput influenced by a
+collection of inputs, where the inputs could possibly be an independent series
+
+        \begin{equation}
+            x_{t} = \beta_{1}z_{t1} + \beta_{2}z_{t2} + ... + \beta_{q}z_{tq} + w_{t}
+        \end{equation}
+
+where $ \beta_{1}, \beta_{2},...,\beta_{q} $ are unknown regression coeffiecients and $w_{t}$ is
+a random error.
 
 \subsection{ARIMA}
-% A brief introduction to time series, ARMA and ARIMA models
-ARIMA(Auto Regressive Integrated Moving Average) is a class of parametric regression model
-
-For an in depth understanding of these models the reader is encouraged to refer to to
+%  Introduction to ARIMA models
+ARIMA(Auto Regressive Integrated Moving Average) is a class of parametric regression models. In
+this section we will introduce ARIMA and related methods such as exponential smoothing and moving
+averages. For an in depth understanding of these models the reader is encouraged to refer to to
 ~\citet{tong1990non}, ~\citet{brockwell2006introduction} and ~\citet{box2015time}.
 
+The main idea behind autoregressive models is that past values affect the present value, i.e.
+$x_{t}$ can be expressed as a function of past p values $ x_{t-1}, x_{t-2},...,x_{t-p} $ , where
+p is the number of steps into the past. We can express an autoregressive model of order p as below
 
-%ARIMA and its variants in traffic forecast
+        \begin{equation}
+          x_{t} = \alpha_{1}x_{t-1} + \alpha_{2}x_{t-2} + ... + \alpha_{p}x_{t-p} + w_{t}
+        \end{equation}
+
+where $x_{t}$ is stationary and $ \alpha_{1}, \alpha_{2},..., \alpha_{p} $ are constants. We have
+added the term $w_{t}$ as a Guassian white noise.
+
+
+% Application in traffic forecast
 \citet{ahmed1979analysis} used Box-Jenkins method for short-term traffic forecast. The input data
 used was 166 sets of time series traffic data collected by freeway traffic surveillance systems in
 three locations - Los Angeles, Minneapolis and Detroit. The authors concluded an ARIMA(0,1,3) model
 as a resonable fit for the short term prediction task.
 
-\citet{kumar2015short} used a seasonal ARIMA in a context of limited data for short term traffic prediction.
+\citet{kumar2015short} used a seasonal ARIMA in a context of limited data for short term traffic 
+prediction.
 
 \subsection{Kalman filter}
 
@@ -61,15 +92,40 @@ models are - k-Nearest Neighbour, Non-parametric regrssion and Neural Networks
 
 \subsection{k-Nearest neighbour}
 
+The basic process of the k-nearest neighbour algorithm can be described as in the figure ~
+\ref{fig:KnnProcessFlow}
+
+\tikzstyle{block} = [rectangle, draw, text width=5em, text centered, rounded corners, minimum height=4em]
+\tikzstyle{line} = [draw, -latex']
+\tikzstyle{cloud} = [draw, ellipse, node distance=4cm, minimum height=3em]
+
+\begin{figure}
+\centering
+\begin{tikzpicture}[node distance = 3cm, auto]
+    % Place nodes
+    \node [block] (pp) {Preprocess Data};
+    \node [cloud, left of=pp] (hd) {Historical data};
+    \node [cloud, right of=pp] (rd) {Real-time data};
+    \node [block, below of=pp] (msv) {Match state vector};
+    \node [block, below of=msv] (knn) {K nearest neighbour};
+    \node [block, left of=knn, node distance=3cm] (prd) {Predictions};
+    % Draw edges
+    \path [line] (pp) -- (msv);
+    \path [line] (msv) -- (knn);
+    \path [line] (knn) -- (prd);
+    \path [line,dashed] (hd) -- (pp);
+    \path [line,dashed] (rd) -- (pp);
+\end{tikzpicture}
+\caption{K nearest neighbour process flow} \label{fig:KnnProcessFlow}
+\end{figure}
+
 \subsection{Nonparametric regression}
 
 \subsection{Support vector machines}
 
 \subsection{Neural networks}
-Neural network is modelled on how human brain performs a particular task. We can view a neural
-network as a parallel distributed network made up of simple processing units. The networks acquire
-knowledge through the process of learning and this knowledge is stored as interneuron connection
-strengths known as synaptic weights.
+
+\subsection{Other nonparametric models}
 
 \section{Other Methods}
 
