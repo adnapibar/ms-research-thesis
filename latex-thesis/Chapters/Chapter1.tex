@@ -15,15 +15,28 @@ anticipation, they frustrate curiosity."}
 Harper Lee, \textit{To Kill a Mockingbird} (1960)
 \end{flushright}
 
-\section{Background}
 Road traffic congestion is a serious global issue, resulting in significant wastage of resources.
 While improving and extending the road infrastructure has reduced the issue to some extent, this is
-time consuming and limited. Thus in last few decades, for better planning and control of road
-traffic, adaptive traffic control systems have been deployed around the world. Still the role of
-adaptive control systems is not fully realised without predictive capabilities in the short term. A
-lot of research has gone into proposing short term traffic prediction models, yet none of those
-models can be claimed to be perfect due to the nature of traffic data and the variable factors that
-affect it.
+time consuming and limited in capacity. Thus in last few decades, for better planning and control
+of road traffic, adaptive traffic control systems have been deployed around the world. Still the
+role of adaptive control systems is not fully realised without predictive capabilities in the
+short term, without which the adapative traffic control systems only react to events at the real
+time. While this is the desired objective, the performance of these systems could be significantly
+improved by making them proactive(\citet{smith1997traffic}). Short term traffic flow prediction
+is not only helpful for these advanced traffic control systems, it is also useful for advanced
+traveller information systems.
+
+\section{Background}
+Predicting the future has always been a fascinating topic throughout the history of mankind.
+Instances of predicting the future through unconventinal means have been mentioned in various
+forms of literature such as mythologies, fantasy, science fiction etc. Even today, while the
+means of prediction have changed, we still try to predict almost everything in our day to day
+lives - from election polls to sports outcomes to financial results.
+
+In the context of road traffic, prediction has always been a difficult task, merely due to the
+dynamic and complex nature of traffic. A lot of research has gone into short term
+traffic prediction. Various methods have been proposed in last few decades to provide more
+accurate predictions, yet none of those methods has been claimed to become the best.
 
 \section{Objectives and scope}
 
@@ -32,14 +45,19 @@ traffic data to predict the traffic in the short term. More importantly this res
 answer the following questions -
 
 \begin{itemize}
-\item Can we design a deep neural network for traffic flow prediction?
-\item Are we confident that the proposed model is better than existing models?
+\item How can we use the large amount of traffic data available for predicting short term traffic
+ flow?
+\item Can the proposed deep learning models have better accuracy than exiting models?
 \end{itemize}
 
-\textbf{Research scope} - There are several traffic characterstics that can be predicted such travel
-time and traffic volume. The scope of this research is limited to only traffic volume. While doing
-so, we are only taking the past data into consideration and ignoring other external factors such as
-weather, public events etc.
+\textbf{Research scope} - The scope of this research is to predict traffic volume in the
+short term. The use of the phrase 'short term' implies that we are only interested in the
+prediction within a very short horizon which typically ranges between few seconds to few
+hours in practice. The traffic parameters that are of usually of interest to be predicted are
+volume, time, speed and density. The scope of this research is limited to the prediction of only
+traffic volume. While doing so, we are only taking the past data into consideration and not
+taking the non-recurrent phenomena such as traffic accidents, weather or public events into
+consideration.
 
 
 \section{Thesis outline}
@@ -50,13 +68,16 @@ weather, public events etc.
 \item Chapter 1: Introduction - In this chapter we present the background and research context,
 research objectives and scope.
 
-\item Chapter 2: Traffic Prediction: Literature Review - In this chapter we review
-the past research done in the area of short-term traffic flow forecasting.
+\item Chapter 2: Traffic Prediction: Literature Review - In this chapter we provide a reasonably
+thorough review of existing literature on short term traffic prediction.
 
-\item Chapter 3: SCATS Traffic Volume Data - In this chapter we present the traffic volume data
-collected by VicRoads using the SCATS volume data.
+\item Chapter 3: SCATS Traffic Volume Data - In this chapter we provide the description of the
+traffic volume data collected by VicRoads using the SCATS systems. Methods to deal with missing
+data are presented in this chapter. Finally we present some exploratory data analysis on the
+traffic data.
 
-\item Chapter 4: A Deep Recurrent Network for Traffic Flow Prediction - In this chapter we propose a model that can be used in forecasting short-term traffic flow.
+\item Chapter 4: A Deep Recurrent Network for Traffic Flow Prediction - In this chapter we propose
+a long short term recurrent neural network model for the purpose of short term traffic prediction.
 
 \item Chapter 5: Evaluation of the Model - In this chapter we evaluate the model.
 

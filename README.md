@@ -1,5 +1,5 @@
-## Masters Thesis
-
+Masters Thesis
+--------------
 
 This repository contains the source code of my thesis and research project done as part of it.
 The aim of the project was to use the VicRoads traffic volume data using the SCATS system for

@@ -181,7 +181,7 @@
 %	defined as \examname above so you cite it as \examname
 %----------------------------------------------------------------------------------------
 % Your thesis title - this is used in the title and abstract
-\thesistitle{A Deep Recurrent Network for Traffic Prediction}
+\thesistitle{Large scale real-time traffic flow prediction using SCATS volume data}
 %-------------------------------------------------
 \supervisor{Dr. Vinh \textsc{Nguyen}} % You supervisor's name - this is used in the title page
 %-------------------------------------------------
