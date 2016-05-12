@@ -1,3 +1,5 @@
+# An LSTM network for short term traffic prediction
+
 import time
 import matplotlib.pyplot as plt
 import numpy as np
