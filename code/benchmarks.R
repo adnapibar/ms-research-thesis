@@ -3,6 +3,7 @@ source("code/common.R")
 source("code/arima.R")
 source("code/linear_regression.R")
 source("code/nnetar.R")
+source("code/exponential_smoothing.R")
 
 train.winsize = 96*28  # size of the training window, 96 observations per day for 28 days
 test.winsize = 1         # forecast next one observation
@@ -19,6 +20,7 @@ rm(train.winsize, test.winsize, time.slices, slide.by)
 rmse.lm <- performLinearRegression(freq)
 rmse.arima <- performArima(freq)
 rmse.nn <- performNNETAR(freq)
+rmse.ets <- performExpSmoothing(freq)
 
 
 # Plot the RMSE for each of the models
@@ -33,3 +35,4 @@ dev.off()
 mean(rmse.lm)  # Linear Regression
 mean(rmse.arima)  # ARIMA
 mean(rmse.nn)  # Feed-Forward Neural Network with one hidden layer
+mean(rmse.ets) # Exponential smoothing state space model
