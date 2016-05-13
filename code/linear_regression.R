@@ -1,6 +1,10 @@
-#####################################
-# Perform Linear Regression modelling
-#####################################
+####################################################################################################
+# Fit a linear model with time series components
+# tslm is largely a wrapper for lm() except that it allows variables "trend" and "season" which are 
+# created on the fly from the time series characteristics of the data. The variable "trend" is a 
+# simple time trend and "season" is a factor indicating the season (e.g., the month or the quarter 
+# depending on the frequency of the data).
+####################################################################################################
 performLinearRegression <- function(freq){
   train.start.idx <- 1
   lm.forecast <- list()

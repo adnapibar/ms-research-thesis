@@ -1,9 +1,10 @@
-# Load the common stuff
-source("code/common.R")
-
-###################################################
+####################################################################################################
 # Perform Exponential smoothing state space model
-###################################################
+
+# The methodology is fully automatic. The only required argument for ets is the time series. 
+# The model is chosen automatically if not specified. This methodology performed extremely well on 
+# the M3-competition data
+####################################################################################################
 performExpSmoothing <- function(freq){
   train.start.idx <- 1
   ets.forecast <- list()

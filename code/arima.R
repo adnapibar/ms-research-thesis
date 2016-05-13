@@ -1,6 +1,22 @@
-#########################
-# Perform ARIMA modelling
-#########################
+####################################################################################################
+# Fit an ARIMA model to a univariate time series.
+# Different definitions of ARMA models have different signs for the AR and/or MA coefficients. 
+# The definition used here has
+
+# X[t] = a[1]X[t-1] + ... + a[p]X[t-p] + e[t] + b[1]e[t-1] + ... + b[q]e[t-q]
+
+# and so the MA coefficients differ in sign from those of S-PLUS. Further, if include.mean is true 
+# (the default for an ARMA model), this formula applies to X - m rather than X. For ARIMA models 
+# with differencing, the differenced series follows a zero-mean ARMA model. If am xreg term is 
+# included, a linear regression (with a constant term if include.mean is true and there is no 
+# differencing) is fitted with an ARMA model for the error term.
+
+# The variance matrix of the estimates is found from the Hessian of the log-likelihood, and so may 
+# only be a rough guide.
+
+# Optimization is done by optim. It will work best if the columns in xreg are roughly scaled to zero 
+# mean and unit variance, but does attempt to estimate suitable scalings.
+####################################################################################################
 performArima <- function(freq){
   train.start.idx <- 1
   arima.forecast <- list()

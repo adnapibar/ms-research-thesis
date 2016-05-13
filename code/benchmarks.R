@@ -24,11 +24,14 @@ rmse.ets <- performExpSmoothing(freq)
 
 
 # Plot the RMSE for each of the models
-pdf(paste(plots.dir,'rmse-comparision.pdf', sep = ''))
+n <- length(train.slices)
+pdf(paste(plots.dir,'rmse-benchmarks.pdf', sep = ''))
 plot(1:n, rmse.lm, type="l", col=2, xlab="Iteration", ylab="RMSE")
 lines(1:n, rmse.arima, type="l", col=3)
 lines(1:n, rmse.nn, type="l", col=4)
-legend("topleft",legend=c("LM","ARIMA", "NNETAR"),col=2:4,lty=1)
+lines(1:n, rmse.ets, type="l", col=5)
+legend("topleft",legend=c("Linear Regression","ARIMA", "Neural Network", "Exponential Smoothing"),
+       col=2:4,lty=1)
 dev.off()
 
 # Mean RMSE 
