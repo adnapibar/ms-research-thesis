@@ -55,7 +55,7 @@ layers, where each layer is an abstraction on the previous layer. The depth of t
 viewed as the depth of the computational graph, i.e. the number of sequential instructions that
 need to be executed to map an input to output.
 
-\section{Deep feedforward networks}
+\section{Feedforward neural networks}
 Deep feedforward networks are the most important deep learning models. The main goal of a deep
 feedforward network is to approximate a function $f^{*}$ that maps an input $\textbf{x}$ to an
 output $y$. As the name implies, the information in these models flow in the forward direction.
@@ -73,18 +73,61 @@ propagates from the input layer through the hidden layer to the output layer, kn
 forward pass of the network. This kind of feedforward network is called a multilayer perceptron.
 Multilayer perceptrons are good at classification.
 
-\def\layersep{2.5cm}
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]
-    {Figures/mlp.pdf}
-    \rule{35em}{0.5pt}
-\caption{A feedforward neural netwrok with two hidden layers, this network is also known as a
-multilayer perceptron. The S-shaped curves denote the sigmoidal function.}
-\label{fig:ffnnetwork}
-\end{figure}
+    \def\layersep{2.5cm}
+    \begin{figure}
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]
+        {Figures/mlp.pdf}
+        \rule{35em}{0.5pt}
+    \caption[Multilayer perceptron]
+    {A feedforward neural netwrok with two hidden layers, this network is also known as a
+    multilayer perceptron. The S-shaped curves denote the sigmoidal function.}
+    \label{fig:ffnnetwork}
+    \end{figure}
 
-\section{Deep recurrent networks}
+Let's consider a simple multilayer perceptron with \textit{I} nodes in the input layer. For an
+input vector \textbf{x}, where length of \textbf{x} is \textit{I}. Each node in
+the hidden layer gets a weighted sum of the units in the input layer. The output of each hidden unit
+$a_{h}$ is then applied to an activation function $\theta_{h}$ to produce the activation $b_{h}$
+
+    \begin{equation}
+        a_{h} = \displaystyle\sum_{i=1}^\textit{I} w_{ih}x_{i}
+    \end{equation}
+
+    \begin{equation}
+        b_{h} = \theta_{h}(a_{h})
+    \end{equation}
+
+There are several choices for the activation functions with sigmoidal and hyperbolic tan
+fucntions are the most common choices. The reason of these choices is nonlinearity of
+these functions.
+
+The activations flow through the rest of the hidden layers in similar fashion. For instance the
+$l^{th}$ hidden unit in layer $H_{l}$
+    \begin{equation}
+        a_{h} = \displaystyle\sum_{h' \in H_{l-1}} w_{h'h}b_{h'}
+    \end{equation}
+
+    \begin{equation}
+        b_{h} = \theta_{h}(a_{h})
+    \end{equation}
+
+In the output layer, the activation function is applied on the output from the hidden layer to
+produce the output y. The input $a_{k}$ to the output unit is given by
+
+    \begin{equation}
+        a_{k} = \displaystyle\sum_{h \in H_{L}} w_{hk}b_{h}
+    \end{equation}
+
+where L is the number of hidden layers in the network. The number of units in the output layer
+and the type of activation function are chosen based on the problem task at hand. For binary
+classification a single unit with logistic sigmoid activation function is primarily used. For
+classification with k > 2 classes, k output units are used and the outputs are normalised using
+the \emph{softmax} function. A very common example of this is the hand-written digits classification,
+where the output layer consists of 10 units.
+
+
+\section{Recurrent neural networks}
 As mentioned earlier, we can create a recurrent neural network by adding feedback connections to
 a feedforward network. Several types of recurrent neural networks have been proposed over the
 years, some of which are - \emph{echo state networks, time delay networks, jordan networks}. At
@@ -92,9 +135,18 @@ first the difference between a feedforward and a recurrent network may not be ob
 trvial but recurrent networks are very powerful in the sense that they can retain the history and
 thus forming a memory in their feedback connections.
 
-
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]
+    {Figures/unfolded-rnn.pdf}
+    \rule{35em}{0.5pt}
+  \caption[An unfolded RNN] {An unfolded recurrent neural network. w1, w2 and w3 are weighted
+  connections. }
+  \label{fig:unfoldedRNN}
+\end{figure}
 
 \section{Network training}
+\subsection{Gradient descent}
 
 \section{LSTM networks}
 In previous section we learn that using a recurrent neural networks we can store information in
@@ -138,3 +190,5 @@ weighted peephole connections from the cell to the gates. All other connections 
 The only outputs from the block to the rest of the network is from the output gate multiplication.}
   \label{fig:lstmBlock}
 \end{figure}
+
+\subsection{Traffic prediction}

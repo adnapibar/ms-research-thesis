@@ -22,6 +22,28 @@ Jules Verne, \textit{Journey to the Centre of the Earth} (1864)
 \section{Experimental setup}
 
 \section{Results}
+The benchmark models are shown in the figure \ref{fig:benchmarkModels}
+
+\begin{figure}[h]
+    \centering
+    \subfloat[Linear Regression][Linear Regression]{
+    \includegraphics[width=0.4\textwidth]{Figures/linear-regression.pdf}
+    \label{fig:LmActualPredicted}}
+    \qquad
+    \subfloat[ARIMA][ARIMA]{
+    \includegraphics[width=0.4\textwidth]{Figures/arima.pdf}
+    \label{fig:ArimaActualPredicted}}
+    \subfloat[Neural Network Time Series][Neural Network Time Series]{
+    \includegraphics[width=0.4\textwidth]{Figures/nnetar.pdf}
+    \label{fig:NnetarActualPredicted}}
+    \qquad
+    \subfloat[Exponential smoothing state space model][Exponential smoothing state space model]{
+    \includegraphics[width=0.4\textwidth]{Figures/exp-smoothing.pdf}
+    \label{fig:etsActualPredicted}}
+    \caption{Benchmark models - Linear regression, ARIMA, Basic Neural network time series with
+    one hidden layer and Exponential smoothing state space model.}
+    \label{fig:benchmarkModels}
+\end{figure}
 
 The results of the LSTM are shown in the figure \ref{fig:LstmActualPredicted}
 

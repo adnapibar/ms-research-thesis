@@ -128,15 +128,24 @@ Date:\\
 \setstretch{1.3} % Reset the line-spacing to 1.3 for body text (if it has changed)
 
 \abstract{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
-% TODO This is the paragraph from the introduction chapter, replace this with proper abstract
-Road traffic congestion is a serious global issue, resulting in significant wastage of resources.
-While improving and extending the road infrastructure has reduced the issue to some extent, this is
-time consuming and limited. Thus in last few decades, for better planning and control of road
-traffic, adaptive traffic control systems have been deployed around the world. Still the role of
-adaptive control systems is not fully realised without predictive capabilities in the short term. A
-lot of research has gone into proposing short term traffic prediction models, yet none of those
-models can be claimed to be perfect due to the nature of traffic data and the variable factors that
-affect it.
+
+% Road traffic congestion as a global issue
+
+% Adaptive traffic control systems and their role in mitigating the traffic congestion problem
+
+% Short term traffic prediction and traffic loop data
+
+% Time series anlysis for short term traffic prediction
+
+% Neural networks and their reemergence as a victor
+
+% Recurrent and LSTM networks
+
+% Application
+In this thesis we apply extend an LSTM model for the application of short term traffic flow
+prediction. We analyse it using the SCATS volume data and suggest improvements.
+
+
 }
 \clearpage % Start a new page
 
@@ -181,25 +190,27 @@ I would not have been able to complete this work\ldots
 \listofsymbols{ll} % Include a list of Abbreviations (a table of two columns)
 {
 \textbf{ARIMA} & \textbf{A}uto \textbf{R}egressive \textbf{I}ntegrated \textbf{M}oving \textbf{A}verage \\
-%\textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+\textbf{LSTM} & \textbf{L}ong \textbf{T}erm \textbf{S}hort \textbf{M}emory \\
+\textbf{RNN} & \textbf{R}ecurrent \textbf{N}eural \textbf{N}etwork \\
+\textbf{SCATS} & \textbf{S}ydney \textbf{C}oordinated \textbf{A}daptive \textbf{T}raffic \textbf{S}ystems \\
 }
 
 %---------------------------------------------------------------------------------------------------
 %	NOTATIONS
 %---------------------------------------------------------------------------------------------------
 
-\clearpage % Start a new page
-
-\lhead{\emph{Notations}} % Set the left side page header to "Notations"
-
-\listofnomenclature{ll} % Include a list of Symbols (a two column table)
-{
-% Symbol & Name \\
-$y$ & Scalar value \\
-$\textbf{x}$ & Vector \\
-$\textbf{M}$ & Matrix \\
-$\Sigma$ & Covariance matrix \\
-}
+%\clearpage % Start a new page
+%
+%\lhead{\emph{Notations}} % Set the left side page header to "Notations"
+%
+%\listofnomenclature{ll} % Include a list of Symbols (a two column table)
+%{
+%% Symbol & Name \\
+%$y$ & Scalar value \\
+%$\textbf{x}$ & Vector \\
+%$\textbf{M}$ & Matrix \\
+%$\Sigma$ & Covariance matrix \\
+%}
 
 %---------------------------------------------------------------------------------------------------
 %	DEDICATION
