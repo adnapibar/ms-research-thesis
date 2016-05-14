@@ -21,7 +21,9 @@ Jules Verne, \textit{Journey to the Centre of the Earth} (1864)
 
 \section{Experimental setup}
 
-\section{Results}
+\subsection{Training and test sets}
+
+\subsection{Benchmarks}
 The benchmark models are shown in the figure \ref{fig:benchmarkModels}
 
 \begin{figure}[h]
@@ -45,6 +47,8 @@ The benchmark models are shown in the figure \ref{fig:benchmarkModels}
     \label{fig:benchmarkModels}
 \end{figure}
 
+\section{Results}
+
 The results of the LSTM are shown in the figure \ref{fig:LstmActualPredicted}
 
 \begin{figure}[htbp]
@@ -58,15 +62,66 @@ The results of the LSTM are shown in the figure \ref{fig:LstmActualPredicted}
 
 \section{Evaluation}
 
-Comparision of the LSTM model with the following models
+Several accuracy measures exist to evaluate a model. In below secions we describe the accuracy
+mesures and use those to evalute our proposed model against the benchmark models. For defining
+the accuracy measures let us denote $x_{i}$ be the $i^{th}$ observation and $\hat{x}_{i}$ be the
+prediction of $x_{i}$.
 
-\begin{itemize}
-\item Exponential smoothing
-\item ARIMA
-\item K-Nearest Neighbour
-\item Backpropagation Neural Network
-\item Radial Basis Function(RBF) NN model
-\item Stacked Autoencoders
-\end{itemize}
+\subsection{Scale-dependent errors}
+The prediction error is simply given by $e_{i} = x_{i} - \hat{x}_{i}$, which is in the same scale
+as of the original data. So accuracy measures that depend on $e_{i}$ are scale dependent and can
+not be used across multiple series on different scales. The two most used scale-dependent
+accuracy measures are mean absolute error and root mean squared error defined as below
 
-The accuracy scores are - MAE, MRE and RMSE
+    \begin{equation}
+        MAE = mean(\abs{e_{i}})
+    \end{equation}
+    \begin{equation}
+        RMSE = \sqrt{mean(e^{2}_{i})}
+    \end{equation}
+
+MAE is easy to understand and popular in usage when using a single dataset.
+
+\subsection{Percentage errors}
+Percentage errors are scale-independent and thus used across multiple datasets on different
+scales. The percentage error is given by $p_{i} = 100*e_{i}/x_{i}$. The most commonly used
+percentage measure is Mean Absolute Percentage Error(MAPE) which is given by the below formula
+    \begin{equation}
+        MAPE = mean(\abs{p_{i}})
+    \end{equation}
+
+There are however few shortccomings of the MAPE, for instance when $x_{i}$ is 0 or very large.
+Another shortcoming is that they put heavier penalty on negative error values than positve error
+values.
+
+\subsection{Scaled errors}
+\citet{hyndman2006another} proposed scaled errors to be used as an alternative in place of
+percentage errors. The proposed Mean Absolute Scaled Error(MASE) is defined as
+
+    \begin{equation}
+        MASE = mean(\abs{q_{i}})
+    \end{equation}
+
+where
+    \begin{equation}
+        q_{i} = \frac{e_{i}}{\frac{1}{T-1} \displaystyle\sum_{t=2}^{T}\abs{x_{t} - x_{t-1}}}
+    \end{equation}
+
+A scaled error is less than one if it is better than the average naïve forecast computed on the
+training data and vice versa.
+
+\begin{table}
+\centering
+    \begin{tabular}{| l | l | l | l | l|} \hline
+        Model & MAE & RMSE & MAPE & MASE \\ \hline
+        Naïve & 10 & 10 & 10 & 10 \\ \hline
+        Linear Regression & 10 & 10 & 10 & 10 \\ \hline
+        ARIMA & 10 & 10 & 10 & 10 \\ \hline
+        Exponential Smoothing & 10 & 10 & 10 & 10 \\ \hline
+        Neural Network (NNAR) & 10 & 10 & 10 & 10 \\ \hline
+        K-NN & 10 & 10 & 10 & 10 \\ \hline
+        SVM & 10 & 10 & 10 & 10 \\ \hline
+        LSTM & 10 & 10 & 10 & 10 \\ \hline
+    \end{tabular}
+    \caption[Model comparisons]{Accuracy mesures for the banchmark models vs LSTM model}
+\end{table}
