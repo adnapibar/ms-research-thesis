@@ -92,24 +92,87 @@ a random error.
 
 \subsection{ARIMA}
 %  Introduction to ARIMA models
-% \citet{chen2011short,kumar2015short,min2009short,min2010urban,szeto2009multivariate,van1996combining,williams2001multivariate,williams2003modeling}
+% \citet{chen2011short,kumar2015short,min2009short,min2010urban,szeto2009multivariate,
+%  van1996combining,williams2001multivariate,williams2003modeling}
 
 ARIMA(Auto Regressive Integrated Moving Average) is a class of parametric regression models. In
 this section we will introduce ARIMA and related methods such as exponential smoothing and moving
 averages. For an in depth understanding of these models the reader is encouraged to refer to to
-~\citet{tong1990non}, ~\citet{brockwell2006introduction} and ~\citet{box2015time}.
+~\citet{tong1990non}, ~\citet{brockwell2006introduction} and ~\citet{box2015time}. It is
+important to understand that ARIMA modelling works only with stationary time series data. A
+stationary time series is one whose properties do not depend on the time it is being observed.
+Trends and seasonality affect time series and hence make it non-stationary. Although this seems as a
+big restriction, in short term traffic prediction, ARIMA models have been very successful. Two
+basic models constituate ARIMA models - AR(autoregressive) and MA(moving average).
 
 The main idea behind autoregressive models is that past values affect the present value, i.e.
 $x_{t}$ can be expressed as a function of past p values $ x_{t-1}, x_{t-2},...,x_{t-p} $ , where
 p is the number of steps into the past. We can express an autoregressive model of order p as below
 
-        \begin{equation}
-          x_{t} = \alpha_{1}x_{t-1} + \alpha_{2}x_{t-2} + ... + \alpha_{p}x_{t-p} + w_{t}
+        \begin{equation} \label{eq:autoregressive}
+          x_{t} = \phi_{1}x_{t-1} + \phi_{2}x_{t-2} + ... + \phi_{p}x_{t-p} + w_{t}
         \end{equation}
 
-where $x_{t}$ is stationary and $ \alpha_{1}, \alpha_{2},..., \alpha_{p} $ are constants. We have
-added the term $w_{t}$ as a Guassian white noise.
+where $x_{t}$ is stationary and $\phi_{1}, \phi_{2},..., \phi_{p}$ are constant
+parameters that are to be chosen. We have added the term $w_{t}$ as a Guassian white noise with
+zero mean and variance $\sigma^{2}_{w}$.
 
+In the MA model, the current value is dependent on the last q one-step forecast errors
+$e_{t-1}, e_{t-2},...,e_{t-q}$ and the white noise $w_{t}$. The expression for moving average
+is
+
+        \begin{equation} \label{eq:movingaverage}
+          x_{t} = -\theta_{1}e_{t-1} - \theta_{2}e_{t-2} - ... - \theta_{q}e_{t-q} + w_{t}
+        \end{equation}
+
+$\theta_{1}, \theta_{2},..., \theta_{q}$ are the parameters to be chosen.
+
+Now proceeding to an ARMA(autoregressive moving average) model, we define an ARMA(p,q) model
+where the present value $x_{t}$ is dependent on p past recent values and q past recent forecast
+errors and a white noise $w_{t}$.
+
+        \begin{equation} \label{eq:arma}
+          x_{t} = \phi_{1}x_{t-1} + \phi_{2}x_{t-2} + ... + \phi_{p}x_{t-p} - \theta_{1}e_{t-1}
+          - \theta_{2}e_{t-2} - ... - \theta_{q}e_{t-q} + w_{t}
+        \end{equation}
+
+When q is 0, the model becomes an autoregressive model of order p, AR(p) and when p is 0 the model
+is a moving average of order q, MA(q). We can rewrite \ref{eq:arma} by using the backshift
+operator $B^{\alpha}$, which is defined as $B^{\alpha}z_{t} = z_{t-\alpha}$,
+
+        \begin{equation} \label{eq:armarewrite}
+          \phi(B)x_{t} = \theta(B)e_{t}
+        \end{equation}
+
+where
+        \begin{equation}
+            \phi(z) = 1 - \phi_{1}z - ... - \phi_{p}z^{p}
+        \end{equation}
+        \begin{equation}
+            \theta(z) = 1 - \theta_{1}z - ... - \theta_{q}z^{q}
+        \end{equation}
+
+In practice, most time series data are non-stationary and so several approaches, for instance
+by differencing, are taken to make it stationary before applying the ARMA(p,q) model. By
+combining differencing with autoregressive and moving average we obtain the ARIMA model defined
+as below
+        \begin{equation} \label{eq:arima}
+          x'_{t} = \phi_{1}x'_{t-1} + \phi_{2}x'_{t-2} + ... + \phi_{p}x'_{t-p} -
+          \theta_{1}e_{t-1} - \theta_{2}e_{t-2} - ... - \theta_{q}e_{t-q} + w_{t}
+        \end{equation}
+
+where $x'_{t}$ is the differenced series. Formally the model is denotes as ARIMA(p,d,q) where p
+is the order of autoregressive part, d is the degree of differencing and q is the order of moving
+average. This is also known as a non-seasonal ARIMA model.
+
+The common method used to determine the parameters in an ARIMA(p,d,q) model is known as the
+Box-Jenkins approach (\citet{box2015time}) which is three stage procedure. The three stages are
+identification, estimation and diagnostic checking. At the identification stage, the values p, d
+and q are determined by observing the autocorrelation and partial autocorrelation functions of
+the time series and its differences. At the estimation stage, the maximum liklihood estimates are
+determined for each model parameter. Finally in the dignostics stage, the residuals are analysed
+and model comparisions are done. If the model fits well then the standardised residuals behave as
+an i.i.d. with mean zero and variance one.
 
 % Application in traffic forecast
 \citet{ahmed1979analysis} used Box-Jenkins method for short-term traffic forecast. The input data
