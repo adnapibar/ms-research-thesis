@@ -38,7 +38,7 @@ to travel between two points), speed(mean speed in km/hour) and density(number o
 Selecting the right model for short term traffic prediction is a challenging task. A number of
 models have been suggested and yet there is no one-fits-all model. The various methods that have
 been suggested for short term traffic prediction can be categorised into four groups -
-naive, parametric, non-parametric and hybrid as shown in figure \ref{fig:taxonomyTrafficPrediction}.
+naïve, parametric, non-parametric and hybrid as shown in figure \ref{fig:taxonomyTrafficPrediction}.
 
 
 \begin{figure}
@@ -49,7 +49,7 @@ naive, parametric, non-parametric and hybrid as shown in figure \ref{fig:taxonom
     \fill[green!30!white] (210:1.2) circle (2);
     \fill[blue!30!white]  (330:1.2) circle (2);
   \end{scope}
-  \node at (90:2)    {Naive};
+  \node at (90:2)    {Naïve};
   \node at (210:2)   {Parametric};
   \node at (330:2)   {Non-Parametric};
   \node              {Hybrid};
@@ -57,7 +57,7 @@ naive, parametric, non-parametric and hybrid as shown in figure \ref{fig:taxonom
 \caption{Methods used for short term traffic prediction} \label{fig:taxonomyTrafficPrediction}
 \end{figure}
 
-\section{Naive methods}
+\section{Naïve methods}
 These methods, while called as naive are  sometimes used in practice because of the simplicity
 of the method and the ease of implementation. In most cases these methods are used as baselines
 for comparison while creating more advances methods. The simplest naive approach in short term
@@ -191,6 +191,12 @@ The major defficiency of tha ARIMA models is that they do not take the extremes 
 consideration and focus on the means. This is in contrast to the nature of the traffic data.
 ARIMA models are also have the inability to perform will with missing data as pointed out by
 \citet{smith1997traffic}.
+
+\subsection{Exponential smoothing}
+In exponential smoothing method the forecast is the weighted average of past observations, while
+the weights decrease exponentially for older observations. For time series data with no trends
+and seasons single exponential smoothing is usually used.
+
 
 \subsection{Kalman filter}
 % \citet{guo2010real,guo2014adaptive,okutani1984dynamic,wang2005real,xie2007short}

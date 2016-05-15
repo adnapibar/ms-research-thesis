@@ -100,7 +100,9 @@ $a_{h}$ is then applied to an activation function $\theta_{h}$ to produce the ac
 
 There are several choices for the activation functions with sigmoidal and hyperbolic tan
 fucntions are the most common choices. The reason of these choices is nonlinearity of
-these functions.
+these functions. Recently the recommended activation function for feedforward neural networks is
+the \emph{rectified linear unit} or ReLU (\citet{nair2010rectified}), defined as $f(x) = max{0,x}$,
+as they allow faster and efficient training of deep neural network architectures.
 
 The activations flow through the rest of the hidden layers in similar fashion. For instance the
 $l^{th}$ hidden unit in layer $H_{l}$
@@ -126,7 +128,6 @@ classification with k > 2 classes, k output units are used and the outputs are n
 the \emph{softmax} function. A very common example of this is the hand-written digits classification,
 where the output layer consists of 10 units.
 
-
 \section{Recurrent neural networks}
 As mentioned earlier, we can create a recurrent neural network by adding feedback connections to
 a feedforward network. Several types of recurrent neural networks have been proposed over the
@@ -145,8 +146,15 @@ thus forming a memory in their feedback connections.
   \label{fig:unfoldedRNN}
 \end{figure}
 
-\section{Network training}
-\subsection{Gradient descent}
+\section {Network training using gradient descent}
+Training neural networks is no different than any other machine learning models with a loss
+function and gradient descent algorithm. However the difficulty is that the non-linear
+characteristics of neural networks causes to the loss functions to become non-convex. So the
+training procedure usually involves small iterative gradient descent algorithm to get a very low
+value of the cost function. For feedforward networks the weights are initialised with very small
+random numbers and the biased may be initilised to zero or very small values as well.
+
+The choice of a cost function is somehow important and usually these are same as the linear models.
 
 \section{LSTM networks}
 In previous section we learn that using a recurrent neural networks we can store information in
@@ -160,8 +168,7 @@ address this problem.
 
 \begin{figure}[htbp]
   \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]
-    {Figures/vanishing-gradient.pdf}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/vanishing-gradient.pdf}
     \rule{35em}{0.5pt}
   \caption[Vanishing Gradient] {The problem of vanishing gradient in recurrent neural networks.
   The sensitivity, as indicated by the shading, gradually diminishes with time}
@@ -172,14 +179,14 @@ address this problem.
 \subsection{Architecture}
 An LSTM network is a set of recurrently connected LSTM blocks, also known as memory blocks, where
 each memory block has one or more memory cells and three units (input, output and forget gates)
-that perform the read, write and reset operations. The units allow the LSTM to store information
-for a long time and thus addresses the problem of vanishing gradient. A basic LSTM block with one
-memory cell is depicted in the figure \ref{fig:lstmBlock}
+that perform the read, write and reset operations. A basic LSTM block with one memory cell is
+depicted in the figure \ref{fig:lstmBlock}. The multiplicative units allow the LSTM to store
+information for a long time and thus addresses the problem of vanishing gradient. An LSTM network
+is shown in figure \ref{fig:lstmNetwork}, the hidden layers contains the LSTM blocks.
 
 \begin{figure}[htbp]
   \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]
-    {Figures/lstm-block.pdf}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/lstm-block.pdf}
     \rule{35em}{0.5pt}
   \caption[An LSTM block with one cell]
 {An LSTM block with one cell. The three units collect activations from both inside and outside of
@@ -191,4 +198,18 @@ The only outputs from the block to the rest of the network is from the output ga
   \label{fig:lstmBlock}
 \end{figure}
 
-\subsection{Traffic prediction}
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/lstm-network.pdf}
+    \rule{35em}{0.5pt}
+  \caption[An LSTM network]
+{An LSTM network with one hidden layer with two memory blocks. The input layer consists of
+four input units and the output layer consists of five output units. Not all connections are
+shown in the figure. There is only one output from the block.}
+  \label{fig:lstmNetwork}
+\end{figure}
+
+\subsection{Training}
+
+\section{A Stacked LSTM network for short term traffic prediction}
+
