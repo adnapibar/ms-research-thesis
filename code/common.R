@@ -18,6 +18,8 @@ plots.dir <- "latex-thesis/Figures/"
 # rows as observations and columns as locations.
 if(!exists('volume.data')){
   volume.data <- read.csv('data/volume_data.csv', header = FALSE)
+  hf.list <- read.csv('data/HF_list.csv')
+  hf.ref <- read.csv('data/hf_ref.csv')
 }
 
 # Handle Missing Data - one way of doing this is to fill the missing

@@ -1,0 +1,37 @@
+Road types and responsible authorities
+The following information explains the organisations that are responsible for each type of road in 
+Victoria
+
+Freeways (excluding private roads)
+
+  VicRoads
+
+Freeways (including private roads)
+
+  Melbourne CityLink – Transurban
+  Eastlink – ConnectEast
+  Peninsula Link
+  
+Arterial roads (urban areas)
+ Operational responsibility, such as inspection, maintenance and repair of road infrastructure, 
+ including road works and road closures:
+  
+  through traffic lanes - VicRoads
+  other (including service roads, pathways and roadside areas) - municipal councils.
+
+Arterial roads (non urban areas)
+  VicRoads has operational responsibility (not including pathways) and coordination responsibilities.
+
+Municipal roads and other roads (non-arterial State roads and minor roads and tracks)
+  Municipal councils for municipal roads
+  Department of Sustainability & Environment and others, including Parks Victoria, for non-arterial 
+  State roads and minor roads and tracks
+---------------------
+Fields in HF_REF.csv
+GID - Geographical Identifier
+NAME - Name of the Road
+DIRECTION - Direction of the traffic on the road
+HF - Homogeneous Flow id eg 1234. An internal reference for Homogenous Flow. 
+    Homogeneous flow - The traffic volume information associated with the traffic flow along a link 
+    that is representative of all travel along the whole link. The Homogeneous Traffic Volume System (HTVS)     aims to have a network of road links for all Victoria that represent homogeneous traffic flows
+
