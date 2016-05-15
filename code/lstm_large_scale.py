@@ -117,7 +117,7 @@ def plot_predictions(y_test, predicted):
         plt.plot(x, y_test_tp[i][:300], label='Actual')
         plt.plot(x, pred_tp[i][:300], label='Predicted')
         plt.legend(loc=2)
-        plt.savefig('../lstm'+ str(i) + '.pdf')
+        plt.savefig('../latex-thesis/Figures/lstm'+ str(i) + '.pdf')
         plt.close()
 
 
