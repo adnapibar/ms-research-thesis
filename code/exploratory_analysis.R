@@ -14,7 +14,7 @@ analyseSite <- function(siteNum){
                                       by = '15 min', length.out=195168), data = site.data)
 
   hf.no <- hf.list[siteNum,]
-  road <- hf.ref[hf.ref$GID==hf.no,]
+  road <- hf.ref[hf.ref$HF==hf.no,]
   
   # Create xts object
   site.xts <- xts(site.df$data, order.by=site.df$interval)
@@ -66,4 +66,5 @@ analyseSite <- function(siteNum){
   return(road)
 }
 
-analyseSite(7)
+# index 6 to 24 (middle one is 15)
+analyseSite(15)

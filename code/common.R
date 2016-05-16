@@ -30,3 +30,10 @@ handleMissingData <- function (site.data){
   site.data[site.data==0] <- avg
   site.data
 }
+
+hf <- data.frame()
+for(i in c(1:1084)){
+  hf.no <- hf.list[i,]
+  road <- hf.ref[hf.ref$HF==hf.no,]
+  hf <- rbind(hf,road)
+}
