@@ -44,42 +44,89 @@ The desicion making of the SCATS system occurs at two levels - \emph{strategic} 
 \section{Volume data}
 Traffic loop detectors are embedded in the raod pavement and located in each lane near the stop
 line at traffic intersections. These detectors collect traffic volume and the time it takes a
-vehicle to clear the loop.
+vehicle to clear the loop. In this research we used the data collected from sensors at 1084
+homogeneous links(a road segment where the volume for all traffic along that link is collected).
+Traffic volume was collected for every 15 minutes interval from 01/01/2008 to 25/07/2013, a total
+of 195168 observations.
 
 
 \subsection{Handling missing data}
 
 
 \section{Exploratory analysis}
+In this section, we will perform soem
+
 Figure \ref{fig:AverageTrafficVolume} shows the daily, weekly, monthly and yearly average traffic
 volume at a site location.Figure \ref{fig:TypicalDayTraffic} shows how a typical day of the week
-on average looks like at a site location.
+on average looks like at a homogeneous link. We will explore both the south and north bound
+traffic data at Nicholson street (north of Melbourne's CBD)between Gertrude street and
+Victoria Parade  during the period 01/01/2008 to 25/07/2013.
 
-\begin{figure}[htbp]
-  \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/averages.pdf}
-    \rule{35em}{0.5pt}
-  \caption[Average Traffic Volume]{(a) daily, (b) weekly, (c) monthly and (d) yearly average of
-  traffic volume (15 mins interval) at a site location from the period 01/01/2008 to 26/07/2013}
-  \label{fig:AverageTrafficVolume}
+\begin{figure}[h]
+    \centering
+    \subfloat[Daily][Daily]{
+    \includegraphics[width=0.4\textwidth]{Figures/averages-daily.pdf}
+    \label{fig:AverageDaily}}
+    \qquad
+    \subfloat[Weekly][Weekly]{
+    \includegraphics[width=0.4\textwidth]{Figures/averages-weekly.pdf}
+    \label{fig:AverageWeekly}}
+
+    \subfloat[Monthly][Monthly]{
+    \includegraphics[width=0.4\textwidth]{Figures/averages-monthly.pdf}
+    \label{fig:AverageMonthly}}
+    \qquad
+    \subfloat[Yearly][Yearly]{
+    \includegraphics[width=0.4\textwidth]{Figures/averages-yearly.pdf}
+    \label{fig:AverageYearly}}
+
+    \caption[Average Traffic Volume]{(a) daily, (b) weekly, (c) monthly and (d) yearly average of
+    traffic volume (15 mins interval) at a site location from the period 01/01/2008 to 26/07/2013}
+   \label{fig:AverageTrafficVolume}
 \end{figure}
 
-\begin{figure}[htbp]
-  \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/typical-day.pdf}
-    \rule{35em}{0.5pt}
-  \caption[Average traffic on each day of the week]{Shows how a typical day of the week on
-  average looks like at a site locationat a site location from the period 01/01/2008 to 26/07/2013}
-  \label{fig:TypicalDayTraffic1}
+\begin{figure}[h]
+    \centering
+    \subfloat[Monday][Monday]{
+    \includegraphics[width=0.4\textwidth]{Figures/typical-Monday.pdf}
+    \label{fig:typicalMonday}}
+    \qquad
+    \subfloat[Tuesday][Tuesday]{
+    \includegraphics[width=0.4\textwidth]{Figures/typical-Tuesday.pdf}
+    \label{fig:typicalTuesday}}
+
+    \subfloat[Wednesday][Wednesday]{
+    \includegraphics[width=0.4\textwidth]{Figures/typical-Wednesday.pdf}
+    \label{fig:typicalWednesday}}
+    \qquad
+    \subfloat[Thursday][Thursday]{
+    \includegraphics[width=0.4\textwidth]{Figures/typical-Thursday.pdf}
+    \label{fig:typicalThursday}}
+
+    \subfloat[Friday][Friday]{
+    \includegraphics[width=0.4\textwidth]{Figures/typical-Friday.pdf}
+    \label{fig:typicalFriday}}
+    \qquad
+    \subfloat[Saturday][Saturday]{
+    \includegraphics[width=0.4\textwidth]{Figures/typical-Saturday.pdf}
+    \label{fig:typicalSaturday}}
+
+    \caption[Average traffic grouped by every day of the week]{Average traffic grouped by every
+    day of the week.}
+    \label{fig:TypicalDayTraffic}
 \end{figure}
 
-\begin{figure}[htbp]
-  \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/acf-pacf.pdf}
-    \rule{35em}{0.5pt}
-  \caption[Plots of ACF and PACF]{Shows how a typical day of the week on
-  average looks like at a site locationat a site location from the period 01/01/2008 to 26/07/2013}
-  \label{fig:TypicalDayTraffic1}
+\begin{figure}[h]
+    \centering
+    \subfloat[ACF][ACF]{
+    \includegraphics[width=0.4\textwidth]{Figures/acf.pdf}
+    \label{fig:acf}}
+    \qquad
+    \subfloat[PACF][PACF]{
+    \includegraphics[width=0.4\textwidth]{Figures/pacf.pdf}
+    \label{fig:pacf}}
+
+   \caption[Plots of ACF and PACF]{Plots of the autocorrelation and partial autocorrelation
+   functions}
+   \label{fig:acfPacf}
 \end{figure}
-
-

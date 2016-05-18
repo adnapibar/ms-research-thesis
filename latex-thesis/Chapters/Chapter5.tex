@@ -21,29 +21,16 @@ Jules Verne, \textit{Journey to the Centre of the Earth} (1864)
 
 \section{Experimental setup}
 
+We chose a subset of the obtained traffic data for experimentation as shown in the figure
+\ref{fig:ExperimentRegion}. The region boundary is denoted by the red line.
 
-\subsection{Benchmarks}
-The benchmark models are shown in the figure \ref{fig:benchmarkModels}
-
-\begin{figure}[h]
-    \centering
-    \subfloat[Linear Regression][Linear Regression]{
-    \includegraphics[width=0.4\textwidth]{Figures/linear-regression.pdf}
-    \label{fig:LmActualPredicted}}
-    \qquad
-    \subfloat[ARIMA][ARIMA]{
-    \includegraphics[width=0.4\textwidth]{Figures/arima.pdf}
-    \label{fig:ArimaActualPredicted}}
-    \subfloat[Neural Network Time Series][Neural Network Time Series]{
-    \includegraphics[width=0.4\textwidth]{Figures/nnetar.pdf}
-    \label{fig:NnetarActualPredicted}}
-    \qquad
-    \subfloat[Exponential smoothing state space model][Exponential smoothing state space model]{
-    \includegraphics[width=0.4\textwidth]{Figures/exp-smoothing.pdf}
-    \label{fig:etsActualPredicted}}
-    \caption[Benchmark models]{Benchmark models - Linear regression, ARIMA, Basic Neural network time series with
-    one hidden layer and Exponential smoothing state space model.}
-    \label{fig:benchmarkModels}
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/experiment-region.pdf}
+    \rule{35em}{0.5pt}
+  \caption[Experiment traffic region]{The traffic region used in this experiment. The boundary is
+   dentoed by the red line.}
+  \label{fig:ExperimentRegion}
 \end{figure}
 
 \subsection{Training details}
@@ -51,15 +38,37 @@ The benchmark models are shown in the figure \ref{fig:benchmarkModels}
 
 \section{Results}
 
-The results of the LSTM are shown in the figure \ref{fig:LstmActualPredicted}
+\begin{figure}[h]
+    \centering
 
-\begin{figure}[htbp]
-  \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/lstm.pdf}
-    \rule{35em}{0.5pt}
-  \caption[LSTM - Actual vs Predictions]{Long Short Term Memory predictions vs actual test data for
-  1000 observations.}
-  \label{fig:LstmActualPredicted}
+    \subfloat[Linear Regression][Linear Regression]{
+    \includegraphics[width=0.4\textwidth]{Figures/linear-regression.pdf}
+    \label{fig:LmActualPredicted}}
+    \qquad
+    \subfloat[ARIMA][ARIMA]{
+    \includegraphics[width=0.4\textwidth]{Figures/arima.pdf}
+    \label{fig:ArimaActualPredicted}}
+
+    \subfloat[Exponential smoothing state space model][Exponential smoothing state space model]{
+    \includegraphics[width=0.4\textwidth]{Figures/exp-smoothing.pdf}
+    \label{fig:etsActualPredicted}}
+    \qquad
+    \subfloat[BP Neural Network][BP Neural Network for time series]{
+    \includegraphics[width=0.4\textwidth]{Figures/nnetar.pdf}
+    \label{fig:NnetarActualPredicted}}
+
+    \subfloat[Stacked AutoEncoders][Stacked AutoEncoders]{
+    \includegraphics[width=0.4\textwidth]{Figures/nnetar.pdf}
+    \label{fig:AutoEncodersActualPredicted}}
+    \qquad
+    \subfloat[Stacked LSTM][Stacked LSTM]{
+    \includegraphics[width=0.4\textwidth]{Figures/lstm.pdf}
+    \label{fig:LSTMActualPredicted}}
+
+    \caption[Acutual vs Predictions]{Acutual vs Predictions - Linear regression, ARIMA, BP
+    Neural network time series with one hidden layer, Exponential smoothing state space model,
+    Stacked Autoencoders and Stacked LSTM network}
+    \label{fig:benchmarkModels}
 \end{figure}
 
 \section{Evaluation}
@@ -114,16 +123,16 @@ training data and vice versa.
 
 \begin{table}
 \centering
-    \begin{tabular}{| l | l | l | l | l|} \hline
-        Model & MAE & RMSE & MAPE & MASE \\ \hline
-        Naïve & 10 & 10 & 10 & 10 \\ \hline
-        Linear Regression & 10 & 10 & 10 & 10 \\ \hline
-        ARIMA & 10 & 10 & 10 & 10 \\ \hline
-        Exponential Smoothing & 10 & 10 & 10 & 10 \\ \hline
-        Neural Network (NNAR) & 10 & 10 & 10 & 10 \\ \hline
-        K-NN & 10 & 10 & 10 & 10 \\ \hline
-        SVM & 10 & 10 & 10 & 10 \\ \hline
-        LSTM & 10 & 10 & 10 & 10 \\ \hline
+    \begin{tabular}{| l | l | l| l | l | l | l|} \hline
+        Model & \multicolumn{2}{|c|}{RMSE} & \multicolumn{2}{|c|}{MAPE} &\multicolumn{2}{|c|}{MASE} \\
+         & 15 mins & 30 mins & 15 mins & 30 mins & 15 mins & 30 mins \\ \hline
+        Linear Regression & 201.31 &  & 196.20 &  & 3.31 &  \\
+        ARIMA & 41.31 &  & 21.5 &   & 0.64 &  \\
+        Eponential Smoothing & 38.97 &   & 14.28 &  & 0.59 &  \\
+        BP Neural Network & 51.89 &  & 30.77 &  & 0.87 &  \\
+        Stacked Autoencoders &  &  &  &  &  &  \\
+        Stacked LSTM &  &  &  &  &  &  \\ \hline
     \end{tabular}
-    \caption[Model comparisons]{Accuracy mesures for the banchmark models vs LSTM model}
+    \caption[Model comparisons]{Accuracy measures - RMSE, MAPE and MASE scores for the evaluted
+    models. The scores are calculated for prediction horizon of 15 and 30 minutes}
 \end{table}
