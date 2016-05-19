@@ -69,9 +69,11 @@ performArima <- function(freq, test.winsize){
   
   print("ARIMA.....")
   print(paste("ME = ", mean(me)))
-  print(paste("RMSE = ", mean(rmse)))
   print(paste("MAE = ", mean(mae)))
+  print(paste("RMSE = ", mean(rmse)))
   print(paste("MPE = ", mean(mpe)))
   print(paste("MAPE = ", mean(mape)))
-  print(paste("MASE = ", mean(mase)))
+  print(paste("MASE = ", mean(mase[!is.infinite(mase)])))
+  
+  return(list(me,mae,rmse,mpe,mape,mase))
 }
