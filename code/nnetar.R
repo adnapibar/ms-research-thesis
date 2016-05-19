@@ -14,41 +14,56 @@
 ####################################################################################################
 performNNETAR <- function(freq){
   train.start.idx <- 1
-  nn.forecast <- list()
+  nn.forecast <- c()
   n <- length(train.slices)
-  rmse <- matrix(NA, n)   # Record the error for each iteration
+  me <- c()
+  rmse <- c()
+  mae <- c()
+  mpe <- c()
+  mape <- c()
+  mase <- c()
   # Actual observations
-  actual <- list()
+  actual <- c()
   for(i in 1:n){
     actual[i] <- site.data[test.slices[[i]]]
   }
   
+  mdl <- NULL
+  mdl.data <- NULL
   for(i in 1:n){
-    train.site.data <- ts(site.data[train.slices[[i]]], start = c(train.start.idx,1), frequency = freq)
+    train.site.data <- ts(site.data[train.slices[[i]]], start = c(i,1), frequency = freq)
     
-    test.start.idx <- end(train.site.data)[1]+1
-    test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = freq)
-    
-    # Feed-forward neural networks with a single hidden layer and lagged inputs for forecasting univariate time series.
-    nnfit <- nnetar(train.site.data)
-    fc <- forecast(nnfit, h = 1)
-    
-    # Find out how to collect the point forcasts 
+    if(is.null(mdl)){
+      mdl <- nnetar(train.site.data, lambda = lambda)
+      fc <- forecast(mdl, h = 1)
+      mdl.data <- train.site.data
+    }else{
+      nn.model <- nnetar(c(mdl.data,train.site.data), model=mdl, lambda = lambda)
+      fc <- forecast(nn.model, h = 1)
+    }
     nn.forecast[i] <- fc$mean[1]
     
-    acc <- data.frame(accuracy(fc, test.site.data))
+    acc <- data.frame(accuracy(fc, site.data[test.slices[[i]]]))
+    me[i] <- acc$ME[2]
     rmse[i] <- acc$RMSE[2]
-    
-    # Slide the training window
-    train.start.idx <- train.start.idx + 3
+    mae[i] <- acc$MAE[2]
+    mpe[i] <- acc$MPE[2]
+    mape[i] <- acc$MAPE[2]
+    mase[i] <- acc$MASE[2]
   }
   
   # Plot the actual vs forecast values
   pdf(paste(plots.dir,'nnetar.pdf', sep = ''))
-  plot(1:n,actual, type='l', col=2, xlab='Iteration', ylab='Traffic Volume (15 min)')
-  lines(1:n, nn.forecast, type='l',col=3)
-  legend("topleft",legend=c("Actual","Neural Network Time Series"),col=2:3,lty=1)
+  plot(1:n,actual, type='l', col='red', xlab='Iteration', ylab='Traffic Volume (15 min)')
+  lines(1:n, nn.forecast, type='l',col='blue')
+  legend("topleft",legend=c("Actual","Feedforward Neural Network"),col=c('red','blue'),lty=1)
   dev.off()
   
-  return(rmse)
+  print("Feedforward Neural Network.....")
+  print(paste("ME = ", mean(me)))
+  print(paste("RMSE = ", mean(rmse)))
+  print(paste("MAE = ", mean(mae)))
+  print(paste("MPE = ", mean(mpe)))
+  print(paste("MAPE = ", mean(mape)))
+  print(paste("MASE = ", mean(mase)))
 }

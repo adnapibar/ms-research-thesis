@@ -1,13 +1,10 @@
 ####################################################################################################
-# Fit a linear model with time series components
-# tslm is largely a wrapper for lm() except that it allows variables "trend" and "season" which are 
-# created on the fly from the time series characteristics of the data. The variable "trend" is a 
-# simple time trend and "season" is a factor indicating the season (e.g., the month or the quarter 
-# depending on the frequency of the data).
+# naive() returns forecasts and prediction intervals for an ARIMA(0,1,0) 
+# random walk model applied to x
 ####################################################################################################
-performLinearRegression <- function(freq){
+performNaiveForecast <- function(freq){
   train.start.idx <- 1
-  lm.forecast <- c()
+  naive.forecast <- c()
   n <- length(train.slices)
   me <- c()
   rmse <- c()
@@ -25,13 +22,10 @@ performLinearRegression <- function(freq){
     train.site.data <- ts(site.data[train.slices[[i]]], start = c(train.start.idx,1), frequency = freq)
     test.start.idx <- end(train.site.data)[1]+1
     test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = freq)
+
+    fc <- naive(train.site.data, h=1, lambda = lambda)
     
-    # Linear Regression
-    lmfit <- tslm(train.site.data~trend, lambda = lambda)
-    fc <- forecast(lmfit, h = 1)
-    
-    # Find out how to collect the point forcasts 
-    lm.forecast[i] <- fc$mean[1]
+    naive.forecast[i] <- fc$mean[1]
     
     acc <- data.frame(accuracy(fc, test.site.data))
     me[i] <- acc$ME[2]
@@ -46,13 +40,13 @@ performLinearRegression <- function(freq){
   }
   
   # Plot the actual vs forecast values
-  pdf(paste(plots.dir,'linear-regression.pdf', sep = ''))
-  plot(1:n, actual, type='l', col='blue', xlab='Iteration', ylab='Traffic Volume (15 min)')
-  lines(1:n, lm.forecast, type='l',col='red')
-  legend("topleft",legend=c("Actual","Linear Regression"),col=c('blue','red'),lty=1)
+  pdf(paste(plots.dir,'naive.pdf', sep = ''))
+  plot(1:n, actual, type='l', col='red', xlab='Iteration', ylab='Traffic Volume (15 min)')
+  lines(1:n, naive.forecast, type='l',col='blue')
+  legend("topleft",legend=c("Actual","Naive"),col=c('red','blue'),lty=1)
   dev.off()
   
-  print("Linear Regression...")
+  print("Naive...")
   print(paste("ME = ", mean(me)))
   print(paste("RMSE = ", mean(rmse)))
   print(paste("MAE = ", mean(mae)))

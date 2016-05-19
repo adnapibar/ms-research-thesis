@@ -10,19 +10,44 @@ from keras.models import Sequential
 np.random.seed(1234)
 
 # Load the volume data
+# Brunswick Road - 6336, 6338; 16572
+# Flemington Road - 3393, 3394, 3396, 3398; 13632, 13634, 13635, 13637
+# Elizabeth Street -
+# Victorial Parade - 3592, 3593, 3594, 3595, 3596; 13829, 13831, 13832, 13835
+# Hoddle Street - 268, 272, 273, 274, 275, 277, 278; 6278, 10522, 10523, 10525, 10526, 10527,
+# 10528, 16515, 16517
+# Nicholson Street - 5539, 5540, 5541, 5543, 5544, 5545, 9615; 15773, 15774, 15775, 15777, 15778,
+#  19854, 19855
+# Royal Parade - 6782, 6783, 6784, 6786; 17022, 17023, 17025
+# Lygon Street - 9424, 9425, 9426, 9427, 9429; 19659, 19660, 19661, 19662, 19663
+
 volume_data = pd.read_csv('../data/volume_data.csv', header=None)
+
+all_hfs = pd.read_csv('../data/hf_list.csv')
+
+used_hfs = [6336, 6338, 16572, 3393, 3394, 3396, 3398, 13632, 13634, 13635, 13637,
+            3592, 3593, 3594, 3595, 3596, 13829, 13831, 13832, 13835, 268, 272, 273,
+            274, 275, 277, 278, 6278, 10522, 10523, 10525, 10526, 10527, 10528, 16515, 16517,
+            5539, 5540, 5541, 5543, 5544, 5545, 9615, 15773, 15774, 15775, 15777, 15778,
+            19854, 19855, 6782, 6783, 6784, 6786, 17022, 17023, 17025, 9424, 9425, 9426, 9427,
+            9429, 19659, 19660, 19661, 19662, 19663]
+
+
+def find_index_hf(hf_no):
+    return all_hfs[all_hfs['GID'] == hf_no].index.tolist()[0]
 
 
 # Return a training and test data for a site.
 def train_test_traffic_data(sequence_length=50):
     sample_size = volume_data.shape[0]
-    roads_size = volume_data.shape[1]
+    hfs = [find_index_hf(hf_no) for hf_no in used_hfs]
 
     result = []
     # Create data
-    for j in range(roads_size):
+    for j in hfs:
         road_vol = volume_data[j]
         road_vol = road_vol.replace(0, int(road_vol.mean())).values
+        # TODO Scale DATA
         temp = []
         for i in range(sample_size - sequence_length):
             temp.append(road_vol[i: i + sequence_length])
@@ -83,7 +108,7 @@ def build_model():
 def run_network(mdl=None, data=None):
     global_start_time = time.time()
     epochs = 5
-    sequence_length = 50
+    sequence_length = 96
 
     if data is None:
         print('Loading data... ')
@@ -113,12 +138,12 @@ def plot_predictions(y_test, predicted):
     x = np.arange(500)
     y_test_tp = np.transpose(y_test)
     pred_tp = np.transpose(predicted)
-    for i in range(y_test_tp.shape[0]):
-        plt.plot(x, y_test_tp[i][:300], label='Actual')
-        plt.plot(x, pred_tp[i][:300], label='Predicted')
-        plt.legend(loc=2)
-        plt.savefig('../latex-thesis/Figures/lstm'+ str(i) + '.pdf')
-        plt.close()
+    # Plot for the location 15773
+    plt.plot(x, y_test_tp[43][:300], label='Actual', color='blue')
+    plt.plot(x, pred_tp[43][:300], label='Predicted', color='red')
+    plt.legend(loc=2)
+    plt.savefig('../latex-thesis/Figures/lstm-large-scale.pdf')
+    plt.close()
 
 
 if __name__ == '__main__':

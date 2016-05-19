@@ -1,13 +1,10 @@
 ####################################################################################################
-# Fit a linear model with time series components
-# tslm is largely a wrapper for lm() except that it allows variables "trend" and "season" which are 
-# created on the fly from the time series characteristics of the data. The variable "trend" is a 
-# simple time trend and "season" is a factor indicating the season (e.g., the month or the quarter 
-# depending on the frequency of the data).
+# The iid model is Y[t]=mu + Z[t] where Z[t] is a normal iid error. Forecasts are given by 
+# Y[n+h]=mu where mu is estimated by the sample mean.
 ####################################################################################################
-performLinearRegression <- function(freq){
+performMeanForecast <- function(freq){
   train.start.idx <- 1
-  lm.forecast <- c()
+  mean.forecast <- c()
   n <- length(train.slices)
   me <- c()
   rmse <- c()
@@ -26,12 +23,9 @@ performLinearRegression <- function(freq){
     test.start.idx <- end(train.site.data)[1]+1
     test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = freq)
     
-    # Linear Regression
-    lmfit <- tslm(train.site.data~trend, lambda = lambda)
-    fc <- forecast(lmfit, h = 1)
+    fc <- meanf(train.site.data, h=1, lambda = lambda)
     
-    # Find out how to collect the point forcasts 
-    lm.forecast[i] <- fc$mean[1]
+    mean.forecast[i] <- fc$mean[1]
     
     acc <- data.frame(accuracy(fc, test.site.data))
     me[i] <- acc$ME[2]
@@ -46,13 +40,13 @@ performLinearRegression <- function(freq){
   }
   
   # Plot the actual vs forecast values
-  pdf(paste(plots.dir,'linear-regression.pdf', sep = ''))
-  plot(1:n, actual, type='l', col='blue', xlab='Iteration', ylab='Traffic Volume (15 min)')
-  lines(1:n, lm.forecast, type='l',col='red')
-  legend("topleft",legend=c("Actual","Linear Regression"),col=c('blue','red'),lty=1)
+  pdf(paste(plots.dir,'meanf.pdf', sep = ''))
+  plot(1:n, actual, type='l', col='red', xlab='Iteration', ylab='Traffic Volume (15 min)')
+  lines(1:n, mean.forecast, type='l',col='blue')
+  legend("topleft",legend=c("Actual","Mean Forecast"),col=c('red','blue'),lty=1)
   dev.off()
   
-  print("Linear Regression...")
+  print("Mean Forecast...")
   print(paste("ME = ", mean(me)))
   print(paste("RMSE = ", mean(rmse)))
   print(paste("MAE = ", mean(mae)))
