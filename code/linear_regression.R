@@ -5,7 +5,7 @@
 # simple time trend and "season" is a factor indicating the season (e.g., the month or the quarter 
 # depending on the frequency of the data).
 ####################################################################################################
-performLinearRegression <- function(freq){
+performLinearRegression <- function(freq, test.winsize){
   train.start.idx <- 1
   lm.forecast <- c()
   n <- length(train.slices)
@@ -15,11 +15,6 @@ performLinearRegression <- function(freq){
   mpe <- c()
   mape <- c()
   mase <- c()
-  # Actual observations
-  actual <- c()
-  for(i in 1:n){
-    actual[i] <- site.data[test.slices[[i]]]
-  }
   
   for(i in 1:n){
     train.site.data <- ts(site.data[train.slices[[i]]], start = c(train.start.idx,1), frequency = freq)
@@ -28,7 +23,7 @@ performLinearRegression <- function(freq){
     
     # Linear Regression
     lmfit <- tslm(train.site.data~trend, lambda = lambda)
-    fc <- forecast(lmfit, h = 1)
+    fc <- forecast(lmfit, h = test.winsize)
     
     # Find out how to collect the point forcasts 
     lm.forecast[i] <- fc$mean[1]
@@ -42,15 +37,22 @@ performLinearRegression <- function(freq){
     mase[i] <- acc$MASE[2]
     
     # Slide the training window
-    train.start.idx <- train.start.idx + 3
+    train.start.idx <- train.start.idx + 1
   }
   
-  # Plot the actual vs forecast values
-  pdf(paste(plots.dir,'linear-regression.pdf', sep = ''))
-  plot(1:n, actual, type='l', col='blue', xlab='Iteration', ylab='Traffic Volume (15 min)')
-  lines(1:n, lm.forecast, type='l',col='red')
-  legend("topleft",legend=c("Actual","Linear Regression"),col=c('blue','red'),lty=1)
-  dev.off()
+  if(test.winsize == 1){
+    # Actual observations
+    actual <- c()
+    for(i in 1:n){
+      actual[i] <- site.data[test.slices[[i]]]
+    }
+    # Plot the actual vs forecast values
+    pdf(paste(plots.dir,'linear-regression.pdf', sep = ''))
+    plot(1:n, actual, type='l', col='blue', xlab='Test Number', ylab='Traffic Volume (15 min)')
+    lines(1:n, lm.forecast, type='l',col='red')
+    legend("topleft",legend=c("Actual","Linear Regression"),col=c('blue','red'),lty=1)
+    dev.off()
+  }
   
   print("Linear Regression...")
   print(paste("ME = ", mean(me)))

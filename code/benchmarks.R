@@ -19,11 +19,10 @@ lambda <- BoxCox.lambda(site.data)
 time.slices = createTimeSlices(1:length(site.data), train.winsize, test.winsize, skip = slide.by)
 train.slices = time.slices[[1]]
 test.slices = time.slices[[2]]
-rm(train.winsize, test.winsize, time.slices, slide.by)
 
-performMeanForecast(freq)
-performNaiveForecast(freq)
-performLinearRegression(freq)
-performNNETAR(freq)
-performExpSmoothing(freq)
-performArima(freq)
+performMeanForecast(freq, test.winsize)
+performNaiveForecast(freq, test.winsize)
+performLinearRegression(freq, test.winsize)
+performNNETAR(freq, test.winsize)
+performExpSmoothing(freq, test.winsize)
+performArima(freq, test.winsize)

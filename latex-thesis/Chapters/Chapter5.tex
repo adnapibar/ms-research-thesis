@@ -55,6 +55,14 @@ next 15 minutes(1 step ahead).
 \begin{figure}[h]
     \centering
 
+    \subfloat[Naïve][Naïve]{
+    \includegraphics[width=0.4\textwidth]{Figures/naive.pdf}
+    \label{fig:naiveActualPredicted}}
+    \qquad
+    \subfloat[Mean Forecast][Mean Forecast]{
+    \includegraphics[width=0.4\textwidth]{Figures/meanf.pdf}
+    \label{fig:meanfActualPredicted}}
+
     \subfloat[Linear Regression][Linear Regression]{
     \includegraphics[width=0.4\textwidth]{Figures/linear-regression.pdf}
     \label{fig:LmActualPredicted}}
@@ -102,7 +110,9 @@ The results of the LSTM network are shown in the figure \ref{fig:LSTMActualPredi
 \end{figure}
 
 In table \ref{table:accuracyScores}, the performance of the LSTM network along with the compared
-models are given. Several accuracy measures exist to evaluate a model. In below secions we describe
+models are given.
+
+Several accuracy measures exist to evaluate a model. In below secions we describe
 the accuracy mesures and use those to evalute our proposed model against the benchmark models.
 For defining the accuracy measures let us denote $x_{i}$ be the $i^{th}$ observation and
 $\hat{x}_{i}$ be the prediction of $x_{i}$.
@@ -150,72 +160,31 @@ where
 A scaled error is less than one if it is better than the average naïve forecast computed on the
 training data and vice versa.
 
-%%
-% MEAN 15 minutes traffic volume is = 104.4
-
-%[1] "Mean Forecast..."
-% 15 MINUTES
-%[1] "RMSE =  48.1291966646441"
-%[1] "MAE =  48.1291966646441"
-%[1] "MAPE =  98.3410581401692"
-%[1] "MASE =  Inf"
-% 30 MINUTES
-
-%[1] "Naive..."
-% 15 MINUTES
-%[1] "RMSE =  15.2469135802469"
-%[1] "MAE =  15.2469135802469"
-%[1] "MAPE =  21.2435033738567"
-%[1] "MASE =  Inf"
-% 30 MINUTES
-
-%[1] "Linear Regression..."
-% 15 MINUTES
-%[1] "RMSE =  50.2963579162249"
-%[1] "MAE =  50.2963579162249"
-%[1] "MAPE =  97.844026487277"
-%[1] "MASE =  Inf"
-% 30 MINUTES
-
-%[1] "Feedforward Neural Network....."
-% 15 MINUTES
-%[1] "RMSE =  19.4785975022794"
-%[1] "MAE =  19.4785975022794"
-%[1] "MAPE =  24.3756488596144"
-%[1] "MASE =  1.30632416624528"
-% 30 MINUTES
-
-%[1] "Exponential Smoothing....."
-% 15 MINUTES
-%[1] "RMSE =  15.3302574006633"
-%[1] "MAE =  15.3302574006633"
-%[1] "MAPE =  20.680574329633"
-%[1] "MASE =  1.04054865720154"
-% 30 MINUTES
-
-%[1] "ARIMA....."
-% 15 MINUTES
-%[1] "RMSE =  15.1000087920356"
-%[1] "MAE =  15.1000087920356"
-%[1] "MAPE =  21.2947271419304"
-%[1] "MASE =  1.02257705105811"
-% 30 MINUTES
 
 \begin{table}
 \centering
     \begin{tabular}{| l | l | l| l | l | l | l|} \hline
-        Model & \multicolumn{2}{|c|}{RMSE} & \multicolumn{2}{|c|}{MAPE(\%)} & \multicolumn{2}{|c|}{MASE} \\
-        & 15 mins & 30 mins & 15 mins & 30 mins & 15 mins & 30 mins \\ \hline
-        Mean & 48.13 &  & 98.34 &  & Inf &  \\
-        Naive & 15.25 &  & 25.24 &  & Inf &  \\
-        Linear Regression & 50.30 &  & 97.84 &  & Inf &  \\
-        ARIMA & 15.1 &  & 21.3 &   & 1.02 &  \\
-        Eponential Smoothing & 15.33 &   & 20.68 &  & 1.04 &  \\
-        Feedforward Neural Network & 19.48 &  & 24.37 &  & 1.31 &  \\
-        Stacked Autoencoders &  &  &  &  &  &  \\
-        Stacked LSTM &  &  &  &  &  &  \\ \hline
+        Model                            & ME & MAE & RMSE & MPE(\%) & MAPE(\%) & MASE \\ \hline
+        Mean Forecast                    & 10.73 & 48.13 & 48.13 & -63.61 & 98.34 & Inf \\ \hline
+        Naive                            & -0.18 & 15.25 & 15.25 & -5.65 & 21.24 & Inf \\ \hline
+        Linear Regression                & 9.75 & 50.30 & 50.30 & -62.20 & 97.84 & Inf \\ \hline
+        ARIMA                            & 1.87 & 15.10 & 15.10 & -6.05 & 21.30 & 1.02 \\ \hline
+        Eponential Smoothing             & 0.04 & 15.33 & 15.33 & -5.48 & 20.68 & 1.04 \\ \hline
+        Feedforward Neural Network       & 5.61 & 19.40 & 19.40 & -5.51 & 24.29 & 1.30 \\ \hline
+        Stacked LSTM(Single location)    &  &  &  &  &  &  \\ \hline
+        Stacked LSTM(Multiple locations) &  &  &  &  &  &  \\
+        \hline \hline
+        Mean Forecast                    & 10.29 & 47.13 & 48.31 & -63.63 & 98.27 & Inf \\ \hline
+        Naive                            & -0.62 & 16.65 & 18.16 & -6.35 & 23.02 & Inf \\ \hline
+        Linear Regression                & 9.30 & 49.30 & 50.38 & -62.67 & 98.30 & Inf \\ \hline
+        ARIMA                            & 2.42 & 16.56 & 18.02 & -7.18 & 23.67 & 1.12 \\ \hline
+        Eponential Smoothing             & -0.61 & 16.66 & 18.08 & -5.74 & 22.20 & 1.13 \\ \hline
+        Feedforward Neural Network       & 6.61 & 19.54 & 20.98 & -4.51 & 25.06 & 1.33 \\ \hline
+        Stacked LSTM(Single location)    &  &  &  &  &  &  \\ \hline
+        Stacked LSTM(Multiple locations) &  &  &  &  &  &  \\ \hline
     \end{tabular}
-    \caption[Model comparisons]{Accuracy measures - RMSE, MAPE and MASE scores for the evaluted
-    models. The scores are calculated for prediction horizon of 15 and 30 minutes}
+    \caption[Model comparisons]{Accuracy measures for the evaluted models. The scores are
+    calculated for prediction horizon of 15-minutes(top half) and 30-minutes(bottom half). Mean
+    15-minutes traffic volume is 104.4}
     \label{table:accuracyScores}
 \end{table}

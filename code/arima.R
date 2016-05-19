@@ -17,7 +17,7 @@
 # Optimization is done by optim. It will work best if the columns in xreg are roughly scaled to zero 
 # mean and unit variance, but does attempt to estimate suitable scalings.
 ####################################################################################################
-performArima <- function(freq){
+performArima <- function(freq, test.winsize){
 
   arima.forecast <- c()
   n <- length(train.slices)
@@ -27,11 +27,6 @@ performArima <- function(freq){
   mpe <- c()
   mape <- c()
   mase <- c()
-  # Actual observations
-  actual <- c()
-  for(i in 1:n){
-    actual[i] <- site.data[test.slices[[i]]]
-  }
   
   mdl <- NULL
   mdl.data <- NULL
@@ -41,11 +36,11 @@ performArima <- function(freq){
     
     if(is.null(mdl)){
       mdl <- auto.arima(train.site.data, approximation=FALSE,trace=FALSE, lambda = lambda)
-      fc <- forecast(mdl, h = 1)
+      fc <- forecast(mdl, h = test.winsize)
       mdl.data <- train.site.data
     }else{
       arima.model <- Arima(c(mdl.data,train.site.data), model=mdl,  lambda = lambda)
-      fc <- forecast(arima.model, h = 1)
+      fc <- forecast(arima.model, h = test.winsize)
     }
     arima.forecast[i] <- fc$mean[1]
     
@@ -58,12 +53,19 @@ performArima <- function(freq){
     mase[i] <- acc$MASE[2]
   }
   
-  # Plot the actual vs forecast values
-  pdf(paste(plots.dir,'arima.pdf', sep = ''))
-  plot(1:n, actual, type='l', col='blue', xlab='Iteration', ylab='Traffic Volume (15 min)')
-  lines(1:n, arima.forecast, type='l', col='red')
-  legend("topleft",legend=c("Actual","ARIMA"), col=c('blue','red'),lty=1)
-  dev.off()
+  if(test.winsize == 1){
+    # Actual observations
+    actual <- c()
+    for(i in 1:n){
+      actual[i] <- site.data[test.slices[[i]]]
+    }
+    # Plot the actual vs forecast values
+    pdf(paste(plots.dir,'arima.pdf', sep = ''))
+    plot(1:n, actual, type='l', col='blue', xlab='Test Number', ylab='Traffic Volume (15 min)')
+    lines(1:n, arima.forecast, type='l', col='red')
+    legend("topleft",legend=c("Actual","ARIMA"), col=c('blue','red'),lty=1)
+    dev.off()
+  }
   
   print("ARIMA.....")
   print(paste("ME = ", mean(me)))

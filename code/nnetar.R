@@ -12,7 +12,7 @@
 # data, the fitted model is called an NNAR(p,P,k)[m] model, which is analogous to an 
 # ARIMA(p,0,0)(P,0,0)[m] model but with nonlinear functions.
 ####################################################################################################
-performNNETAR <- function(freq){
+performNNETAR <- function(freq, test.winsize){
   train.start.idx <- 1
   nn.forecast <- c()
   n <- length(train.slices)
@@ -22,12 +22,7 @@ performNNETAR <- function(freq){
   mpe <- c()
   mape <- c()
   mase <- c()
-  # Actual observations
-  actual <- c()
-  for(i in 1:n){
-    actual[i] <- site.data[test.slices[[i]]]
-  }
-  
+ 
   mdl <- NULL
   mdl.data <- NULL
   for(i in 1:n){
@@ -35,11 +30,11 @@ performNNETAR <- function(freq){
     
     if(is.null(mdl)){
       mdl <- nnetar(train.site.data, lambda = lambda)
-      fc <- forecast(mdl, h = 1)
+      fc <- forecast(mdl, h = test.winsize)
       mdl.data <- train.site.data
     }else{
       nn.model <- nnetar(c(mdl.data,train.site.data), model=mdl, lambda = lambda)
-      fc <- forecast(nn.model, h = 1)
+      fc <- forecast(nn.model, h = test.winsize)
     }
     nn.forecast[i] <- fc$mean[1]
     
@@ -52,12 +47,20 @@ performNNETAR <- function(freq){
     mase[i] <- acc$MASE[2]
   }
   
-  # Plot the actual vs forecast values
-  pdf(paste(plots.dir,'nnetar.pdf', sep = ''))
-  plot(1:n,actual, type='l', col='red', xlab='Iteration', ylab='Traffic Volume (15 min)')
-  lines(1:n, nn.forecast, type='l',col='blue')
-  legend("topleft",legend=c("Actual","Feedforward Neural Network"),col=c('red','blue'),lty=1)
-  dev.off()
+  if(test.winsize == 1){
+    # Actual observations
+    actual <- c()
+    for(i in 1:n){
+      actual[i] <- site.data[test.slices[[i]]]
+    }
+    
+    # Plot the actual vs forecast values
+    pdf(paste(plots.dir,'nnetar.pdf', sep = ''))
+    plot(1:n,actual, type='l', col='red', xlab='Test Number', ylab='Traffic Volume (15 min)')
+    lines(1:n, nn.forecast, type='l',col='blue')
+    legend("topleft",legend=c("Actual","Feedforward Neural Network"),col=c('red','blue'),lty=1)
+    dev.off()
+  }
   
   print("Feedforward Neural Network.....")
   print(paste("ME = ", mean(me)))

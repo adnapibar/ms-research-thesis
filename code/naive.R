@@ -2,7 +2,7 @@
 # naive() returns forecasts and prediction intervals for an ARIMA(0,1,0) 
 # random walk model applied to x
 ####################################################################################################
-performNaiveForecast <- function(freq){
+performNaiveForecast <- function(freq, test.winsize){
   train.start.idx <- 1
   naive.forecast <- c()
   n <- length(train.slices)
@@ -12,18 +12,13 @@ performNaiveForecast <- function(freq){
   mpe <- c()
   mape <- c()
   mase <- c()
-  # Actual observations
-  actual <- c()
-  for(i in 1:n){
-    actual[i] <- site.data[test.slices[[i]]]
-  }
   
   for(i in 1:n){
     train.site.data <- ts(site.data[train.slices[[i]]], start = c(train.start.idx,1), frequency = freq)
     test.start.idx <- end(train.site.data)[1]+1
     test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = freq)
 
-    fc <- naive(train.site.data, h=1, lambda = lambda)
+    fc <- naive(train.site.data, h=test.winsize, lambda = lambda)
     
     naive.forecast[i] <- fc$mean[1]
     
@@ -36,15 +31,23 @@ performNaiveForecast <- function(freq){
     mase[i] <- acc$MASE[2]
     
     # Slide the training window
-    train.start.idx <- train.start.idx + 3
+    train.start.idx <- train.start.idx + 1
   }
   
   # Plot the actual vs forecast values
-  pdf(paste(plots.dir,'naive.pdf', sep = ''))
-  plot(1:n, actual, type='l', col='red', xlab='Iteration', ylab='Traffic Volume (15 min)')
-  lines(1:n, naive.forecast, type='l',col='blue')
-  legend("topleft",legend=c("Actual","Naive"),col=c('red','blue'),lty=1)
-  dev.off()
+  if(test.winsize == 1){
+    # Actual observations
+    actual <- c()
+    for(i in 1:n){
+      actual[i] <- site.data[test.slices[[i]]]
+    }
+    pdf(paste(plots.dir,'naive.pdf', sep = ''))
+    plot(1:n, actual, type='l', col='red', xlab='Test Number', ylab='Traffic Volume (15 min)')
+    lines(1:n, naive.forecast, type='l',col='blue')
+    legend("topleft",legend=c("Actual","Naive"),col=c('red','blue'),lty=1)
+    dev.off()
+  }
+ 
   
   print("Naive...")
   print(paste("ME = ", mean(me)))
