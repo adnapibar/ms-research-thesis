@@ -164,24 +164,25 @@ training data and vice versa.
 \begin{table}
 \centering
     \begin{tabular}{| l | l | l| l | l | l | l|} \hline
-        Model                            & ME & MAE & RMSE & MPE(\%) & MAPE(\%) & MASE \\ \hline
-        Mean Forecast                    & 10.73 & 48.13 & 48.13 & -63.61 & 98.34 & Inf \\ \hline
-        Naive                            & -0.18 & 15.25 & 15.25 & -5.65 & 21.24 & Inf \\ \hline
-        Linear Regression                & 9.75 & 50.30 & 50.30 & -62.20 & 97.84 & Inf \\ \hline
+        \textbf{Model}  & \textbf{ME} & \textbf{MAE} & \textbf{RMSE} & \textbf{MPE(\%)} & \textbf{MAPE(\%)} & \textbf{MASE} \\ \hline
+        \multicolumn{7}{|c|}{15 minutes} \\ \hline
+        Mean Forecast                    & 10.73 & 48.13 & 48.13 & -63.61 & 98.34 & 1.57 \\ \hline
+        Naive                            & -0.18 & 15.25 & 15.25 & -5.65 & 21.24 & 0.49 \\ \hline
+        Linear Regression                & 9.75 & 50.30 & 50.30 & -62.20 & 97.84 & 1.65 \\ \hline
         ARIMA                            & 1.87 & 15.10 & 15.10 & -6.05 & 21.30 & 1.02 \\ \hline
         Eponential Smoothing             & 0.04 & 15.33 & 15.33 & -5.48 & 20.68 & 1.04 \\ \hline
         Feedforward Neural Network       & 5.61 & 19.40 & 19.40 & -5.51 & 24.29 & 1.30 \\ \hline
-        Stacked LSTM(Single location)    &  &  &  &  &  &  \\ \hline
-        Stacked LSTM(Multiple locations) &  &  &  &  &  &  \\
-        \hline \hline
-        Mean Forecast                    & 10.29 & 47.13 & 48.31 & -63.63 & 98.27 & Inf \\ \hline
-        Naive                            & -0.62 & 16.65 & 18.16 & -6.35 & 23.02 & Inf \\ \hline
-        Linear Regression                & 9.30 & 49.30 & 50.38 & -62.67 & 98.30 & Inf \\ \hline
+        Deep LSTM(single location)       &  &  &  &  &  &  \\ \hline
+        Deep LSTM(multiple locations)    &  &  &  &  &  &  \\ \hline
+        \multicolumn{7}{|c|}{30 minutes} \\ \hline
+        Mean Forecast                    & 10.29 & 47.13 & 48.31 & -63.63 & 98.27 & 1.54 \\ \hline
+        Naive                            & -0.62 & 16.65 & 18.16 & -6.35 & 23.02 & 0.54 \\ \hline
+        Linear Regression                & 9.30 & 49.30 & 50.38 & -62.67 & 98.30 & 1.62 \\ \hline
         ARIMA                            & 2.42 & 16.56 & 18.02 & -7.18 & 23.67 & 1.12 \\ \hline
         Eponential Smoothing             & -0.61 & 16.66 & 18.08 & -5.74 & 22.20 & 1.13 \\ \hline
         Feedforward Neural Network       & 6.61 & 19.54 & 20.98 & -4.51 & 25.06 & 1.33 \\ \hline
-        Stacked LSTM(Single location)    &  &  &  &  &  &  \\ \hline
-        Stacked LSTM(Multiple locations) &  &  &  &  &  &  \\ \hline
+        Deep LSTM(single location)       &  &  &  &  &  &  \\ \hline
+        Deep LSTM(multiple locations)    &  &  &  &  &  &  \\ \hline
     \end{tabular}
     \caption[Model comparisons]{Accuracy measures for the evaluted models. The scores are
     calculated for prediction horizon of 15-minutes(top half) and 30-minutes(bottom half). Mean
