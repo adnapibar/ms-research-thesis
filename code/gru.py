@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from keras.layers.core import Dense, Activation, Dropout
-from keras.layers.recurrent import LSTM
+from keras.layers.recurrent import GRU
 from keras.models import Sequential
 
 # Set a random seed to reproduce the results
@@ -59,14 +59,14 @@ def build_model():
     layers = [1, 50, 100, 1]
 
     # We also add 20% Dropout in this layer.
-    mdl.add(LSTM(
+    mdl.add(GRU(
         input_dim=layers[0],
         output_dim=layers[1],
         return_sequences=True))
     mdl.add(Dropout(0.2))
 
     # 2nd hidden layer
-    mdl.add(LSTM(
+    mdl.add(GRU(
         layers[2],
         return_sequences=False))
     mdl.add(Dropout(0.2))

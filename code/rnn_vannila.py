@@ -1,4 +1,4 @@
-# An LSTM network for short term traffic prediction
+# An SimpleRNN network for short term traffic prediction
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 import time
@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from keras.layers.core import Dense, Activation, Dropout
-from keras.layers.recurrent import LSTM
+from keras.layers.recurrent import SimpleRNN
 from keras.models import Sequential
 
 # Set a random seed to reproduce the results
@@ -59,14 +59,14 @@ def build_model():
     layers = [1, 50, 100, 1]
 
     # We also add 20% Dropout in this layer.
-    mdl.add(LSTM(
+    mdl.add(SimpleRNN(
         input_dim=layers[0],
         output_dim=layers[1],
         return_sequences=True))
     mdl.add(Dropout(0.2))
 
     # 2nd hidden layer
-    mdl.add(LSTM(
+    mdl.add(SimpleRNN(
         layers[2],
         return_sequences=False))
     mdl.add(Dropout(0.2))
@@ -119,7 +119,7 @@ def plot_predictions(y_test, predicted):
     plt.plot(x, y_test[:400], label='Actual')
     plt.plot(x, predicted[:400], label='Predicted')
     plt.legend(loc=2)
-    plt.savefig('../latex-thesis/Figures/lstm-single.pdf')
+    plt.savefig('../latex-thesis/Figures/rnn.pdf')
 
 
 def mean_absolute_percentage_error(y_true, y_pred):
