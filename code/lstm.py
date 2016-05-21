@@ -1,4 +1,5 @@
 # An LSTM network for short term traffic prediction
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 
 import time
 import matplotlib.pyplot as plt
@@ -13,13 +14,33 @@ np.random.seed(1234)
 
 # Load the volume data
 volume_data = pd.read_csv('../data/volume_data.csv', header=None)
+scaler = None
+all_hfs = pd.read_csv('../data/hf_list.csv')
+
+used_hfs = [6336, 6338, 16572, 3393, 3394, 3396, 3398, 13632, 13634, 13635, 13637,
+            3592, 3593, 3594, 3595, 3596, 13829, 13831, 13832, 13835, 268, 272, 273,
+            274, 275, 277, 278, 6278, 10522, 10523, 10525, 10526, 10527, 10528, 16515, 16517,
+            5539, 5540, 5541, 5543, 5544, 5545, 9615, 15773, 15774, 15775, 15777, 15778,
+            19854, 19855, 6782, 6783, 6784, 6786, 17022, 17023, 17025, 9424, 9425, 9426, 9427,
+            9429, 19659, 19660, 19661, 19662, 19663]
+
+
+def find_index_hf(hf_no):
+    return all_hfs[all_hfs['GID'] == hf_no].index.tolist()[0]
+
+
+maxs = []
+means = []
 
 
 # Return a training and test data for a site.
-def train_test_traffic_data(sitenum, sequence_length=50):
-    site_traffic = volume_data[sitenum]
+def train_test_traffic_data(sitenum, sequence_length=100):
+    site_traffic = volume_data[find_index_hf(sitenum)]
     mean_t = int(site_traffic.mean())
     site_traffic = site_traffic.replace(0, mean_t).values
+    means.append(site_traffic.mean())
+    maxs.append(site_traffic.max())
+    site_traffic = (site_traffic - site_traffic.mean()) / site_traffic.max()
     result = []
     for index in range(len(site_traffic) - sequence_length):
         result.append(site_traffic[index: index + sequence_length])
@@ -77,7 +98,7 @@ def run_network(mdl=None, data=None):
 
     if data is None:
         print('Loading data... ')
-        X_train, y_train, X_test, y_test = train_test_traffic_data(0, sequence_length)
+        X_train, y_train, X_test, y_test = train_test_traffic_data(15773, sequence_length)
     else:
         X_train, y_train, X_test, y_test = data
 
@@ -96,16 +117,27 @@ def run_network(mdl=None, data=None):
         return mdl, y_test, 0
 
     print('Training duration (s) : ', time.time() - global_start_time)
-
+    y_test = (y_test * maxs[0]) + means[0]
+    predicted_trffic = (predicted_trffic * maxs[0]) + means[0]
     return mdl, y_test, predicted_trffic
 
 
 def plot_predictions(y_test, predicted):
-    x = np.arange(1000)
-    plt.plot(x, y_test[:1000], label='Actual')
-    plt.plot(x, predicted[:1000], label='Predicted')
+    x = np.arange(400)
+    plt.plot(x, y_test[:400], label='Actual')
+    plt.plot(x, predicted[:400], label='Predicted')
     plt.legend(loc=2)
-    plt.savefig('../plots/lstm.pdf')
+    plt.savefig('../latex-thesis/Figures/lstm-single.pdf')
+
+
+def mean_absolute_percentage_error(y_true, y_pred):
+    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+
+
+def print_scores(actual, predictions):
+    print("MAE=", mean_absolute_error(actual, predictions))
+    print("MSE=", mean_squared_error(actual, predictions))
+    print("MAPE=", mean_absolute_percentage_error(actual, predictions))
 
 
 if __name__ == '__main__':
@@ -113,4 +145,6 @@ if __name__ == '__main__':
     model, y_test, predicted = run_network()
     print('Plotting test vs prediction...')
     plot_predictions(y_test, predicted)
+    print('Error metrics...')
+    print_scores(y_test, predicted)
     print('Done!')
