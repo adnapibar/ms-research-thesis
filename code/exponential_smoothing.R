@@ -5,17 +5,20 @@
 # The model is chosen automatically if not specified. This methodology performed extremely well on 
 # the M3-competition data
 ####################################################################################################
-performExpSmoothing <- function(freq, test.winsize){
+performExpSmoothing <- function(horizon){
+  train.winsize = 96*28    # size of the training window, 96 observations per day for 7 days
+  slide.by = 96*5         # slide the training window by 5 days
+  freq <- 96
+  
+  # 1 Step ahead forecast
+  test.winsize = horizon     # forecast window
+  
+  time.slices = createTimeSlices(1:length(site.data), train.winsize, test.winsize, skip = slide.by)
+  train.slices = time.slices[[1]]
+  test.slices = time.slices[[2]]
   train.start.idx <- 1
   ets.forecast <- c()
   n <- length(train.slices)
-  me <- c()
-  rmse <- c()
-  mae <- c()
-  mpe <- c()
-  mape <- c()
-  mase <- c()
- 
   mdl <- NULL
   mdl.data <- NULL
   for(i in 1:n){
@@ -29,39 +32,17 @@ performExpSmoothing <- function(freq, test.winsize){
       ets.model <- ets(c(mdl.data,train.site.data), model=mdl, lambda = lambda)
       fc <- forecast(ets.model, h = test.winsize)
     }
-    ets.forecast[i] <- fc$mean[1]
-    
-    acc <- data.frame(accuracy(fc, site.data[test.slices[[i]]]))
-    me[i] <- acc$ME[2]
-    rmse[i] <- acc$RMSE[2]
-    mae[i] <- acc$MAE[2]
-    mpe[i] <- acc$MPE[2]
-    mape[i] <- acc$MAPE[2]
-    mase[i] <- acc$MASE[2]
+    ets.forecast[i] <- sum(fc$mean[1:test.winsize])
+  }
+  # Actual observations
+  actual <- c()
+  for(i in 1:n){
+    actual[i] <- sum(site.data[test.slices[[i]]])
   }
   
-  if(test.winsize == 1){
-    # Actual observations
-    actual <- c()
-    for(i in 1:n){
-      actual[i] <- site.data[test.slices[[i]]]
-    }
-    # Plot the actual vs forecast values
-    pdf(paste(plots.dir,'exp-smoothing.pdf', sep = ''))
-    plot(1:n,actual, type='l', col='red', xlab='Test Number', ylab='Traffic Volume (15 min)')
-    lines(1:n, ets.forecast, type='l',col='blue')
-    legend("topleft",legend=c("Actual","Exponential smoothing"),col=c('red','blue'),lty=1)
-    dev.off()
-  }
+  plot.predictions(actual,ets.forecast, "Exponential Smoothing", paste("ets",horizon,sep=''))
   
-  print("Exponential Smoothing.....")
-  print(paste("ME = ", mean(me)))
-  print(paste("MAE = ", mean(mae)))
-  print(paste("RMSE = ", mean(rmse)))
-  print(paste("MPE = ", mean(mpe)))
-  print(paste("MAPE = ", mean(mape)))
-  print(paste("MASE = ", mean(mase[!is.infinite(mase)])))
-  
-  return(list(me,mae,rmse,mpe,mape,mase))
+  print(accuracy(actual,ets.forecast))
+ 
   
 }

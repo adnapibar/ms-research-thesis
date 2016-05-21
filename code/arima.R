@@ -17,16 +17,19 @@
 # Optimization is done by optim. It will work best if the columns in xreg are roughly scaled to zero 
 # mean and unit variance, but does attempt to estimate suitable scalings.
 ####################################################################################################
-performArima <- function(freq, test.winsize){
-
+performArima <- function(horizon){
+  train.winsize = 96*28    # size of the training window, 96 observations per day for 7 days
+  slide.by = 96*5         # slide the training window by 5 days
+  freq <- 96
+  
+  # 1 Step ahead forecast
+  test.winsize = horizon     # forecast window
+  
+  time.slices = createTimeSlices(1:length(site.data), train.winsize, test.winsize, skip = slide.by)
+  train.slices = time.slices[[1]]
+  test.slices = time.slices[[2]]
   arima.forecast <- c()
   n <- length(train.slices)
-  me <- c()
-  rmse <- c()
-  mae <- c()
-  mpe <- c()
-  mape <- c()
-  mase <- c()
   
   mdl <- NULL
   mdl.data <- NULL
@@ -42,38 +45,15 @@ performArima <- function(freq, test.winsize){
       arima.model <- Arima(c(mdl.data,train.site.data), model=mdl,  lambda = lambda)
       fc <- forecast(arima.model, h = test.winsize)
     }
-    arima.forecast[i] <- fc$mean[1]
-    
-    acc <- data.frame(accuracy(fc, site.data[test.slices[[i]]]))
-    me[i] <- acc$ME[2]
-    rmse[i] <- acc$RMSE[2]
-    mae[i] <- acc$MAE[2]
-    mpe[i] <- acc$MPE[2]
-    mape[i] <- acc$MAPE[2]
-    mase[i] <- acc$MASE[2]
+    arima.forecast[i] <- sum(fc$mean[1:test.winsize])
   }
-  
-  if(test.winsize == 1){
-    # Actual observations
-    actual <- c()
-    for(i in 1:n){
-      actual[i] <- site.data[test.slices[[i]]]
-    }
-    # Plot the actual vs forecast values
-    pdf(paste(plots.dir,'arima.pdf', sep = ''))
-    plot(1:n, actual, type='l', col='blue', xlab='Test Number', ylab='Traffic Volume (15 min)')
-    lines(1:n, arima.forecast, type='l', col='red')
-    legend("topleft",legend=c("Actual","ARIMA"), col=c('blue','red'),lty=1)
-    dev.off()
+  # Actual observations
+  actual <- c()
+  for(i in 1:n){
+    actual[i] <- sum(site.data[test.slices[[i]]])
   }
+  plot.predictions(actual,arima.forecast, "ARIMA", paste("arima",horizon,sep=''))
   
-  print("ARIMA.....")
-  print(paste("ME = ", mean(me)))
-  print(paste("MAE = ", mean(mae)))
-  print(paste("RMSE = ", mean(rmse)))
-  print(paste("MPE = ", mean(mpe)))
-  print(paste("MAPE = ", mean(mape)))
-  print(paste("MASE = ", mean(mase[!is.infinite(mase)])))
-  
-  return(list(me,mae,rmse,mpe,mape,mase))
+  print(accuracy(actual,arima.forecast))
+ 
 }

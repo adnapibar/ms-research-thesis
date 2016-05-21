@@ -17,9 +17,10 @@ plots.dir <- "latex-thesis/Figures/"
 # Read the volume data from the csv into a dataframe, where
 # rows as observations and columns as locations.
 if(!exists('volume.data')){
-  volume.data <- read.csv('data/volume_data.csv', header = FALSE)
-  hf.list <- read.csv('data/hf_list.csv')
-  hf.ref <- read.csv('data/hf_ref.csv')
+  # volume.data <- read.csv('data/volume_data.csv', header = FALSE)
+  # hf.list <- read.csv('data/hf_list.csv')
+  # hf.ref <- read.csv('data/hf_ref.csv')
+  load("saved_data.RData")
 }
 
 # Handle Missing Data - one way of doing this is to fill the missing
@@ -81,4 +82,13 @@ plot.xts2 <- function (x, y = NULL, type = "l", auto.grid = TRUE, major.ticks = 
     title(main = series.title)
   do.call("title", list(...))
   assign(".plot.xts", recordPlot(), .GlobalEnv)
+}
+
+plot.predictions <- function(actual, predicted, title, filename){
+  n <- length(actual)
+  pdf(paste(plots.dir,filename,'.pdf', sep = ''))
+  plot(1:n, actual, type='l', col='red', xlab='Test Number', ylab='Traffic Volume (15 min)')
+  lines(1:n, predicted, type='l',col='blue')
+  legend("topleft",legend=c("Actual",title),col=c('red','blue'),lty=1)
+  dev.off()
 }

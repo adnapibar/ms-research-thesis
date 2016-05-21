@@ -2,16 +2,21 @@
 # naive() returns forecasts and prediction intervals for an ARIMA(0,1,0) 
 # random walk model applied to x
 ####################################################################################################
-performNaiveForecast <- function(freq, test.winsize){
+performNaiveForecast <- function(horizon){
+  train.winsize = 96*28    # size of the training window, 96 observations per day for 7 days
+  slide.by = 96*5         # slide the training window by 5 days
+  freq <- 96
+  
+  # 1 Step ahead forecast
+  test.winsize = horizon     # forecast window
+  
+  time.slices = createTimeSlices(1:length(site.data), train.winsize, test.winsize, skip = slide.by)
+  train.slices = time.slices[[1]]
+  test.slices = time.slices[[2]]
+  
   train.start.idx <- 1
   naive.forecast <- c()
   n <- length(train.slices)
-  me <- c()
-  rmse <- c()
-  mae <- c()
-  mpe <- c()
-  mape <- c()
-  mase <- c()
   
   for(i in 1:n){
     train.site.data <- ts(site.data[train.slices[[i]]], start = c(train.start.idx,1), frequency = freq)
@@ -19,43 +24,18 @@ performNaiveForecast <- function(freq, test.winsize){
     test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = freq)
 
     fc <- naive(train.site.data, h=test.winsize, lambda = lambda)
-    
-    naive.forecast[i] <- fc$mean[1]
-    
-    acc <- data.frame(accuracy(fc, test.site.data))
-    me[i] <- acc$ME[2]
-    rmse[i] <- acc$RMSE[2]
-    mae[i] <- acc$MAE[2]
-    mpe[i] <- acc$MPE[2]
-    mape[i] <- acc$MAPE[2]
-    mase[i] <- acc$MASE[2]
-    
+    naive.forecast[i] <- sum(fc$mean[1:test.winsize])
+   
     # Slide the training window
     train.start.idx <- train.start.idx + 1
   }
   
-  # Plot the actual vs forecast values
-  if(test.winsize == 1){
-    # Actual observations
-    actual <- c()
-    for(i in 1:n){
-      actual[i] <- site.data[test.slices[[i]]]
-    }
-    pdf(paste(plots.dir,'naive.pdf', sep = ''))
-    plot(1:n, actual, type='l', col='red', xlab='Test Number', ylab='Traffic Volume (15 min)')
-    lines(1:n, naive.forecast, type='l',col='blue')
-    legend("topleft",legend=c("Actual","Naive"),col=c('red','blue'),lty=1)
-    dev.off()
+  # Actual observations
+  actual <- c()
+  for(i in 1:n){
+    actual[i] <- sum(site.data[test.slices[[i]]])
   }
- 
+  plot.predictions(actual,naive.forecast, "Naive", paste("naive",horizon,sep=''))
   
-  print("Naive...")
-  print(paste("ME = ", mean(me)))
-  print(paste("MAE = ", mean(mae)))
-  print(paste("RMSE = ", mean(rmse)))
-  print(paste("MPE = ", mean(mpe)))
-  print(paste("MAPE = ", mean(mape)))
-  print(paste("MASE = ", mean(mase[!is.infinite(mase)])))
-  
-  return(list(me,mae,rmse,mpe,mape,mase))
+  print(accuracy(actual, naive.forecast))
 }
