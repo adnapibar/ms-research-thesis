@@ -92,3 +92,14 @@ plot.predictions <- function(actual, predicted, title, filename){
   legend("topleft",legend=c("Actual",title),col=c('red','blue'),lty=1)
   dev.off()
 }
+
+source("code/naive.R")
+source("code/meanf.R")
+source("code/linear_regression.R")
+source("code/arima.R")
+source("code/nnetar.R")
+source("code/exponential_smoothing.R")
+
+index <- getIndexByHF(15773)
+site.data <- handleMissingData(volume.data[,index])
+lambda <- BoxCox.lambda(site.data)

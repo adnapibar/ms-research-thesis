@@ -1,31 +1,28 @@
 # Load the common stuff
-source("code/common.R")
-source("code/naive.R")
-source("code/meanf.R")
-source("code/linear_regression.R")
-source("code/arima.R")
-source("code/nnetar.R")
-source("code/exponential_smoothing.R")
+print("Load libraries, source codes and data...")
+system.time(source("code/common.R"))
+print("Done!")
 
-index <- getIndexByHF(15773)
-site.data <- handleMissingData(volume.data[,index])
-lambda <- BoxCox.lambda(site.data)
+print("Naive...")
+system.time(for(i in 1:2){performNaiveForecast(i)})
+print("Done!")
 
-performNaiveForecast(1)
-performNaiveForecast(2)
+print("MEANF...")
+system.time(for(i in 1:2){performMeanForecast(i)})
+print("Done!")
 
-performMeanForecast(1)
-performMeanForecast(2)
+print("Linear Regression...")
+system.time(for(i in 1:2){performLinearRegression(i)})
+print("Done!")
 
-performLinearRegression(1)
-performLinearRegression(2)
+print("NNAR...")
+system.time(for(i in 1:2){performNNETAR(i)})
+print("Done!")
 
-performNNETAR(1)
-performNNETAR(2)
+print("ETS...")
+system.time(for(i in 1:2){performExpSmoothing(i)})
+print("Done!")
 
-performExpSmoothing(1)
-performExpSmoothing(2)
-
-performArima(1)
-performArima(2)
-
+print("ARIMA...")
+system.time(for(i in 1:2){performArima(i)})
+print("Done!")
