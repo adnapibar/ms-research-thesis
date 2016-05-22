@@ -12,7 +12,7 @@ site.data <- handleMissingData(volume.data[,index])
 lambda <- BoxCox.lambda(site.data)
 
 performNaiveForecast(1)
-performNaiveForecast(1)
+performNaiveForecast(2)
 
 performMeanForecast(1)
 performMeanForecast(2)
@@ -27,5 +27,5 @@ performExpSmoothing(1)
 performExpSmoothing(2)
 
 performArima(1)
-#performArima(2)
+performArima(2)
 

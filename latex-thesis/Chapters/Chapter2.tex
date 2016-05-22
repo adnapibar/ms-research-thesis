@@ -92,8 +92,6 @@ a random error.
 
 \subsection{ARIMA}
 %  Introduction to ARIMA models
-% \citet{chen2011short,kumar2015short,min2009short,min2010urban,szeto2009multivariate,
-%  van1996combining,williams2001multivariate,williams2003modeling}
 
 ARIMA(Auto Regressive Integrated Moving Average) is a class of parametric regression models. In
 this section we will introduce ARIMA and related methods such as exponential smoothing and moving
@@ -175,6 +173,8 @@ and model comparisions are done. If the model fits well then the standardised re
 an i.i.d. with mean zero and variance one.
 
 % Application in traffic forecast
+% \citet{kumar2015short,min2009short,min2010urban,szeto2009multivariate,
+%  van1996combining,williams2001multivariate,williams2003modeling}
 \citet{ahmed1979analysis} used Box-Jenkins method for short-term traffic forecast. The input data
 used was 166 sets of time series traffic data collected by freeway traffic surveillance systems in
 three locations - Los Angeles, Minneapolis and Detroit. The authors concluded an ARIMA(0,1,3) model
@@ -185,6 +185,7 @@ from 1968 to 1976.
 
 \citet{kumar2015short} used a seasonal ARIMA in a context of limited data for short term traffic 
 prediction.
+
 
 % Conclusions - pros and cons
 The major defficiency of tha ARIMA models is that they do not take the extremes into
@@ -277,8 +278,13 @@ networks, Kohnen maps} and \textit{Hopfield networks}.
 \subsection{Other nonparametric models}
 
 \section{Hybrid Methods}
+In recent years many hybrid methods have been tried in short term traffic prediction with mixed
+results.
 % \cite{alecsandru2003hybrid,alecsandru2004hybrid,chan2012neural,chen2001study,dimitriou2008adaptive,
 % hong2011hybrid,mccrea2010hybrid,wang2013short,xiang2010new,zeng2008short,zhang2014hybrid}
+\citet{chen2011short} proposed an ARIMA-GARCH model for short term traffic prediction. The
+performance of this hybrid model when compared to the standard ARIMA model did not yield positive
+results.
 
 
 \section{Comparisons}
