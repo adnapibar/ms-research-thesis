@@ -85,10 +85,10 @@ plot.xts2 <- function (x, y = NULL, type = "l", auto.grid = TRUE, major.ticks = 
 }
 
 plot.predictions <- function(actual, predicted, title, filename){
-  n <- length(actual)
+  n <- 400
   pdf(paste(plots.dir,filename,'.pdf', sep = ''))
-  plot(1:n, actual, type='l', col='red', xlab='Test Number', ylab='Traffic Volume (15 min)')
-  lines(1:n, predicted, type='l',col='blue')
+  plot(1:n, actual[1:400], type='l', col='red', xlab='Test Number', ylab='Traffic Volume (15 min)')
+  lines(1:n, predicted[1:400], type='l',col='blue')
   legend("topleft",legend=c("Actual",title),col=c('red','blue'),lty=1)
   dev.off()
 }
@@ -103,3 +103,5 @@ source("code/exponential_smoothing.R")
 index <- getIndexByHF(15773)
 site.data <- handleMissingData(volume.data[,index])
 lambda <- BoxCox.lambda(site.data)
+
+errors <- read.csv('code/error_metrics.csv')
