@@ -58,14 +58,11 @@ naïve, parametric, non-parametric and hybrid as shown in figure \ref{fig:taxono
 \end{figure}
 
 \section{Naïve methods}
-These methods, while called as naive are  sometimes used in practice because of the simplicity
-of the method and the ease of implementation. In most cases these methods are used as baselines
-for comparison while creating more advances methods. The simplest naive approach in short term
-prediction would be to take the last observed value and this involves no computational effort.
-
-Instanteneous Travel Time(ITT) assumes that the traffic conditions will remain constant indefinitly.
-
-Historical averages uses the average of past observed values.
+These are heuristics methods, and often used in practice because of their simplicity and the ease
+of implementations. In most cases these methods are used as baselines for comparison while
+creating more advances methods. The simplest naive approach in short term prediction would be to
+take the last observed value and this involves no computational effort. Another simple heuristic
+method known as the historical averages uses the average of past observed values.
 
 \section{Parametric models}
 In parametric models, we estimate the parameters from the training dataset to determine the
@@ -173,19 +170,67 @@ and model comparisions are done. If the model fits well then the standardised re
 an i.i.d. with mean zero and variance one.
 
 % Application in traffic forecast
-% \citet{kumar2015short,min2009short,min2010urban,szeto2009multivariate,
-%  van1996combining,williams2001multivariate,williams2003modeling}
 \citet{ahmed1979analysis} used Box-Jenkins method for short-term traffic forecast. The input data
 used was 166 sets of time series traffic data collected by freeway traffic surveillance systems in
-three locations - Los Angeles, Minneapolis and Detroit. The authors concluded an ARIMA(0,1,3) model
-as a resonable fit for the short term prediction task.
+three locations - Los Angeles, Minneapolis and Detroit. The authors concluded an ARIMA(0,1,3)
+model, based on the autocorrealtion and partial autocorrelation functions, as a resonable fit for
+the short term prediction tasks for both traffic volume and occupancy. The model performance was
+evaluated against a moving average, a double smoothing average and a Trigg and Leach adaptive
+model. The comparisons suggest that the ARIMA model had better accuracy than the others. The
+authors used this model in detecting traffic incidents by comparing the real-time flow occupancy
+with the predicted value. \citet{nihan1980use} used the Box-Jenkins technique on monthly data
+collected at 15 minutes interval on a freeway segment from 1968 to 1976 to forecast for the year
+1977. After examining several models they finally selecte an ARIMA(12,1,7) model. The forecast
+was done for average weekday volume with positive results.
 
-\citet{nihan1980use} used the Box-Jenkins technique on monthly data collected on a freeway segment
-from 1968 to 1976.
+\citet{williams2001multivariate} used an ARIMAX model to use upstream traffic data along with the
+predicting location's traffic data while estimating the paramters of the ARIMA model. This is
+done using ARIMAX model which is an extension of the ARIMA model where an exogenous variable is
+used. The data was collected form four locations near Beaune, France. The data from three upstream
+locations were used for forecasting at the fourth location in Beaune. The same data were used
+in the proposed ATHENA and KARIMA models. The model was compared  against the univariate ARIMA,
+ATHENA\citet{danech1991athena} and KARIMA(\citet{van1996combining}) models. The results show tha
+the ARIMAX model consistently outperformed the ARIMA model. However the complexity of the ARIMAX
+model is more than the ARIMA model with as many as twice the parameters to estimate. Also in case
+of missing values the ARIMAX model performance degraded more than the ARIMA model.
 
-\citet{kumar2015short} used a seasonal ARIMA in a context of limited data for short term traffic 
-prediction.
+\citet{min2009short} proposed a dynamic Space Time ARIMA (STARIMA) model for short term traffic
+prediction. Their argument for the new proposed model was based on the factor that most of the
+existed model failed to take the spatial information of the transporatation system into account.
+The proposed dynamic STARIMA model combines STARIMA and Dynamic Turn Ratio Prediction (DTRP)
+model. Using DTRP they dynamically updated the static matric $W_{k}$ in STARIMA model that contains
+the structural information of the transporatation network. The results of the study showed
+significant improvement in forecast accuracy. The authors later published another similar work
+(\citet{min2010urban}) that used the generalised STARIMA (GSTARIMA) model.  The authors
+presented the results where this model has a small improvements over the STARIMA model. However
+the major drawbacks of the GSTARIMA model is the estimation of large number of parameters which
+significantly increases the computational time. It also suffers in performance if enough historical
+data is not available.
 
+\citet{williams2003modeling} poposed for the acceptance of seasonal ARIMA models for short term
+traffic prediction. A seasonal ARIMA $(p,d,q) (P,D,Q)_{s}$ for a time series {$x_{t}$} is one
+where s is the period, d and D are nonnegative integers. The time series theorem known as the World
+decomposition is used as the theoritical justification of applying seasonal ARIMA model to
+univariate time series with stationarity. Data from two freeway locations, one each from the
+United States and the United Kingdom were used for evaluating the model. The performance of the
+models were compared against three heuristics approaches - historical averages, random walk and
+deviation from historical avarages. The results show that for both the locations the seasonal
+ARIMA has better performance than the three methods mentioned earlier. However the authors did
+not present whether a non-seasonal ARIMA model would have similar performance. The only other
+model that was considered for comparison was the KARIMA model, which did not perform as good as
+the seasonal ARIMA model. \citet{kumar2015short} also used a seasonal ARIMA in the context of
+limited data for short term traffic prediction. They used data collected over three days from an
+arterial road in Chennai, India for the study. The model was validated on 24 hours ahead forecast
+. Thier resluts were positive when compared with historical avereges and naïve methods. They
+argued when availability of large traffic dataset is a constraint seasonal ARIMA method is a
+better choice. \citet{szeto2009multivariate} used a hybrid SARIMA model with cell transmission
+model for multivariate traffic prediction. The authors reasoned the use of multivariate models
+captuered the spatial characteristics of the transporatation network and hence are the natural
+and better choice over an univariate model. The model was validated against data collected form
+the city center in Dublin, Ireland. The results at two junctions were compared against real
+observations and had MAPE of 4.45 and 10.6. The authors however did not provide comparison
+against other univariate models or multivariate models which could present the model's relative
+performance.
 
 % Conclusions - pros and cons
 The major defficiency of tha ARIMA models is that they do not take the extremes into
@@ -193,20 +238,27 @@ consideration and focus on the means. This is in contrast to the nature of the t
 ARIMA models are also have the inability to perform will with missing data as pointed out by
 \citet{smith1997traffic}.
 
+
+\subsection{Kalman filter}
+
+\citet{okutani1984dynamic} used Kalman filtering in traffic prediction in an urabn network and
+extended it for freeways.
+
+\citet{wang2005real}
+
+\citet{xie2007short}
+
+\citet{guo2010real}
+
+\citet{guo2014adaptive}
+
+The main advantage of Kalman filtering is the state variable is updated continuously.
+
 \subsection{Exponential smoothing}
 In exponential smoothing method the forecast is the weighted average of past observations, while
 the weights decrease exponentially for older observations. For time series data with no trends
 and seasons single exponential smoothing is usually used.
 
-
-\subsection{Kalman filter}
-% \citet{guo2010real,guo2014adaptive,okutani1984dynamic,wang2005real,xie2007short}
-\citet{okutani1984dynamic} used Kalman filtering in traffic prediction in an urabn network and
-extended it for freeways.
-
-The main advantage of Kalman filtering is the state variable is updated continuously.
-
-\subsection{Other parametric models}
 
 \section{Non-Parametric models}
 In nonparamtric models the parameters are not fixed, and vary with the amount of data available.
@@ -215,7 +267,6 @@ is that they can model the complex non-linear data better. Some of the widely us
 models are - k-Nearest Neighbour, Non-parametric regrssion and Neural Networks
 
 \subsection{K-nearest neighbour}
-% \citet{lv2009real,myung2011travel,zhang2013improved} \citet{meng2015two}
 
 The basic process of the k-nearest neighbour algorithm is described in figure
 \ref{fig:KnnProcessFlow}.
@@ -245,19 +296,16 @@ minimum height=4em]
 \caption{K nearest neighbour process flow} \label{fig:KnnProcessFlow}
 \end{figure}
 
-\subsection{Fuzzy logic}
-% \cite{zhang2008short}
+\citet{lv2009real}
 
-\subsection{Bayesian networks}
-% \cite{castillo2008predicting}
+\citet{myung2011travel}
+
+\citet{zhang2013improved}
+
+\citet{meng2015two}
+
 
 \subsection{Neural networks}
-% \cite{adeli2001neural,abu2011modeling,bengio1994learning,boto2010wavelet,chan2012neural,
-% chan2012optimization,chan2013prediction,chen2001study,dia2001object,dougherty1997short,
-% haykin2009neural,hochreiter2001gradient,hodge2014short,hosseini2012short,
-% innamaa2005short,ishak2004optimizing,jiang2005dynamic,karlaftis2011statistical,kirby1997should,
-% qiu2011bayesian,sun2012network,van2005accurate,vlahogianni2005optimized,
-% vlahogianni2007prediction,vlahogianni2013testing,yasdi1999prediction,zheng2006short}
 \label{subsec:neuralNetworksTrafficPred}
 Artificial Neural Networks(ANN) were mathematical models (\citet{mcculloch1943logical},
 \citet{rosenblatt1958perceptron}) designed to  provide a representation of how the human brain
@@ -275,16 +323,26 @@ Some well known examples include - \textit{Multilayer perceptrons, Radial basis 
 networks, Kohnen maps} and \textit{Hopfield networks}.
 
 
-\subsection{Other nonparametric models}
+
+\subsection{Fuzzy logic}
+
+\cite{zhang2008short}
+
+\subsection{Bayesian networks}
+
+\cite{castillo2008predicting}
+
 
 \section{Hybrid Methods}
 In recent years many hybrid methods have been tried in short term traffic prediction with mixed
 results.
-% \cite{alecsandru2003hybrid,alecsandru2004hybrid,chan2012neural,chen2001study,dimitriou2008adaptive,
-% hong2011hybrid,mccrea2010hybrid,wang2013short,xiang2010new,zeng2008short,zhang2014hybrid}
+
+A hybrid method by combining kohonen maps with ARIMA model was proposed by \citet{van1996combining}.
+The model known as KARIMA, used the same data(collected near Beaune, France) that was used in the
+ATHENA model for an accurate comparison with the later.
+
 \citet{chen2011short} proposed an ARIMA-GARCH model for short term traffic prediction. The
 performance of this hybrid model when compared to the standard ARIMA model did not yield positive
 results.
-
 
 \section{Comparisons}
