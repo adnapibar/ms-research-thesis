@@ -18,8 +18,8 @@
 # mean and unit variance, but does attempt to estimate suitable scalings.
 ####################################################################################################
 performArima <- function(horizon){
-  train.winsize = 96*28    # size of the training window, 96 observations per day for 7 days
-  slide.by = 96*5         # slide the training window by 5 days
+  train.winsize = 96*3    # size of the training window, 96 observations per day for 7 days
+  slide.by = 96*3          # slide the training window by 5 days
   freq <- 96
   
   # 1 Step ahead forecast
