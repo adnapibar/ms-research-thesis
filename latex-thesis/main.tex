@@ -7,12 +7,11 @@
 %---------------------------------------------------------------------------------------------------
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %---------------------------------------------------------------------------------------------------
-
 % The default font size and one-sided printing (no margin offsets)
 \documentclass[11pt, oneside]{Thesis}
 
 % Specifies the directory where pictures are stored
-\graphicspath{{Pictures/}}
+\graphicspath{{Figures/}}
 % Use the natbib reference package - read up on this to edit the reference style; if you want text
 % (e.g. Smith et al., 2012) for the in-text references (instead of numbers), remove 'numbers'
 \usepackage[square, numbers, comma, sort&compress]{natbib}
@@ -21,7 +20,7 @@
 \usetikzlibrary{trees,shapes,arrows,matrix,chains,positioning,decorations.pathreplacing}
 
 % Colors hyperlinks in blue - change to black if annoying
-\hypersetup{urlcolor=blue, colorlinks=true}
+\hypersetup{urlcolor=black, colorlinks=true}
 \title{\ttitle} % Defines the thesis title - don't touch this
 
 \begin{document}
@@ -45,12 +44,33 @@
 \hypersetup{pdfauthor=\authornames}
 \hypersetup{pdfkeywords=\keywordnames}
 
+\clearpage % Start a new page
+
+%---------------------------------------------------------------------------------------------------
+%	LIST OF CONTENTS/FIGURES/TABLES PAGES
+%---------------------------------------------------------------------------------------------------
+% The page style headers have been "empty" all this time, now use the "fancy" headers as defined
+% before to bring them back
+\pagestyle{empty}
+\begin{center}
+\begin{tabular}{ l p{8cm}}
+  Name & {\authornames} \\
+  Student number & 643998 \\
+  Supervisor & {\supname} \\
+  Total number of credit points & 75 \\
+  Type of project & Research \\
+  Subject Code & COMP60002\\
+  Project title & {\ttitle} \\
+\end{tabular}
+\end{center}
+
 %---------------------------------------------------------------------------------------------------
 %	TITLE PAGE
 %---------------------------------------------------------------------------------------------------
 
 \begin{titlepage}
 \begin{center}
+\includegraphics[scale=0.3]{unilogo.pdf} % University/department logo - uncomment to place it
 
 \textsc{\LARGE \deptname}\\ % Department name
 \textsc{\LARGE \univname}\\[1.5cm] % University name
@@ -84,8 +104,6 @@
 %\deptname\\[2cm] % Research group name and department name
 
 {\large \today}\\[4cm] % Date
-%\includegraphics{Logo} % University/department logo - uncomment to place it
-
 \vfill
 \end{center}
 
@@ -108,6 +126,9 @@ previously submitted for a degree or diploma in any university; and that to the 
 and belief it does not contain any material previously published or written by another person where
 due reference is not made in the text.
 
+\item[\tiny{$\blacksquare$}] where necessary I have received clearance for this research from the
+University's Ethics Committee and have submitted all required data to the Department.
+
 \item[\tiny{$\blacksquare$}] the thesis is approximately 20000 words in length (excluding text in
 images, table, bibliographies and appendices).
 \end{itemize}
@@ -128,25 +149,30 @@ Date:\\
 
 \setstretch{1.3} % Reset the line-spacing to 1.3 for body text (if it has changed)
 
-\abstract{\addtocontents{toc}{\vspace{1em}} % Add a gap in the Contents, for aesthetics
-
-% Road traffic congestion as a global issue
-
-% Adaptive traffic control systems and their role in mitigating the traffic congestion problem
-
-% Short term traffic prediction and traffic loop data
-
-% Time series anlysis for short term traffic prediction
-
-% Neural networks and their reemergence as a victor
-
-% Recurrent and LSTM networks
-
-% Application
-In this thesis we apply extend an LSTM model for the application of short term traffic flow
-prediction. We analyse it using the SCATS volume data and suggest improvements.
-
-
+\abstract{\addtocontents{toc}{\vspace{1em}}
+Road traffic congestion is a global issue that results in significant wastage of time and resources.
+Rising population, urbanisation, growing economies and affordable personal vehicles aggravate the
+issue. In Australia, across Melbourne and Sydney, people on average spent 35\% more travel
+time\footnote{TomTom Traffic Index.} during congestion. Many urban cities have been trying to
+mitigate this issue by expanding and modernising the transporation infrastructure. Even though
+increasing the capacity accomodates the traffic demand, studies have shown this does not eliminate
+the congestion problem. Hence, since 1970's advanced traffic management systems have been used to
+address this. But for these systems to increase their operational efficiencies and fully realise
+their effectiveness, they need to have the predictive capabilities in the short term, usually
+ranging between few seconds to few hours. The research in short term traffic prediction has been
+active since the 1970's. Numerous models have been proposed to use the traffic data collected by
+inductive loop detectors for short term traffic prediction. Most of the works have shown promising
+results through experiments at particular locations, however we are still to find a robust and
+globally adaptable solution. In last decade the attention have shifted from theroitically well
+established parametric methods to non parametric data driven algorithms. This work is an extension
+to that. Neural networks have always been one of the most capable mathematical models that can model
+complex non-linear relations. Upto 2006, their use have been hindered by practical issues related to
+the training. But recent breakthroughs in new ways of training deep neural architecture have made
+them reemerged as victors by realising the capabilities the had promised. In this thesis we study
+and extend their application to short term traffic predictions. We used a deep Long Short Term Memory
+neural network to predict the short term traffic volumes at a network level. We used the volume data
+collected by Vicroads in Melbourne. We compared the results of our work with several existing
+methods and found some promising results.
 }
 \clearpage % Start a new page
 
@@ -221,7 +247,7 @@ I would not have been able to complete this work\ldots
 
 \pagestyle{empty} % Page style needs to be empty for this page
 
-\dedicatory{Dedicated to\ my parents}% Dedication text
+\dedicatory{Dedicated to\ my parents and teachers}% Dedication text
 
 \addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
 

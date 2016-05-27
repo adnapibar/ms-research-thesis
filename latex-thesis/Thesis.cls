@@ -51,7 +51,10 @@
 \thispagestyle{plain}
 \null\vfil
 %\vskip 60\p@
-\begin{center}{\huge\bf Declaration of Authorship\par}\end{center}
+\begin{center}
+    %{\huge\bf Declaration of Authorship\par}
+    {\huge{\textit{Declaration of Authorship}} \par}
+\end{center}
 %\vskip 60\p@
 {\normalsize #1}
 \vfil\vfil\null
@@ -184,7 +187,7 @@
 % Your thesis title - this is used in the title and abstract
 \thesistitle{Large scale real-time traffic flow prediction using SCATS volume data}
 %-------------------------------------------------
-\supervisor{Dr. Vinh \textsc{Nguyen}} % You supervisor's name - this is used in the title page
+\supervisor{Dr. Xuan Vinh \textsc{Nguyen}} % You supervisor's name - this is used in the title page
 %-------------------------------------------------
 \examiner{} % Your examiner's name - this is not currently used anywhere in the template, cite it with \examname if you want it
 %-------------------------------------------------
@@ -289,36 +292,37 @@
 %----------------------------------------------------------------------------------------
 %	ABSTRACT PAGE DESIGN
 %----------------------------------------------------------------------------------------
-%\newenvironment{abstract}
-%{
-%  \btypeout{Abstract Page}
-%  \thispagestyle{plain}
-%  \null\vfil
-%  \begin{center}
-%    \setlength{\parskip}{0pt}
-%    {\normalsize \UNIVNAME \par} % University name in capitals
-%    \bigskip
-%    {\huge{\textit{Abstract}} \par}
-%    \bigskip
-%    {\normalsize \facname \par} % Faculty name
-%    {\normalsize \deptname \par} % Department name
-%    \bigskip
-%    {\normalsize \degreename\par} % Degree name
-%    \bigskip
-%    {\normalsize\bf \@title \par} % Thesis title
-%    \medskip
-%    {\normalsize by \authornames \par} % Author name
-%    \bigskip
-%  \end{center}
-%}
-\newcommand\abstract[1]{
-\btypeout{Abstract}
-\addtotoc{Abstract}
-\thispagestyle{plain}
-\begin{center}{\huge{\textit{Abstract}} \par}\end{center}
-{\normalsize #1}
-\vfil\vfil\null
+\newenvironment{abstract}
+{
+ \btypeout{Abstract Page}
+ \addtotoc{Abstract}
+ \thispagestyle{plain}
+ %\null\vfil
+ \begin{center}
+   \setlength{\parskip}{0pt}
+   % {\normalsize \UNIVNAME \par} % University name in capitals
+   % \bigskip
+   {\huge{\textit{Abstract}} \par}
+   \bigskip
+   % {\normalsize \facname \par} % Faculty name
+   % {\normalsize \deptname \par} % Department name
+   % \bigskip
+   % {\normalsize \degreename\par} % Degree name
+   % \bigskip
+   % {\normalsize\bf \@title \par} % Thesis title
+   % \medskip
+   % {\normalsize by \authornames \par} % Author name
+   % \bigskip
+ \end{center}
 }
+% \newcommand\abstract[1]{
+% \btypeout{Abstract}
+% \addtotoc{Abstract}
+% \thispagestyle{plain}
+% \begin{center}{\huge{\textit{Abstract}} \par}\end{center}
+% {\normalsize #1}
+% \vfil\vfil\null
+% }
 %----------------------------------------------------------------------------------------
 {
   \vfil\vfil\vfil\null

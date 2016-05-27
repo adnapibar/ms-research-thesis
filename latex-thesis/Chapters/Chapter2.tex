@@ -240,6 +240,9 @@ ARIMA models are also have the inability to perform will with missing data as po
 
 
 \subsection{Kalman filter}
+Kalman filter is a paramteric regression technique usually used in the field of automatic control
+systems and signal preocessing. It was proposed by \citet{kalman1960new}. It can be used on both
+stationary and non-stationary time series.
 
 \citet{okutani1984dynamic} used Kalman filtering in traffic prediction in an urabn network and
 extended it for freeways.
@@ -268,8 +271,8 @@ models are - k-Nearest Neighbour, Non-parametric regrssion and Neural Networks
 
 \subsection{K-nearest neighbour}
 
-The basic process of the k-nearest neighbour algorithm is described in figure
-\ref{fig:KnnProcessFlow}.
+The basic process of the k-nearest neighbour algorithm is described in figure \ref{fig:KnnProcessFlow}.
+
 
 \tikzstyle{block} = [rectangle, draw, text width=5em, text centered, rounded corners,
 minimum height=4em]
@@ -316,13 +319,12 @@ artificial neural network consists of a set of nodes connnected by edges with we
 that the nodes represent the biological neurons and the edges represent the synapses. The
 conections among the nodes can be cyclic or acyclic. The former is known as a feedforward neural
 network and the later as a recurrent network. We describe about these neural networks in more
-details in chpater \ref{Chapter4}.
+details in chpater \ref{Chapter4}. Several variations of artificial neural networks have been
+used in short term traffic prediction. Some well known examples include - \textit{Multilayer
+perceptrons, Radial basis function networks, Kohnen maps} and \textit{Hopfield networks}.
 
-Several variations of artificial neural networks have been used in short term traffic prediction.
-Some well known examples include - \textit{Multilayer perceptrons, Radial basis function
-networks, Kohnen maps} and \textit{Hopfield networks}.
-
-
+\cite{dougherty1997short} apllied a backpropagation feedforward neural network in traffic flow
+and speed predictions.
 
 \subsection{Fuzzy logic}
 
