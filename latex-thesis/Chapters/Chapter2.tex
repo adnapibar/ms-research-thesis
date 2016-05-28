@@ -107,6 +107,9 @@ collection of inputs, where the inputs could possibly be an independent series
 where $ \beta_{1}, \beta_{2},...,\beta_{q} $ are unknown regression coeffiecients and $w_{t}$ is
 a random error.
 
+A very few attempts have been made to model the traffic conditions using linear and non-linear
+models of regression in the field of short term traffic prediction. \citet{low1972new} and
+\citet{jensen1973calibrating} used linear models of regresion for predicting traffic volumes.
 \citet{hogberg1976estimation} used non-liner regression for traffic prediction.
 
 \subsection{ARIMA}
@@ -259,27 +262,32 @@ ARIMA models are also have the inability to perform will with missing data as po
 
 \subsection{Kalman filter}
 Kalman filter is a paramteric regression technique usually used in the field of automatic control
-systems and signal preocessing. It was proposed by \citet{kalman1960new}. It can be used on both
-stationary and non-stationary time series.
+systems and signal preocessing. It was proposed by \citet{kalman1960new}. It can be used to model
+both stationary and non-stationary time series. We present a brief description of this theory, for
+detail understanding the reader should refer to some extensive literature (such as
+\citet{harvey1990forecasting}  and \citet{haykin2001kalman}).
 
-\citet{okutani1984dynamic} used Kalman filtering in traffic prediction in an urabn network and
-extended it for freeways.
+The Kalman filter solves the problem of sequential state estimation of a dynamic linear system, where
+in such a system the state evolution and the measurements are both linear and Gaussian. Let us consider
+a state space model of the form
 
-\citet{wang2005real}
+        \begin{equation} x_{n} = P_{n}x_{n-1} + \tau_{n} \end{equation}
+        \begin{equation} y_{n} = Q_{n}y_{n-1} + \upsilon_{n} \end{equation}
 
-\citet{xie2007short}
+where, $x_{n}$ and $y_{n}$ are the state and measurement respoectvely at time step n.
+$P_{n}$ is a $N \times N$ state transition matrix and $\tau_{n}$ is a $N \times 1$ Gaussian
+random state noise vector with zero mean and covariance matrix $R_{n}$. $Q_{n}$ is a $M \times N$
+measurement matrix and $\upsilon_{n}$ is a $M \times 1$ Gaussian random measurement noise vector
+with zero mean and covariance matrix $S_{n}$.
 
-\citet{guo2010real}
+%TODO complete the kalman filtering
 
+\citet{okutani1984dynamic} proposed two models using Kalman filtering for short term traffic volume
+predictions. The prediction of volume on a link were done using not only the data from that link but
+also from adjacent links. They found, using these models, the average error rate to be around 9\%.
+This shows the ability of Kalman filtering to predict in a multivariate setting which is difficult in
+other statistical regression models such as ARIMA. \citet{xie2007short} \citet{guo2010real}
 \citet{guo2014adaptive}
-
-The main advantage of Kalman filtering is the state variable is updated continuously.
-
-\subsection{Exponential smoothing}
-In exponential smoothing method the forecast is the weighted average of past observations, while
-the weights decrease exponentially for older observations. For time series data with no trends
-and seasons single exponential smoothing is usually used.
-
 
 \section{Non-Parametric methods}
 In nonparamtric models the parameters are not fixed, and vary with the amount of data available.
@@ -317,16 +325,48 @@ details in chpater \ref{Chapter4}. Several variations of artificial neural netwo
 used in short term traffic prediction. Some well known examples include - \textit{Multilayer
 perceptrons, Radial basis function networks, Kohnen maps} and \textit{Hopfield networks}.
 
-\cite{dougherty1997short} applied a backpropagation feedforward neural network in traffic flow
-and speed predictions.
+\citet{clark1993use} made a comparison of of neural networks and ARIMA models in an urban setting
+and found slight difference between the performances. \citet{dougherty1997short} applied a
+backpropagation feedforward neural network in traffic flow and speed predictions. They used this
+model to predict flow, occupancy and speed traffic parameters and found the prediction of speed to
+be disappointing. For flow and occupancy, even though the results were not outstanding, were promising.
+\citet{kirby1997should} extended the work of \citet{clark1993use} and compared a neural network model
+with the ATHENA and ARIMA models. They concluded that the neural networks performed worse than the
+ARIMA model for 30 and 60 minutes prediction horizons. However they argued that the neural networks
+are by nature the most suited models to fit the traffic characteristics than the statistical time
+series methods. \citet{yasdi1999prediction} used a Jordan neural network for traffic volume predicions.
+The authors made forecasts for weekly, daily and hourly traffic volumes. For their work they used
+data collected from traffic loop inducters and aggregated at fifteen minutes interval. The data is
+then further classified based on events and stored in a knowledge base for reference. The results were
+exceptonal with an MSE less than 0.003. \citet{dia2001object} used a time-lag recurrent network(TLRN)
+to predict traffic speed for fifteen minutes horizon. They performed their experiment on a section
+of the Pacific Highway between Brisbane and Goldcost in Queensland, Australia. Unlike previous mentioned
+studies the authors used an object-oriented dynamic neural network model. The dataset they used consisted
+of 5000 obsservations at 20 seconds of interval collected over five hour period on two days. Their results
+show that the model had an accuracy of 90-94\% for 5 minutes predictions. The accuracies dropped
+to 84\% and 80\% for 10 and 15 minutes prediction horizons respectively. \citet{innamaa2005short}
+applied a feedforward MLP to predict travel time in an interurban highway. They used data collected
+over a period of four months in a highway in southern Finland. The neural network implemented for the
+experiment was very simple with one hidden layer and at most 20 units in the hidden layer. Also they used
+separate neural networks for each sublink to predict the average travel time, thus in practice these
+are unrealistic to be implemented due to increased complexity. On an average they achieved an
+accuracy of 90\%. They suggested inclusion of flow information could have been beneficial.
+\cite{jiang2005dynamic} used a nonparametric dynamic time-delay recurrent wavelet neural network model
+for forecasting traffic flow. They suggested that this model can be used for both the short term and
+long term(from a day to a month) traffic flow forecasting. They used a limited dataset and showed the
+results to be within 10\% error rate.
+
+
+Neural networks are very powerful not only in thier good predictive ability but also they are robust
+and model the traffic conditions with good overall performance.
 
 \subsection{Fuzzy logic}
 
-\cite{zhang2008short}
+\citet{zhang2008short}
 
 \subsection{Bayesian networks}
 
-\cite{castillo2008predicting}
+\citet{castillo2008predicting}
 
 
 \section{Hybrid Methods}
@@ -341,19 +381,27 @@ ATHENA model for an accurate comparison with the later.
 performance of this hybrid model when compared to the standard ARIMA model did not yield positive
 results.
 
+\citet{ishak2004optimizing} used a neuro-fuzzy hybrid model.
+
+\citet{vlahogianni2005optimized} used a combined genetic and neural network approach.
+
 \section{Comparisons}
+A vast majority of the previous work present some form of comparison of methods. However the
+comparisons are very specific to the work and not extensive. Also the comparisons are presented in
+form of accuracies, so the qualitative differences in modelling traffic data are often missed.
+
 We present a summury of the comparisons among the above mentioned mehods in the table
-\ref{table:comparisonExistingMethods}.
+\ref{table:comparisonExistingMethods}. The comparisons show their overall advantages and disadvantages.
 
 \begin{table}
 \centering
-    \begin{tabular}{ l p{5cm} p{5cm} p{5cm}} \hline
-       \textbf{Model} & Data requirements & Advantages & Disadvantages\\ \hline
-       Smoothing &  &  &  \\ \hline
-       ARIMA &  &  &  \\ \hline
-       Kalman filtering &  &  &  \\ \hline
-       Nearest neighbour &  &  &  \\ \hline
-       Neural networks &  &  &  \\ \hline
+    \begin{tabular}{ l p{5cm} p{5cm}} \hline
+       \textbf{Model} & Advantages & Disadvantages\\ \hline
+       Smoothing &   &  \\ \hline
+       ARIMA &    &  \\ \hline
+       Kalman filtering &   &  \\ \hline
+       Nearest neighbour &   &  \\ \hline
+       Neural networks &  &  \\ \hline
     \end{tabular}
     \caption[Comparison of existing methods]{Comparison of existing methods applied in short term
      traffic predictions.}
