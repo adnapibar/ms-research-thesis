@@ -20,42 +20,64 @@ Stephen Hawking, \textit{Black Holes and Baby Universes} (1993)
 %	CONTENT
 %---------------------------------------------------------------------------------------------------
 \section{Introduction}
-%\cite{ahmed1979analysis,van2012short,vlahogianni2004short,vlahogianni2014short,smith1997traffic}
-In this chapter we provide a reasonably complete review of existing literature on short term
-traffic flow prediction. Research on short term traffic prediction has been going on since 1979,
-\citet{ahmed1979analysis}. After more than three decades of research, short term traffic flow
-prediction is still an interesting reserch subject for many professionals around the world. The
-simplest reseaon being the complex non-linear nature of traffic data and the effects of
+In this chapter we provide an account of various elements involved in short term traffic prediciton
+as a process and a reasonably complete review of existing literature. Research on short term traffic
+prediction has been active since 1979, \citet{ahmed1979analysis}. Yet many professionals around the
+world still show a strong interest in this field.
+The simplest reseaon being the complex non-linear nature of traffic data and the effects of
 non-recurrent events(weather, public events, accidents etc.) on it.  Critical reviews of existing
 literature on short term traffic flow have been presented in detail by \citet{smith1997traffic},
 \citet{vlahogianni2004short}, \citet{van2012short} and \citet{vlahogianni2014short}. The use of
 the phrase 'short term' limits the scope of traffic prediction in terms of the prediction horizon
 which usually varies between few seconds to few hours depending upon the approach and application.
 
+The process of short term traffic prediction consists of determining the scope, formulating the
+conceptual output specifications and model selection (\citet{vlahogianni2004short}) as shown in
+figure \ref{fig:sttp-process}.
+
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/sttp-process.pdf}
+    \rule{35em}{0.5pt}
+  \caption[Elements of short term traffic prediction]{Elements of short term traffic prediction}
+  \label{fig:sttp-process}
+\end{figure}
+
+Determining whether the prediction model to be developed is going to be part of an advanced
+traffic management system or advances traveller information system is important and is influenced
+by other elements such as type of road and traffic parameters invloved.
+
+The type of area influences the prediction process. Short term traffic predictions can be done for
+highway, freeway and urban arterial roads. Most of the existing work focus on either highway or
+freeway traffic. The reason being predcting traffic conditions at a unrban setting is more complex.
+While predicting traffic conditions at highways and freeways are important for both advanced traffic
+management systems and advances traveller information systems, for urban settings the need for short
+term traffic predictions is more relevant for signal control at intersections.
+
 The traffic parameter that are predicted can be - flow(number of vehicles per hour), time(minutes
 to travel between two points), speed(mean speed in km/hour) and density(number of vehicles per km).
+Relevane of flow is more stable and important than other parameters as per \citet{levin1980forecasting}.
+However this is conflicting and other authors have argued otherwise. \citet{dougherty1997short} attempted
+to determine the parameter that best describes the traffic conditions and their findings suggested that
+flow and density are more relevant than speed. Predicting travel time has also been the focus of many
+works, especially in recent years. This is because of its importance when it comes to advances traveller
+information systems, while flow and density are more important for advanced traffic management systems.
 
 Selecting the right model for short term traffic prediction is a challenging task. A number of
-models have been suggested and yet there is no one-fits-all model. The various methods that have
-been suggested for short term traffic prediction can be categorised into four groups -
-naïve, parametric, non-parametric and hybrid as shown in figure \ref{fig:taxonomyTrafficPrediction}.
+models have been suggested and yet there is no concensos on a globally acceptable one. The various
+methods that have been suggested for short term traffic prediction can be categorised into four
+groups - naïve, parametric, non-parametric and hybrid as shown in figure \ref{fig:sttp-methods}.
 
-
-\begin{figure}
-\centering
-\begin{tikzpicture}
-  \begin{scope}[blend group = soft light]
-    \fill[red!30!white]   ( 90:1.2) circle (2);
-    \fill[green!30!white] (210:1.2) circle (2);
-    \fill[blue!30!white]  (330:1.2) circle (2);
-  \end{scope}
-  \node at (90:2)    {Naïve};
-  \node at (210:2)   {Parametric};
-  \node at (330:2)   {Non-Parametric};
-  \node              {Hybrid};
-\end{tikzpicture}
-\caption{Methods used for short term traffic prediction} \label{fig:taxonomyTrafficPrediction}
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=0.4\textwidth,height=0.4\textheight,keepaspectratio]{Figures/sttp-methods.pdf}
+    \rule{35em}{0.5pt}
+  \caption[Methods in short term traffic prediction]{Methods in short term traffic prediction}
+  \label{fig:sttp-methods}
 \end{figure}
+
+In the follwing sections, we review significant amount of previous work in this field, grouped by the
+type of method.
 
 \section{Naïve methods}
 These are heuristics methods, and often used in practice because of their simplicity and the ease
@@ -64,7 +86,7 @@ creating more advances methods. The simplest naive approach in short term predic
 take the last observed value and this involves no computational effort. Another simple heuristic
 method known as the historical averages uses the average of past observed values.
 
-\section{Parametric models}
+\section{Parametric methods}
 In parametric models, we estimate the parameters from the training dataset to determine the
 function that classifies new unseen data. The number of parameters are fixed. The advantage of
 parametric models are that these perform quite well in situations where the large amount of data
@@ -88,8 +110,6 @@ a random error.
 \citet{hogberg1976estimation} used non-liner regression for traffic prediction.
 
 \subsection{ARIMA}
-%  Introduction to ARIMA models
-
 ARIMA(Auto Regressive Integrated Moving Average) is a class of parametric regression models. In
 this section we will introduce ARIMA and related methods such as exponential smoothing and moving
 averages. For an in depth understanding of these models the reader is encouraged to refer to to
@@ -169,7 +189,6 @@ determined for each model parameter. Finally in the dignostics stage, the residu
 and model comparisions are done. If the model fits well then the standardised residuals behave as
 an i.i.d. with mean zero and variance one.
 
-% Application in traffic forecast
 \citet{ahmed1979analysis} used Box-Jenkins method for short-term traffic forecast. The input data
 used was 166 sets of time series traffic data collected by freeway traffic surveillance systems in
 three locations - Los Angeles, Minneapolis and Detroit. The authors concluded an ARIMA(0,1,3)
@@ -220,8 +239,8 @@ not present whether a non-seasonal ARIMA model would have similar performance. T
 model that was considered for comparison was the KARIMA model, which did not perform as good as
 the seasonal ARIMA model. \citet{kumar2015short} also used a seasonal ARIMA in the context of
 limited data for short term traffic prediction. They used data collected over three days from an
-arterial road in Chennai, India for the study. The model was validated on 24 hours ahead forecast
-. Thier resluts were positive when compared with historical avereges and naïve methods. They
+arterial road in Chennai, India for the study. The model was validated on 24 hours ahead forecast.
+Thier resluts were positive when compared with historical avereges and naïve methods. They
 argued when availability of large traffic dataset is a constraint seasonal ARIMA method is a
 better choice. \citet{szeto2009multivariate} used a hybrid SARIMA model with cell transmission
 model for multivariate traffic prediction. The authors reasoned the use of multivariate models
@@ -232,7 +251,6 @@ observations and had MAPE of 4.45 and 10.6. The authors however did not provide 
 against other univariate models or multivariate models which could present the model's relative
 performance.
 
-% Conclusions - pros and cons
 The major defficiency of tha ARIMA models is that they do not take the extremes into
 consideration and focus on the means. This is in contrast to the nature of the traffic data.
 ARIMA models are also have the inability to perform will with missing data as pointed out by
@@ -263,42 +281,18 @@ the weights decrease exponentially for older observations. For time series data 
 and seasons single exponential smoothing is usually used.
 
 
-\section{Non-Parametric models}
+\section{Non-Parametric methods}
 In nonparamtric models the parameters are not fixed, and vary with the amount of data available.
 Usually more data is required for this models than parametric models. The advantage of these models
 is that they can model the complex non-linear data better. Some of the widely used non-parametric
 models are - k-Nearest Neighbour, Non-parametric regrssion and Neural Networks
 
 \subsection{K-nearest neighbour}
-
-The basic process of the k-nearest neighbour algorithm is described in figure \ref{fig:KnnProcessFlow}.
-
-
-\tikzstyle{block} = [rectangle, draw, text width=5em, text centered, rounded corners,
-minimum height=4em]
-\tikzstyle{line} = [draw, -latex']
-\tikzstyle{cloud} = [draw, ellipse, node distance=4cm, minimum height=3em]
-
-\begin{figure}
-\centering
-\begin{tikzpicture}[node distance = 3cm, auto]
-    % Place nodes
-    \node [block] (pp) {Preprocess Data};
-    \node [cloud, left of=pp] (hd) {Historical data};
-    \node [cloud, right of=pp] (rd) {Real-time data};
-    \node [block, below of=pp] (msv) {Match state vector};
-    \node [block, below of=msv] (knn) {K nearest neighbour};
-    \node [block, left of=knn, node distance=3cm] (prd) {Predictions};
-    % Draw edges
-    \path [line] (pp) -- (msv);
-    \path [line] (msv) -- (knn);
-    \path [line] (knn) -- (prd);
-    \path [line,dashed] (hd) -- (pp);
-    \path [line,dashed] (rd) -- (pp);
-\end{tikzpicture}
-\caption{K nearest neighbour process flow} \label{fig:KnnProcessFlow}
-\end{figure}
-
+\citet{smith1994comparison} performed a comparison between non-parametric regression and neural
+networks. They used a backpropagation neural network model with one hidden layer and k-nearest
+neighbour with k value of 10. They showed using their results that nearest neighbour to be more
+effective than the neural network model. They also argued their use because nearest neighbour methods
+are simple to understand by practitioners.
 \citet{lv2009real}
 
 \citet{myung2011travel}
@@ -323,7 +317,7 @@ details in chpater \ref{Chapter4}. Several variations of artificial neural netwo
 used in short term traffic prediction. Some well known examples include - \textit{Multilayer
 perceptrons, Radial basis function networks, Kohnen maps} and \textit{Hopfield networks}.
 
-\cite{dougherty1997short} apllied a backpropagation feedforward neural network in traffic flow
+\cite{dougherty1997short} applied a backpropagation feedforward neural network in traffic flow
 and speed predictions.
 
 \subsection{Fuzzy logic}
@@ -348,3 +342,20 @@ performance of this hybrid model when compared to the standard ARIMA model did n
 results.
 
 \section{Comparisons}
+We present a summury of the comparisons among the above mentioned mehods in the table
+\ref{table:comparisonExistingMethods}.
+
+\begin{table}
+\centering
+    \begin{tabular}{ l p{5cm} p{5cm} p{5cm}} \hline
+       \textbf{Model} & Data requirements & Advantages & Disadvantages\\ \hline
+       Smoothing &  &  &  \\ \hline
+       ARIMA &  &  &  \\ \hline
+       Kalman filtering &  &  &  \\ \hline
+       Nearest neighbour &  &  &  \\ \hline
+       Neural networks &  &  &  \\ \hline
+    \end{tabular}
+    \caption[Comparison of existing methods]{Comparison of existing methods applied in short term
+     traffic predictions.}
+    \label{table:comparisonExistingMethods}
+\end{table}
