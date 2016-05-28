@@ -50,18 +50,41 @@ model, that can be easily embedded into advanced traffic management and advanced
 systems, is yet to be found.
 
 Neural networks have the potential to solve such complex problems, and it has been realised long term
-ago. But due to the practical issue that arise in training,
+ago. But due to the practical issue that arise in training, ther use have been restricted. In last
+decade new ways of training deep neural networks have made them reemerges as victors. Also the use
+of fast graphical processing units have reduced the training time by 10 to 20 times. The capabilities
+that neural networks had initally promised have been realised in several fields such as machine
+vision, image and speech recognition, natural language processing etc. In this study we extend their
+applications to the fiels of short term traffic predictions. We use several variants of deep recurrent
+neural networks and suggest a deep LSTM network to model the traffic conditions and make predictions
+at multiple steps ahead at a network level. Our study shows some promising results and encourages
+similar future works.
+
+
+\section{Motivations}
+There are two main factors that have motivated us to undertake this study. These are
+
+\begin{itemize}
+\item Short term traffic prediction has more than three decades of active research, making this a
+challenging task. This is mainly due to the complex nature of traffic data - temporal and spatial
+relationships, noise and missing values, effects of non-recurrent events (weather, accidents,
+public events etc.)
+
+\item Availability of huge amount of historical data and new breakthroughs in deep learning.
+
+\end{itemize}
 
 \section{Objectives and scope}
 
-\textbf{Research objective} is to propose a new model that can use the large amount of available
-traffic data to predict the traffic in the short term. More importantly this research tries to
-answer the following questions -
+\textbf{Research objective} is to use the large amount of available historical traffic volume data and
+apply deep neural networks for future predictions at a network level. More importantly this research
+tries to answer the following questions -
 
 \begin{itemize}
 \item How can we use the large amount of traffic data available for predicting short term traffic
- flow?
-\item Can the proposed deep learning models have better accuracy than exiting models?
+ flow for better predictions?
+\item Can we use the ability of deep neural networks to capture the tempo-spatial dimension of
+traffic conditions and make predictions at a transportation network level?
 \end{itemize}
 
 \textbf{Research scope} - The scope of this research is to predict traffic volume in the
@@ -85,15 +108,15 @@ research objectives and scope.
 \item Chapter 2: Traffic Prediction: Literature Review - In this chapter we provide a reasonably
 thorough review of existing literature on short term traffic prediction.
 
-\item Chapter 3: SCATS Traffic Volume Data - In this chapter we provide the description of the
-traffic volume data collected by VicRoads using the SCATS systems. Methods to deal with missing
-data are presented in this chapter. Finally we present some exploratory data analysis on the
-traffic data.
+\item Chapter 3: SCATS Traffic Volume Data - In this chapter we describe the traffic volume data
+collected by VicRoads using the SCATS systems. Methods to deal with missing data are presented in
+this chapter. Finally we present some exploratory data analysis on the traffic data.
 
 \item Chapter 4: A Deep LSTM Network for Short Term Traffic Prediction - In this chapter we propose
 a long short term memory (LSTM) neural network model for short term traffic prediction.
 
-\item Chapter 5: Evaluation of the Model - In this chapter we evaluate the model.
+\item Chapter 5: Evaluation of the Model - In this chapter we evaluate the model and compare the results
+with existing methods.
 
 \item Chapter 6: Conclusions and Future Directions - In this chapter we conclude our thesis and
 provide inputs for future work.
