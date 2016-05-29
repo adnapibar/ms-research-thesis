@@ -205,6 +205,8 @@ collected at 15 minutes interval on a freeway segment from 1968 to 1976 to forec
 1977. After examining several models they finally selecte an ARIMA(12,1,7) model. The forecast
 was done for average weekday volume with positive results.
 
+%TODO \citet{hamed1995short}
+
 \citet{williams2001multivariate} used an ARIMAX model to use upstream traffic data along with the
 predicting location's traffic data while estimating the paramters of the ARIMA model. This is
 done using ARIMAX model which is an extension of the ARIMA model where an exogenous variable is
@@ -267,6 +269,7 @@ both stationary and non-stationary time series. We present a brief description o
 detail understanding the reader should refer to some extensive literature (such as
 \citet{harvey1990forecasting}  and \citet{haykin2001kalman}).
 
+
 The Kalman filter solves the problem of sequential state estimation of a dynamic linear system, where
 in such a system the state evolution and the measurements are both linear and Gaussian. Let us consider
 a state space model of the form
@@ -286,7 +289,9 @@ with zero mean and covariance matrix $S_{n}$.
 predictions. The prediction of volume on a link were done using not only the data from that link but
 also from adjacent links. They found, using these models, the average error rate to be around 9\%.
 This shows the ability of Kalman filtering to predict in a multivariate setting which is difficult in
-other statistical regression models such as ARIMA. \citet{xie2007short} \citet{guo2010real}
+other statistical regression models such as ARIMA.
+\citet{stathopoulos2003multivariate}
+\citet{xie2007short} \citet{guo2010real}
 \citet{guo2014adaptive}
 
 \section{Non-Parametric methods}
@@ -360,6 +365,8 @@ results to be within 10\% error rate.
 Neural networks are very powerful not only in thier good predictive ability but also they are robust
 and model the traffic conditions with good overall performance.
 
+\subsection{Support vector machine}
+
 \subsection{Fuzzy logic}
 
 \citet{zhang2008short}
@@ -377,6 +384,8 @@ A hybrid method by combining kohonen maps with ARIMA model was proposed by \cite
 The model known as KARIMA, used the same data(collected near Beaune, France) that was used in the
 ATHENA model for an accurate comparison with the later.
 
+\citet{danech1991athena}
+
 \citet{chen2011short} proposed an ARIMA-GARCH model for short term traffic prediction. The
 performance of this hybrid model when compared to the standard ARIMA model did not yield positive
 results.
@@ -386,22 +395,16 @@ results.
 \citet{vlahogianni2005optimized} used a combined genetic and neural network approach.
 
 \section{Comparisons}
-A vast majority of the previous work present some form of comparison of methods. However the
-comparisons are very specific to the work and not extensive. Also the comparisons are presented in
-form of accuracies, so the qualitative differences in modelling traffic data are often missed.
+A vast majority of the previous work present some form of comparison between different methods based
+on the empirical results. But as the results apply only to a specific area, we can not make these
+as the basis for a general comparison between these methods.
 
 We present a summury of the comparisons among the above mentioned mehods in the table
 \ref{table:comparisonExistingMethods}. The comparisons show their overall advantages and disadvantages.
 
 \begin{table}
-\centering
-    \begin{tabular}{ l p{5cm} p{5cm}} \hline
-       \textbf{Model} & Advantages & Disadvantages\\ \hline
-       Smoothing &   &  \\ \hline
-       ARIMA &    &  \\ \hline
-       Kalman filtering &   &  \\ \hline
-       Nearest neighbour &   &  \\ \hline
-       Neural networks &  &  \\ \hline
+    \begin{tabular}{c}
+        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/method-comparisons.pdf}
     \end{tabular}
     \caption[Comparison of existing methods]{Comparison of existing methods applied in short term
      traffic predictions.}
