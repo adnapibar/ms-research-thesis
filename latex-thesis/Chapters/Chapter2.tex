@@ -45,7 +45,8 @@ figure \ref{fig:sttp-process}.
 
 Determining whether the prediction model to be developed is going to be part of an advanced
 traffic management system or advances traveller information system is important and is influenced
-by other elements such as type of road and traffic parameters invloved.
+by other elements such as type of road and traffic parameters invloved. However, a suitable
+forecasting method that can be easily integrated into these systems is still elsusive.
 
 The type of area influences the prediction process. Short term traffic predictions can be done for
 highway, freeway and urban arterial roads. Most of the existing work focus on either highway or
@@ -62,10 +63,23 @@ to determine the parameter that best describes the traffic conditions and their 
 flow and density are more relevant than speed. Predicting travel time has also been the focus of many
 works, especially in recent years. This is because of its importance when it comes to advances traveller
 information systems, while flow and density are more important for advanced traffic management systems.
+While a lot of earlier work has gone into predicting one of the parameters, there have been few
+attempts to predict a combination of traffic parameters.
+
+Forecasting horizon and step is also imporatant and shows the stability of the method. It is worth
+noticing that forecast horizon is the total amount of time we are trying to predict ahead while
+the number of steps depends on the frequency of traffic data. For instance a data with 5 minute interval,
+we may want to predict the traffic flow in next 15 minutes, where this is the forecast horizon and the
+forecast steps is 3. By intuition we can understand that the accuracy will suffer as we expand the
+forecast horizon. The \textit{Highway Capacity Manual}(2000) suggests that the best forecast horizon
+for short term traffic prediction is 15 minutes. \citet{yue2007prediction} empirically examined the
+relationship among prediction horizon, the effectiveness of real-time data and traffic predictability.
+They concluded that the choice of a model can be affected by the understanding of this relationship.
+
 
 Selecting the right model for short term traffic prediction is a challenging task. A number of
-models have been suggested and yet there is no concensos on a globally acceptable one. The various
-methods that have been suggested for short term traffic prediction can be categorised into four
+models have been suggested and yet there is no concensus on a globally acceptable method.
+The various methods that have been suggested for short term traffic prediction can be categorised into four
 groups - naïve, parametric, non-parametric and hybrid as shown in figure \ref{fig:sttp-methods}.
 
 \begin{figure}[htbp]
@@ -127,10 +141,10 @@ a random error.
 
 A very few attempts have been made to model the traffic conditions using linear and non-linear
 models of regression in the field of short term traffic prediction. The simplest reason being the
-inability of these statistical methods to capture the highly non-linear and complex relationships that
+inability of these statistical methods to capture the highly nonlinear and complex relationships that
 are present in the traffic data.
 \citet{low1972new} and \citet{jensen1973calibrating} used linear models of regresion for predicting
-traffic volumes while \citet{hogberg1976estimation} used non-liner regression for traffic prediction.
+traffic volumes while \citet{hogberg1976estimation} used nonliner regression for traffic prediction.
 \citet{lan1999real} proposed a recursive algorithm by using a dynamic genralised linear model
 in this context to predict traffic flow. In this work a negative binomial probabilty distribution
 was chosen. The flow data used in this experiment was obtained using a video camera and counted
@@ -293,7 +307,8 @@ Kalman filter is a paramteric regression technique usually used in the field of 
 systems and signal preocessing. It was proposed by \citet{kalman1960new}. It can be used to model
 both stationary and non-stationary time series. We present a brief description of this theory, for
 detail understanding the reader should refer to some extensive literature (such as
-\citet{harvey1990forecasting}  and \citet{haykin2001kalman}).
+\citet{harvey1990forecasting}  and \citet{haykin2001kalman}). It is important to realise thar Kalman
+filer and state space model refer to the same basic theory.
 
 
 The Kalman filter solves the problem of sequential state estimation of a dynamic linear system, where
@@ -349,8 +364,15 @@ predictions. The prediction of volume on a link were done using not only the dat
 also from adjacent links. They found, using these models, the average error rate to be around 9\%.
 This shows the ability of Kalman filtering to predict in a multivariate setting which is difficult in
 other statistical regression models such as ARIMA.
-\citet{stathopoulos2003multivariate}
-\citet{xie2007short} \citet{guo2010real}
+
+\citet{stathopoulos2003multivariate} used traffic data collected at 3-minutes interval from urban
+arterials to develop a multivariate time-series state space model. For prediction of traffic flow at
+one location, both the data at that location and from upstream were considered.
+
+\citet{xie2007short}
+
+\citet{guo2010real}
+
 \citet{guo2014adaptive}
 
 \section{Non-Parametric methods}
@@ -360,11 +382,16 @@ is that they can model the complex non-linear data better. Some of the widely us
 models are - k-Nearest Neighbour, Support Vector Machines and Neural Networks
 
 \subsection{K-nearest neighbour}
+K-nearest neighbour is a non-paramtric regression method. In this approach the basic concept is based
+on the idea of a phase space embedding and finding a neighbourhood in that.
+
+
 \citet{smith1994comparison} performed a comparison between non-parametric regression and neural
 networks. They used a backpropagation neural network model with one hidden layer and k-nearest
 neighbour with k value of 10. They showed using their results that nearest neighbour to be more
 effective than the neural network model. They also argued their use because nearest neighbour methods
 are simple to understand by practitioners.
+
 \citet{lv2009real}
 
 \citet{myung2011travel}
@@ -429,10 +456,18 @@ Neural networks are very powerful not only in thier good predictive ability but 
 and model the traffic conditions with good overall performance.
 
 \subsection{Support vector machine}
+Since its inception, Support Vector Machine(SVM) has been very popular and widely used in a range of
+classification and regression applications. This is due to their greater generalisation ability.
+The basic idea of SVM is to map the data into a higher dimensional feature space and use a separating
+hyperplane to classify the data. For regression problems, the algorithm is known as Support Vector
+Regressions(SVR).
 
-\subsection{Fuzzy logic}
 
-\citet{zhang2008short}
+In time series domain the use of SVR has been shown some promise, hence it id inevitable that its
+application to traffic forecasting problem would remain untested. \citet{wu2004travel} used an SVR
+model to predict travel time in a highway. They compared their model to a historical averages algorithm
+and found better accuracies. However the authors did not present any reason of not comparing the model
+with a stronger model.
 
 \subsection{Bayesian networks}
 
@@ -472,7 +507,7 @@ network model. It was observed clustering the input data beforehand helped impro
 performance. It would have been worth comparing the model performance with other hybrid models such
 as the KARIMA model that takes a similar approach.
 
-\cite{abdulhai2002short} validated the used of neuro-genetic algorithms in short term traffic flow and
+\citet{abdulhai2002short} validated the used of neuro-genetic algorithms in short term traffic flow and
 occupancy predictions on a freeway. They used a time delayed neural network (TDNN) model, whose
 structure was synthesised by using a genetic algorithm. The model used tried to capture the
 tempo-spatial relationships in the traffic conditions by using the traffic data from upstream and
@@ -493,8 +528,9 @@ results.
 \section{Comparisons}
 A vast majority of the previous work present some form of comparison between different methods based
 on the empirical results. But as the results apply only to a specific area, we can not make these
-as the basis for a general comparison between these methods. \citet{smith2002comparison} performed
-a comparison between non-parametric and parametric models for single point traffic flow
+as the basis for a general comparison between these methods. Also in most cases the comparison is
+subjective to the proposed model by the author. \citet{smith2002comparison} performed
+a comparison between non-parametric and parametric regression models for single point traffic flow
 forecasting based on their theoritical foundations. They found the parameter estimation and outlier
 detection using a sesonal ARIMA model is time consuming, hence in practical situations they may not be the
 best suited. While ARIMA models have thier foundations in stoachstic system theory, the non-parametric
@@ -502,10 +538,23 @@ regression is founded on chaotic system theory. The argument that is in favour o
 is that traffic conditions data are stochastic in nature. Although this is a valid assumption, the
 presense of chaotic nature in traffic data can not be dismissed, especially in a congested traffic
 environment. \citet{hu2003applicable} explored this and applied phase space reconstruction theory to
-forecast traffic flow and found some positive results.
+forecast traffic flow and found some positive results. In a similar context \citet{karlaftis2011statistical}
+performed a comparison between statistical methods and neural networks. In this work they outlines some
+similarities and fundamental differences between these methods. They suggested three areas where these
+two methods can act in synergy and compliment each other, these are - core model development, analysis
+of large data sets and causality investigation. They also argued that the comparison of these methods in
+several work as unfair, as they are solely based on model accuracies.
+
+It is also worth mentioning here that the majority of earlier work focus on prediction of a traffic
+parameter such as flow at a single location. A very few attempts have been made to predict traffic flow
+at a network level. Because in practice this is more valuable in both urban and freeway environments.
+\citet{van2007short} summarised a list of exisitng methods used in traffic predictions and mentioned
+the importance of a model that predicts at a larger network-wide scale.
 
 We present a summury of the comparisons among the above mentioned mehods in the table
-\ref{table:comparisonExistingMethods}. The comparisons show their overall advantages and disadvantages.
+\ref{table:comparisonExistingMethods}. The comparisons show the basic characteristics of the methods,
+the requirements on the input data and overall advantages and disadvantages of the methods. In
+\ref{Chapter5}, we present an empirical comparison of these methods.
 
 \begin{table}
     \begin{tabular}{c}
