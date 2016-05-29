@@ -37,7 +37,7 @@ figure \ref{fig:sttp-process}.
 
 \begin{figure}[htbp]
   \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/sttp-process.pdf}
+    \includegraphics[width=0.7\textwidth,height=0.7\textheight,keepaspectratio]{Figures/sttp-process.pdf}
     \rule{35em}{0.5pt}
   \caption[Elements of short term traffic prediction]{Elements of short term traffic prediction}
   \label{fig:sttp-process}
@@ -82,9 +82,27 @@ type of method.
 \section{Naïve methods}
 These are heuristics methods, and often used in practice because of their simplicity and the ease
 of implementations. In most cases these methods are used as baselines for comparison while
-creating more advances methods. The simplest naive approach in short term prediction would be to
-take the last observed value and this involves no computational effort. Another simple heuristic
-method known as the historical averages uses the average of past observed values.
+creating more advances methods. We breifly present these methods here.
+
+\subsection{The Naïve method}
+The simplest naive approach in short term prediction would be to take the last observed value and
+this involves no computational effort. That is at any time t
+
+        \begin{equation}
+            \hat{x}_{t} = x_{t-1}
+        \end{equation}
+
+Another variant of this method known as seasonal Naïve method, where the estimate at any time t is
+last observed value from the same season of the year. This is mainly used for highly seasonal time
+series data.
+
+\subsection{Average method}
+Another simple heuristic method known as the historical averages uses the average of past observed
+values. We define this as
+
+        \begin{equation}
+            \hat{x}_{t} = (x_{t-1} + x_{t-2} ... + x_{t-n})/n
+        \end{equation}
 
 \section{Parametric methods}
 In parametric models, we estimate the parameters from the training dataset to determine the
@@ -108,9 +126,16 @@ where $ \beta_{1}, \beta_{2},...,\beta_{q} $ are unknown regression coeffiecient
 a random error.
 
 A very few attempts have been made to model the traffic conditions using linear and non-linear
-models of regression in the field of short term traffic prediction. \citet{low1972new} and
-\citet{jensen1973calibrating} used linear models of regresion for predicting traffic volumes.
-\citet{hogberg1976estimation} used non-liner regression for traffic prediction.
+models of regression in the field of short term traffic prediction. The simplest reason being the
+inability of these statistical methods to capture the highly non-linear and complex relationships that
+are present in the traffic data.
+\citet{low1972new} and \citet{jensen1973calibrating} used linear models of regresion for predicting
+traffic volumes while \citet{hogberg1976estimation} used non-liner regression for traffic prediction.
+\citet{lan1999real} proposed a recursive algorithm by using a dynamic genralised linear model
+in this context to predict traffic flow. In this work a negative binomial probabilty distribution
+was chosen. The flow data used in this experiment was obtained using a video camera and counted
+manually and hence very small set of data set containinh 139 observations at 20 seconds interval
+was used for model evalution.
 
 \subsection{ARIMA}
 ARIMA(Auto Regressive Integrated Moving Average) is a class of parametric regression models. In
@@ -203,9 +228,10 @@ authors used this model in detecting traffic incidents by comparing the real-tim
 with the predicted value. \citet{nihan1980use} used the Box-Jenkins technique on monthly data
 collected at 15 minutes interval on a freeway segment from 1968 to 1976 to forecast for the year
 1977. After examining several models they finally selecte an ARIMA(12,1,7) model. The forecast
-was done for average weekday volume with positive results.
-
-%TODO \citet{hamed1995short}
+was done for average weekday volume with positive results. \citet{hamed1995short} studies the
+application of ARIMA model in short term traffic volume prediction. They found a simple ARIMA(0,1,1)
+model to be adequate for modelling the traffic data. The used a 1-min interval dataset collected in
+five urban aretrials.
 
 \citet{williams2001multivariate} used an ARIMAX model to use upstream traffic data along with the
 predicting location's traffic data while estimating the paramters of the ARIMA model. This is
@@ -283,7 +309,40 @@ random state noise vector with zero mean and covariance matrix $R_{n}$. $Q_{n}$ 
 measurement matrix and $\upsilon_{n}$ is a $M \times 1$ Gaussian random measurement noise vector
 with zero mean and covariance matrix $S_{n}$.
 
-%TODO complete the kalman filtering
+In this state-space setting, the two important tasks are - \textit{filtering} and \textit{prediction}.
+The filtering problem is to estimate the state $x_{n}$ given the set of measurements
+$Y_{n} = y_{1}, y_{2},...,y_{n}$. And the prediction probelm is to predict $x_{n+t}$, that is the
+state after t time steps, given the set of measurements $Y_{n}$. The Kalman filter algorithm can be
+described using the below equations.
+
+        1. Prediction step
+
+        \begin{equation} m_{n|n-1} = P_{n}m_{n-1|n-1} \end{equation}
+        \begin{equation} C_{n|n-1} = P_{n}C_{n-1|n-1}P^{T}_{n} + R_{n} \end{equation}
+
+        2. Update step to estimate $\hat{x}_{n} = m_{n|n}$
+
+        \begin{equation} J_{n} = Q_{n}C_{n|n-1}Q^{T}_{n} + S_{n} \end{equation}
+        \begin{equation} K_{n} = C_{n|n-1}Q^{T}_{n}J^{-1}_{n} \end{equation}
+        \begin{equation} m_{n|n} = m_{n|n-1} + K_{n}(y_{n} - Q_{n}m_{n|n-1}) \end{equation}
+        \begin{equation} C_{n|n} = C_{n|n-1} - K_{n}Q_{n}C_{n|n-1} \end{equation}
+
+where $m_{n|n}$ and $C_{n|n}$ are the Gaussian mean and covariance of state $x_{n}$ at time step n,
+in the posterior probability distributed function
+
+        \begin{equation} p(x_{n}|Y_{n}) \equiv \mathcal{N}(x_{n};m_{n|n},C_{n|n}) \end{equation}
+
+The subscript notation $n|n$ denotes the recursive computation of the pdf of the state $x_{n}$ at
+step n using the measurements upto time step n.
+
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=0.5\textwidth,height=0.5\textheight,keepaspectratio]{Figures/kalman-filter.pdf}
+    \rule{35em}{0.5pt}
+  \caption[Sequential Bayesian estimation in Kalman filtering]{Sequential Bayesian estimation in
+  Kalman filtering, recursively computes the posterior probabilty $p(x_{n}|Y_{n})$}
+  \label{fig:kalman-filter}
+\end{figure}
 
 \citet{okutani1984dynamic} proposed two models using Kalman filtering for short term traffic volume
 predictions. The prediction of volume on a link were done using not only the data from that link but
@@ -298,7 +357,7 @@ other statistical regression models such as ARIMA.
 In nonparamtric models the parameters are not fixed, and vary with the amount of data available.
 Usually more data is required for this models than parametric models. The advantage of these models
 is that they can model the complex non-linear data better. Some of the widely used non-parametric
-models are - k-Nearest Neighbour, Non-parametric regrssion and Neural Networks
+models are - k-Nearest Neighbour, Support Vector Machines and Neural Networks
 
 \subsection{K-nearest neighbour}
 \citet{smith1994comparison} performed a comparison between non-parametric regression and neural
@@ -349,17 +408,21 @@ of the Pacific Highway between Brisbane and Goldcost in Queensland, Australia. U
 studies the authors used an object-oriented dynamic neural network model. The dataset they used consisted
 of 5000 obsservations at 20 seconds of interval collected over five hour period on two days. Their results
 show that the model had an accuracy of 90-94\% for 5 minutes predictions. The accuracies dropped
-to 84\% and 80\% for 10 and 15 minutes prediction horizons respectively. \citet{innamaa2005short}
-applied a feedforward MLP to predict travel time in an interurban highway. They used data collected
-over a period of four months in a highway in southern Finland. The neural network implemented for the
-experiment was very simple with one hidden layer and at most 20 units in the hidden layer. Also they used
-separate neural networks for each sublink to predict the average travel time, thus in practice these
-are unrealistic to be implemented due to increased complexity. On an average they achieved an
-accuracy of 90\%. They suggested inclusion of flow information could have been beneficial.
-\cite{jiang2005dynamic} used a nonparametric dynamic time-delay recurrent wavelet neural network model
-for forecasting traffic flow. They suggested that this model can be used for both the short term and
-long term(from a day to a month) traffic flow forecasting. They used a limited dataset and showed the
-results to be within 10\% error rate.
+to 84\% and 80\% for 10 and 15 minutes prediction horizons respectively.
+\citet{chen2001use} applied a dynamic neural network model in this context, which was based on a
+resource allocating network(RAN). The RAN is a single hidden layer neural network with no inital hidden
+units. The hidden units are added dynamically and the number of hidden units correspond to the compexity
+of the mapped function. Upto a macimum number of hidden units were set to 30 in this study.
+\citet{innamaa2005short}applied a feedforward MLP to predict travel time in an interurban highway.
+They used data collected over a period of four months in a highway in southern Finland. The neural
+network implemented for the experiment was very simple with one hidden layer and at most 20 units in
+the hidden layer. Also they used separate neural networks for each sublink to predict the average
+travel time, thus in practice these are unrealistic to be implemented due to increased complexity.
+On an average they achieved an accuracy of 90\%. They suggested inclusion of flow information could
+have been beneficial. \citet{jiang2005dynamic} used a nonparametric dynamic time-delay recurrent
+wavelet neural network model for forecasting traffic flow. They suggested that this model can be
+used for both the short term and long term(from a day to a month) traffic flow forecasting. They
+used a limited dataset and showed the results to be within 10\% error rate.
 
 
 Neural networks are very powerful not only in thier good predictive ability but also they are robust
@@ -380,24 +443,66 @@ and model the traffic conditions with good overall performance.
 In recent years many hybrid methods have been tried in short term traffic prediction with mixed
 results.
 
-A hybrid method by combining kohonen maps with ARIMA model was proposed by \citet{van1996combining}.
-The model known as KARIMA, used the same data(collected near Beaune, France) that was used in the
-ATHENA model for an accurate comparison with the later.
+The ATHENA model(\citet{danech1991athena}) is a hybrid model that employed a layered statistical
+approach. It used a clustering method to group the data and then a linear regression model was applied
+to each cluster. A hybrid method by combining kohonen maps with ARIMA model was proposed by
+\citet{van1996combining}. The model known as KARIMA, used the same data (collected near Beaune,
+France) that was used in the ATHENA model for an accurate comparison with the later. The authors
+used rectangular and hexagonal Kohonen maps to cluster the traffic volume data. Then each of the
+new data cluster was fitted using an ARIMA model. This layered approach was similar to the ATHENA
+model. The authors observed the superiority of the hexagonal Kohonen maps over the rectangular one,
+but unable to determine the reason of that. Overall the model showed improved performance than the
+ATHENA and a simple ARIMA model.
 
-\citet{danech1991athena}
+\citet{chen2001study} analysed the use of hybrid neural networks in the context of traffic prediction
+and the effect of missing data on those. The authors used two hybrid methods usign the self-organising
+maps(SOM). In the first method they used four ARIMA models while in the second method two multi-layer
+perceptrons(MLP) were used. The SOM was used to classify the traffic data into different cluster that
+can then be used by a suitable ARIMA or MLP model. The SOM/ARIMA performed better than individual
+ARIMA models while the SOM/MLP method outperformed all other methods used in the study. They also
+observed that the ARIMA models were also the most sensitive to missing data, while neural networks
+were mostly unaffected.
 
-\citet{chen2011short} proposed an ARIMA-GARCH model for short term traffic prediction. The
-performance of this hybrid model when compared to the standard ARIMA model did not yield positive
-results.
+\citet{yin2002urban} used a hybrid fuzzy-neural model(FNM) for this task. The FNM model consisted of
+two modules - a gate network (GN) and an expert network (EN). The role of the GN is to classify the
+input traffic data into a group of clusters using a fuzzy method. On the other hand the EN was a
+neural network that models the the clustered data for predictions. An online rolling training scheme
+was proposed to train the FNM model. The performance of this model was done with a very simple neural
+network model. It was observed clustering the input data beforehand helped improving the overall
+performance. It would have been worth comparing the model performance with other hybrid models such
+as the KARIMA model that takes a similar approach.
+
+\cite{abdulhai2002short} validated the used of neuro-genetic algorithms in short term traffic flow and
+occupancy predictions on a freeway. They used a time delayed neural network (TDNN) model, whose
+structure was synthesised by using a genetic algorithm. The model used tried to capture the
+tempo-spatial relationships in the traffic conditions by using the traffic data from upstream and
+downstream sections. A genetic algorithm was used to chose the neural network from a population. The
+model performance was validated using both simulated and real traffic data. The comparisons were made
+against a backpropagation feedforward MLP. The model performed acceptably with an accuracy of 86\% for
+15 minutes predictions. The model performance was significantly affected for less spatial effects.
 
 \citet{ishak2004optimizing} used a neuro-fuzzy hybrid model.
 
 \citet{vlahogianni2005optimized} used a combined genetic and neural network approach.
 
+\citet{chen2011short} proposed an ARIMA-GARCH model for short term traffic prediction. The
+performance of this hybrid model when compared to the standard ARIMA model did not yield positive
+results.
+
+
 \section{Comparisons}
 A vast majority of the previous work present some form of comparison between different methods based
 on the empirical results. But as the results apply only to a specific area, we can not make these
-as the basis for a general comparison between these methods.
+as the basis for a general comparison between these methods. \citet{smith2002comparison} performed
+a comparison between non-parametric and parametric models for single point traffic flow
+forecasting based on their theoritical foundations. They found the parameter estimation and outlier
+detection using a sesonal ARIMA model is time consuming, hence in practical situations they may not be the
+best suited. While ARIMA models have thier foundations in stoachstic system theory, the non-parametric
+regression is founded on chaotic system theory. The argument that is in favour of using ARIMA models
+is that traffic conditions data are stochastic in nature. Although this is a valid assumption, the
+presense of chaotic nature in traffic data can not be dismissed, especially in a congested traffic
+environment. \citet{hu2003applicable} explored this and applied phase space reconstruction theory to
+forecast traffic flow and found some positive results.
 
 We present a summury of the comparisons among the above mentioned mehods in the table
 \ref{table:comparisonExistingMethods}. The comparisons show their overall advantages and disadvantages.
