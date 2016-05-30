@@ -64,7 +64,13 @@ flow and density are more relevant than speed. Predicting travel time has also b
 works, especially in recent years. This is because of its importance when it comes to advances traveller
 information systems, while flow and density are more important for advanced traffic management systems.
 While a lot of earlier work has gone into predicting one of the parameters, there have been few
-attempts to predict a combination of traffic parameters.
+attempts to predict a combination of traffic parameters. There are also non-recurrent events such as
+accidents, severe weather, public events etc. that affect traffic conditions. Not many attempts have
+been made to include these as input parameters while creating a forecasting model. This is because
+the influence of these have been found to be ambiguous. Recently \citet{tsirigotis2012does}
+studied the influence of weather on the performance of traffic forecasting models. The author observed
+a very marignal improvement on the performance with the inclusion of weather data as an exogenous
+variable.
 
 Forecasting horizon and step is also imporatant and shows the stability of the method. It is worth
 noticing that forecast horizon is the total amount of time we are trying to predict ahead while
@@ -76,6 +82,12 @@ for short term traffic prediction is 15 minutes. \citet{yue2007prediction} empir
 relationship among prediction horizon, the effectiveness of real-time data and traffic predictability.
 They concluded that the choice of a model can be affected by the understanding of this relationship.
 
+One of the other aspect to consider is the importance of spatial relationships in traffic flow data
+along with its temporal characteristics. The reason being that this fully captures the dynamics of
+traffic conditions and is a more accurate representation of traffic flow characterstics. Several
+attempts have been made to incorporate traffic flow from upstream, downstream and adjacent locations
+to increase the prediction accuracy. \citet{cheng2012spatio} provides an extensive examination of the
+spatio-temporal characteristics of traffic data and an exploratory autocorrelation analysis.
 
 Selecting the right model for short term traffic prediction is a challenging task. A number of
 models have been suggested and yet there is no concensus on a globally acceptable method.
@@ -411,6 +423,9 @@ this was the first time this approach was used to identify traffic accidents. Th
 normal traffic conditions and hazardous conditions are represented as traffic accident precursors.
 Using these precursors, a 5-nearest neighbour method was proposed to identify hazardous conditions.
 
+The advantages of using a non-parametric regression such as K-NN in short term traffic prediction
+are their simplicity in modelling multivariate data, independent of the assumption on the state
+transitions of the traffic conditions and intuitive model formulation (\citet{vlahogianni2004short}).
 
 \subsection{Neural networks}
 \label{subsec:neuralNetworksTrafficPred}
@@ -472,14 +487,18 @@ SSNN model was insensitive to those. The model was compared with the instantaneo
 
 
 Neural networks are very powerful not only in thier good predictive ability but also they are robust
-and model the traffic conditions with good overall performance.
+and model the traffic conditions with good overall performance. They are also capable of making
+better multi-step ahead predictions than other mentioned methods.
 
 \subsection{Support vector machine}
 Since its inception, Support Vector Machine(SVM) has been very popular and widely used in a range of
 classification and regression applications. This is due to their greater generalisation ability.
 The basic idea of SVM is to map the data into a higher dimensional feature space and use a separating
-hyperplane to classify the data. For regression problems, the algorithm is known as Support Vector
-Regressions(SVR).
+hyperplane to classify the data. For regression problems, a version of SVM was proposed by
+\citet{smola1997support} and is known as support vector regression. Similar to SVM, the SVR uses
+a small subset of training data, because the cost function for the model ignores any data that is
+close to the model prediction. Another version of SVM to solve regression problem is Least
+Square Support Vector Machine (LS-SVM) proposed by \cite{suykens2002least}
 
 
 In time series domain the use of SVR has been shown some promise, hence it id inevitable that its
@@ -487,6 +506,9 @@ application to traffic forecasting problem would remain untested. \citet{wu2004t
 model to predict travel time in a highway. They compared their model to a historical averages algorithm
 and found better accuracies. However the authors did not present any reason of not comparing the model
 with a stronger model.
+\citet{zeng2008svr} proposed an online accurate support vector regressor(AOSVR) to increase the time
+efficiency of predictions. They first created a SVR model with Gaussian kernel and trained using an
+LS-SVM algorithm. With the availability of new data the model parameters are updated online.
 
 \subsection{Bayesian networks}
 A Bayesian network is a probilistic graphical model, that uses a directed acyclic graph(DAG) to
@@ -522,8 +544,8 @@ present any comparison with other models proposed earlier in this field.
 
 \section{Hybrid Methods}
 In recent years many hybrid methods have been tried in short term traffic prediction with mixed
-results. Most of these methods take a combined approach, where a more than one methods are combined
-to enhance the prediction accuract.
+results. Many of these methods take a combined approach, where a forecasts of more than one methods
+are combined to enhance the prediction accuract.
 
 One of the first hybrid approach used in short term traffic flow prediction was the ATHENA model.
 The ATHENA model(\citet{danech1991athena}) employed a layered statistical approach. It
@@ -535,16 +557,29 @@ used rectangular and hexagonal Kohonen maps to cluster the traffic volume data. 
 new data cluster was fitted using an ARIMA model. This layered approach was similar to the ATHENA
 model. The authors observed the superiority of the hexagonal Kohonen maps over the rectangular one,
 but unable to determine the reason of that. Overall the model showed improved performance than the
-ATHENA and a simple ARIMA model.
+ATHENA and a simple ARIMA model. \citet{chen2001study} analysed the use of hybrid neural
+networks in the context of traffic prediction and the effect of missing data on those.
+The authors used two hybrid methods usign the self-organising maps(SOM). In the first method they
+used four ARIMA models while in the second method two multi-layer perceptrons(MLP) were used.
+The SOM was used to classify the traffic data into different cluster that can then be used by a
+suitable ARIMA or MLP model. The SOM/ARIMA performed better than individual ARIMA models while the
+SOM/MLP method outperformed all other methods used in the study. They also observed that the ARIMA
+models were also the most sensitive to missing data, while neural networks were mostly unaffected.
 
-\citet{chen2001study} analysed the use of hybrid neural networks in the context of traffic prediction
-and the effect of missing data on those. The authors used two hybrid methods usign the self-organising
-maps(SOM). In the first method they used four ARIMA models while in the second method two multi-layer
-perceptrons(MLP) were used. The SOM was used to classify the traffic data into different cluster that
-can then be used by a suitable ARIMA or MLP model. The SOM/ARIMA performed better than individual
-ARIMA models while the SOM/MLP method outperformed all other methods used in the study. They also
-observed that the ARIMA models were also the most sensitive to missing data, while neural networks
-were mostly unaffected.
+
+Both ARIMA and GARCH(Generalized Autoregressive Conditional Heteroscedasticity) models have received
+a lot of popularity in time series modelling, especially in the financial analysis. The ARIMA-GARCH
+model is a new hybrid method that has received some attention. \citet{chen2011short} proposed an
+ARIMA-GARCH model for short term traffic prediction. The authors combines a linear ARIMA and a GARCH
+model to create a hybrid non-linear model. The authors argued that, for traffic flow prediction, in
+practice the assumption of ARIMA model for a constant variance is not met. Hence the combination with
+the GARCH model which has time-dependent variance can improve the prediction accuracy. The ARIMA model
+was fitted with preprocessed data. The prediction error series was then fitted with the GARCH model.
+The process is repeated until the model is accurate enough. They evaluted the hybrid model's
+performance by using traffic flow data collected from a freeway. The performance of the hybrid model
+did not show any improvements over the standard ARIMA model and reached similar accuracies. The author
+concluded that even though the model did not show improved performance, they are better choice over
+a simple ARIMA model as they capture the traffic characteristics more comprehensively.
 
 \citet{yin2002urban} used a hybrid fuzzy-neural model(FNM) for this task. The FNM model consisted of
 two modules - a gate network (GN) and an expert network (EN). The role of the GN is to classify the
@@ -553,7 +588,15 @@ neural network that models the the clustered data for predictions. An online rol
 was proposed to train the FNM model. The performance of this model was done with a very simple neural
 network model. It was observed clustering the input data beforehand helped improving the overall
 performance. It would have been worth comparing the model performance with other hybrid models such
-as the KARIMA model that takes a similar approach.
+as the KARIMA model that takes a similar approach.\citet{stathopoulos2008fuzzy} proposed a fuzzy
+rule-based system(FRBS) to combine traffic flow forecasts resulting from an online adaptive Kalman
+filter and an artificial neural netwrork. The FRBS is used to represent different forms of knowledge
+at hand and model the relationships among the variables. The authors used a hybrid FRBS with a
+metaheuristic optimisation technique, to automate the tuning of its parameters. The comnining of
+forecasts from the ANN and KF models were done using IF-THEN rules in the rule base. They evaluated
+this model using real traffic flow data from a urban signallised arterial aggregated at 3-minutes
+interval. The combines forecasts were better than both individual forecasts. Moreover, the accuracy
+of the combined model is directly related to the individual accuracies.
 
 \citet{abdulhai2002short} validated the used of neuro-genetic algorithms in short term traffic flow and
 occupancy predictions on a freeway. They used a time delayed neural network (TDNN) model, whose
@@ -563,7 +606,6 @@ downstream sections. A genetic algorithm was used to chose the neural network fr
 model performance was validated using both simulated and real traffic data. The comparisons were made
 against a backpropagation feedforward MLP. The model performed acceptably with an accuracy of 86\% for
 15 minutes predictions. The model performance was significantly affected for less spatial effects.
-
 \citet{vlahogianni2005optimized} took a similar approach where the neural network structure was optimised
 using a genetic algorithm. The use of GA was to optimise the number of processing units in the hidden
 layer. When compared with a non-optimised MLP they found that the optimised version reached similar
@@ -574,12 +616,6 @@ traffic flow as they concentrate on the means and miss the extreme; Thus this co
 They also evaluated the model performance in a multivariate traffic flow data to capture the spatial
 relationships. The results show that using this multivariate apporoach, the model exhibited a better
 performance for longer predictive horizons.
-
-
-\citet{chen2011short} proposed an ARIMA-GARCH model for short term traffic prediction. The
-performance of this hybrid model when compared to the standard ARIMA model did not yield positive
-results.
-
 
 \section{Comparisons}
 A vast majority of the previous work present some form of comparison between different methods based
