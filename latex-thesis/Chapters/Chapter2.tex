@@ -142,9 +142,18 @@ a random error.
 A very few attempts have been made to model the traffic conditions using linear and non-linear
 models of regression in the field of short term traffic prediction. The simplest reason being the
 inability of these statistical methods to capture the highly nonlinear and complex relationships that
-are present in the traffic data.
-\citet{low1972new} and \citet{jensen1973calibrating} used linear models of regresion for predicting
-traffic volumes while \citet{hogberg1976estimation} used nonliner regression for traffic prediction.
+are present in the traffic data. \citet{low1972new} and \citet{jensen1973calibrating}
+used linear models of regresion for predicting traffic volumes while \citet{hogberg1976estimation}
+used nonliner regression for traffic prediction. \citet{rice2004simple} revisited the application of
+linear regression to short term traffic prediction. They used this approach to predict travel time
+on freeways. For their method, they created a matric $V$ with entries $V(d,l,t)$ which denotes the
+measured velocity on day $d$ at loop $l$ at time $t$. Using this matric they calculated $TT_{d}(a,b,t)$,
+which is the time it took to travel from $a$ to $b$ at time $t$ on a day $d$. They calculated another
+proxy value for this times, which would have been the travel time if traffic conditions were remained
+constant, this was denoted as $T^*_{d}(a,b,t)$. Using empirical analysis they observed a linear
+relationship between $T^*(t)$ and $TT(t+\delta)$ and proposed a linear regression model to capture this
+relationship.
+
 \citet{lan1999real} proposed a recursive algorithm by using a dynamic genralised linear model
 in this context to predict traffic flow. In this work a negative binomial probabilty distribution
 was chosen. The flow data used in this experiment was obtained using a video camera and counted
@@ -363,17 +372,10 @@ step n using the measurements upto time step n.
 predictions. The prediction of volume on a link were done using not only the data from that link but
 also from adjacent links. They found, using these models, the average error rate to be around 9\%.
 This shows the ability of Kalman filtering to predict in a multivariate setting which is difficult in
-other statistical regression models such as ARIMA.
-
-\citet{stathopoulos2003multivariate} used traffic data collected at 3-minutes interval from urban
-arterials to develop a multivariate time-series state space model. For prediction of traffic flow at
-one location, both the data at that location and from upstream were considered.
-
-\citet{xie2007short}
-
-\citet{guo2010real}
-
-\citet{guo2014adaptive}
+other statistical regression models such as ARIMA. \citet{stathopoulos2003multivariate} used traffic
+data collected at 3-minutes interval from urban arterials to develop a multivariate time-series
+state space model. For prediction of traffic flow at one location, both the data at that location
+and from upstream were considered.
 
 \section{Non-Parametric methods}
 In nonparamtric models the parameters are not fixed, and vary with the amount of data available.
@@ -383,22 +385,31 @@ models are - k-Nearest Neighbour, Support Vector Machines and Neural Networks
 
 \subsection{K-nearest neighbour}
 K-nearest neighbour is a non-paramtric regression method. In this approach the basic concept is based
-on the idea of a phase space embedding and finding a neighbourhood in that.
+on the idea of a phase space embedding and finding a neighbourhood in that. A phase space or state
+space is a vector space that represents the state of a purely deterministic system. The points in this
+phase space show the dynamics of such a system. For a time series, the problem of constructing a phase
+space is known as phase space embedding. Given a time series ($x_{1},...x_{t}$) with scalar values,
+in order to forecast $x_{t+1}$, a suitable value k is used which can be determined heuristically by
+using an error measure such as RMSE.. The forecast algorithm then predicts the value by taking either
+a simple arithmatic mean of k neighbours or a weighted average with respect to the distance. The
+distance functions can be Euclidean, Manhattan, Minkowski etc.
 
+\citet{davis1991nonparametric} were one of the first to show the application of a k-NN method in short
+term traffic flow prediction. The authors used a minute aggregated traffic flow and occupancy data
+collected at an intersection in an interstate highway. However a detail account of the results were
+lacked in the work, this could be because of the lack of data as the author used only about one and
+half hour of data for this experiment.
 
-\citet{smith1994comparison} performed a comparison between non-parametric regression and neural
-networks. They used a backpropagation neural network model with one hidden layer and k-nearest
-neighbour with k value of 10. They showed using their results that nearest neighbour to be more
-effective than the neural network model. They also argued their use because nearest neighbour methods
-are simple to understand by practitioners.
-
-\citet{lv2009real}
-
-\citet{myung2011travel}
-
-\citet{zhang2013improved}
-
-\citet{meng2015two}
+The performance of a k-NN algorithm in short term traffic prediction was further demonstrated by
+\citet{smith1994comparison}. They used a backpropagation neural network model with one hidden layer
+and k-nearest neighbour with k value of 10. They showed using their results that nearest neighbour
+to be more effective than the neural network model. They also argued their use because nearest
+neighbour methods are simple to understand by practitioners. Another application of k-nearest neighbour
+was by \citet{lv2009real} to predict highway traffic accident. They used data collected from
+inductive loop detectors along with historical traffic accident data. As per the authors knoweledge
+this was the first time this approach was used to identify traffic accidents. The changes between
+normal traffic conditions and hazardous conditions are represented as traffic accident precursors.
+Using these precursors, a 5-nearest neighbour method was proposed to identify hazardous conditions.
 
 
 \subsection{Neural networks}
@@ -429,18 +440,21 @@ series methods. \citet{yasdi1999prediction} used a Jordan neural network for tra
 The authors made forecasts for weekly, daily and hourly traffic volumes. For their work they used
 data collected from traffic loop inducters and aggregated at fifteen minutes interval. The data is
 then further classified based on events and stored in a knowledge base for reference. The results were
-exceptonal with an MSE less than 0.003. \citet{dia2001object} used a time-lag recurrent network(TLRN)
-to predict traffic speed for fifteen minutes horizon. They performed their experiment on a section
-of the Pacific Highway between Brisbane and Goldcost in Queensland, Australia. Unlike previous mentioned
-studies the authors used an object-oriented dynamic neural network model. The dataset they used consisted
-of 5000 obsservations at 20 seconds of interval collected over five hour period on two days. Their results
+exceptonal with an MSE less than 0.003.
+
+\citet{dia2001object} used a time-lag recurrent network(TLRN) to predict traffic speed for fifteen
+minutes horizon. They performed their experiment on a section of the Pacific Highway between
+Brisbane and Goldcost in Queensland, Australia. Unlike previous mentioned studies the authors used
+an object-oriented dynamic neural network model. The dataset they used consisted of 5000
+obsservations at 20 seconds of interval collected over five hour period on two days. Their results
 show that the model had an accuracy of 90-94\% for 5 minutes predictions. The accuracies dropped
-to 84\% and 80\% for 10 and 15 minutes prediction horizons respectively.
-\citet{chen2001use} applied a dynamic neural network model in this context, which was based on a
-resource allocating network(RAN). The RAN is a single hidden layer neural network with no inital hidden
-units. The hidden units are added dynamically and the number of hidden units correspond to the compexity
-of the mapped function. Upto a macimum number of hidden units were set to 30 in this study.
-\citet{innamaa2005short}applied a feedforward MLP to predict travel time in an interurban highway.
+to 84\% and 80\% for 10 and 15 minutes prediction horizons respectively. \citet{chen2001use} applied
+a dynamic neural network model in this context, which was based on a resource allocating network(RAN).
+The RAN is a single hidden layer neural network with no inital hidden units. The hidden units are added
+dynamically and the number of hidden units correspond to the compexity of the mapped function. Upto
+a maximum number of hidden units were set to 30 in this study.
+
+\citet{innamaa2005short} applied a feedforward MLP to predict travel time in an interurban highway.
 They used data collected over a period of four months in a highway in southern Finland. The neural
 network implemented for the experiment was very simple with one hidden layer and at most 20 units in
 the hidden layer. Also they used separate neural networks for each sublink to predict the average
@@ -450,6 +464,11 @@ have been beneficial. \citet{jiang2005dynamic} used a nonparametric dynamic time
 wavelet neural network model for forecasting traffic flow. They suggested that this model can be
 used for both the short term and long term(from a day to a month) traffic flow forecasting. They
 used a limited dataset and showed the results to be within 10\% error rate.
+
+\citet{van2005accurate} studied the robustness of a state-space neural network(SSNN) to predict
+travel time under missing data. The hidden layer had 12 units. The data used for experiment was
+was corrupted to contain both incidental and structural input failures. It was observed that the
+SSNN model was insensitive to those. The model was compared with the instantaneous predictor.
 
 
 Neural networks are very powerful not only in thier good predictive ability but also they are robust
@@ -470,16 +489,45 @@ and found better accuracies. However the authors did not present any reason of n
 with a stronger model.
 
 \subsection{Bayesian networks}
+A Bayesian network is a probilistic graphical model, that uses a directed acyclic graph(DAG) to
+represent a set of random variables and their conditional probabilities. In such a DAG the nodes
+correspond to random varables and the edges correspond to the conditional probabilities. We can see
+that the edges in such a DAG represent a direct causal influence and the belief in such a causal
+structured network changes with new evidence. Formally we can define a Bayesian network as a
+pair $(G,P)$, where $G$ is a DAG with a set of nodes $X$ and $P = \{p(x_{1}|\pi_{1}),..., p(x_{n}|\pi_{n})\}$
+is a set of conditional probabilities with $\pi_{i}$ is the set of parent nodes of node $x_{i}$.
+The joint probabibility of all nodes is defined as
 
-\citet{castillo2008predicting}
+     \begin{equation} p(X) =  \prod_{i = 1}^n p(x_{i}|\pi_{i}) \end{equation}
+
+The joint probability distribution for a Gaussian Bayesian network is a multivariate
+normal distribution $N(\mu, \Sigma)$, which is defined as
+
+     \begin{equation}
+      f(x) =  (2\pi)^{-n/2} \abs{\Sigma}^{-1/2} exp\{-1/2(x-\mu)^T \Sigma^{-1}(x-\mu)\}
+     \end{equation}
+
+One of the advantage of using a Bayesian network for traffic flow prediction is that they can
+very easily model the multivariate traffic flow data to capture the tempo-spatial relations.
+
+\citet{castillo2008predicting} proposed a Gaussian Bayesian network for traffic prediction. The idea
+was to use the origin-destination(OD) and link flows as a multivariate random variable in this network.
+The OD flows were used as parent nodes and the link flows as the child nodes. The conditional
+probability of each link flow given the OD flows was defined as a normal distribution. Once the model
+was built the joint probability distribution was used to predict the traffic flow for the links, when
+new data is available. The authors argued that the Bayesian netowrks are natural tools for representing
+the random dependence structure of traffic flows in OD pairs and link traffic flows. The authors did not
+present any comparison with other models proposed earlier in this field.
 
 
 \section{Hybrid Methods}
 In recent years many hybrid methods have been tried in short term traffic prediction with mixed
-results.
+results. Most of these methods take a combined approach, where a more than one methods are combined
+to enhance the prediction accuract.
 
-The ATHENA model(\citet{danech1991athena}) is a hybrid model that employed a layered statistical
-approach. It used a clustering method to group the data and then a linear regression model was applied
+One of the first hybrid approach used in short term traffic flow prediction was the ATHENA model.
+The ATHENA model(\citet{danech1991athena}) employed a layered statistical approach. It
+used a clustering method to group the data and then a linear regression model was applied
 to each cluster. A hybrid method by combining kohonen maps with ARIMA model was proposed by
 \citet{van1996combining}. The model known as KARIMA, used the same data (collected near Beaune,
 France) that was used in the ATHENA model for an accurate comparison with the later. The authors
@@ -516,9 +564,17 @@ model performance was validated using both simulated and real traffic data. The 
 against a backpropagation feedforward MLP. The model performed acceptably with an accuracy of 86\% for
 15 minutes predictions. The model performance was significantly affected for less spatial effects.
 
-\citet{ishak2004optimizing} used a neuro-fuzzy hybrid model.
+\citet{vlahogianni2005optimized} took a similar approach where the neural network structure was optimised
+using a genetic algorithm. The use of GA was to optimise the number of processing units in the hidden
+layer. When compared with a non-optimised MLP they found that the optimised version reached similar
+performance with less number of hidden units. They evaluated the model in first using univariate traffic
+flow data and compared the results with an ARIMA and a state space model. The results were better than
+the compared models, but on the other hand it was found that ARIMA models do not perform well for urban
+traffic flow as they concentrate on the means and miss the extreme; Thus this comparison seemed unfair.
+They also evaluated the model performance in a multivariate traffic flow data to capture the spatial
+relationships. The results show that using this multivariate apporoach, the model exhibited a better
+performance for longer predictive horizons.
 
-\citet{vlahogianni2005optimized} used a combined genetic and neural network approach.
 
 \citet{chen2011short} proposed an ARIMA-GARCH model for short term traffic prediction. The
 performance of this hybrid model when compared to the standard ARIMA model did not yield positive
@@ -554,7 +610,7 @@ the importance of a model that predicts at a larger network-wide scale.
 We present a summury of the comparisons among the above mentioned mehods in the table
 \ref{table:comparisonExistingMethods}. The comparisons show the basic characteristics of the methods,
 the requirements on the input data and overall advantages and disadvantages of the methods. In
-\ref{Chapter5}, we present an empirical comparison of these methods.
+chapter \ref{Chapter5}, we present an empirical comparison of these methods.
 
 \begin{table}
     \begin{tabular}{c}

@@ -41,25 +41,50 @@ the green phases of succesive sets of signals within a coordinated system
 The desicion making of the SCATS system occurs at two levels - \emph{strategic} and \emph{tactical}.
 
 
-\section{Volume data}
+\section{Traffic flow volume data}
+
+% Describe the traffic flow
+
+\subsection{Data acquisition}
 Traffic loop detectors are embedded in the raod pavement and located in each lane near the stop
 line at traffic intersections. These detectors collect traffic volume and the time it takes a
-vehicle to clear the loop. In this research we used the data collected from sensors at 1084
-homogeneous links(a road segment where the volume for all traffic along that link is collected).
-Traffic volume was collected for every 15 minutes interval from 01/01/2008 to 25/07/2013, a total
-of 195168 observations.
+vehicle to clear the loop. A schematic diagram of a loop detector is shown in fig \ref{fig:loopDetector}
 
-% Table for Descriptive Statistics , number of missing values, mean values
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=0.7\textwidth,height=0.7\textheight,keepaspectratio]{Figures/loop-detector.pdf}
+    \rule{35em}{0.5pt}
+  \caption[A vehicle loop detector system]{An inductive loop detector system used for detecting the presence
+  of a vehicle.}
+  \label{fig:loopDetector}
+\end{figure}
 
-\subsection{Handling missing data}
+
+\subsection{Measurement errors}
+There are various factors that contribute to the measurement errors. This can be the fault of the
+vehicle loop detection system or at the traffic control center.
+
+\subsubsection{Missing data}
 One of the major difficulties with traffic sensor data is missing data, that can be caused by
 several factors.
 
-\section{Exploratory analysis}
-In this section, we will perform exploratory analysis on the traffic volume data at a homogenous
-segment.For this purpose we will use both the south and north bound traffic data at Nicholson
-street (north of Melbourne's CBD)between Gertrude street and Victoria Parade  during the period
-01/01/2008 to 25/07/2013.
+% table showing count of missing data
+% plot of missing data
+
+\subsubsection{Unreliable data}
+
+\section{Analysis of the traffic volume data}
+
+% Trends - daily, weekly, weekdays, weekends, special events
+% Seasonality
+% Spatial relationships
+
+In this section, we present analysis on the traffic volume data at a homogenous segment.
+For this purpose we will use both the south and north bound traffic data at Nicholson
+street (north of Melbourne's CBD)between Gertrude street and Victoria Parade during the period
+from 01/01/2008 to 25/07/2013. Traffic volume was aggregated on a 15 minutes interval making a total
+of 195168 observations.
+
 
 Figure \ref{fig:AverageTrafficVolume} shows the daily, weekly, monthly and yearly average traffic
 volume at a site location.Figure \ref{fig:TypicalDayTraffic} shows how a typical day of the week
