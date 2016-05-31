@@ -119,7 +119,7 @@ def plot_predictions(y_test, predicted):
     plt.plot(x, y_test[:400], label='Actual')
     plt.plot(x, predicted[:400], label='Predicted')
     plt.legend(loc=2)
-    plt.savefig('../latex-thesis/Figures/lstm-single.pdf')
+    plt.savefig('../latex-thesis/Figures/lstm-single1.pdf')
 
 
 def mean_absolute_percentage_error(y_true, y_pred):

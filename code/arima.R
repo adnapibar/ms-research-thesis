@@ -38,7 +38,7 @@ performArima <- function(horizon){
     train.site.data <- ts(site.data[train.slices[[i]]], start = c(i,1), frequency = freq)
     
     if(is.null(mdl)){
-      mdl <- auto.arima(train.site.data, approximation=FALSE,trace=FALSE, lambda = lambda)
+      mdl <- auto.arima(train.site.data, approximation=FALSE, trace=TRUE, lambda = lambda)
       fc <- forecast(mdl, h = test.winsize)
       mdl.data <- train.site.data
     }else{
@@ -52,8 +52,6 @@ performArima <- function(horizon){
   for(i in 1:n){
     actual[i] <- sum(site.data[test.slices[[i]]])
   }
-  plot.predictions(actual,arima.forecast, "ARIMA", paste("arima",horizon,sep=''))
-  
-  print(accuracy(actual,arima.forecast))
+  return(list(actual, arima.forecast))
  
 }

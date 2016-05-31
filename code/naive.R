@@ -35,7 +35,5 @@ performNaiveForecast <- function(horizon){
   for(i in 1:n){
     actual[i] <- sum(site.data[test.slices[[i]]])
   }
-  plot.predictions(actual,naive.forecast, "Naive", paste("naive",horizon,sep=''))
-  
-  print(accuracy(actual, naive.forecast))
+  return(list(actual, naive.forecast))
 }

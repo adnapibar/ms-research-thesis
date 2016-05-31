@@ -5,7 +5,7 @@ library(lubridate)
 library(forecast)
 library(caret)
 library(ggplot2)
-
+library(plotly)
 # Figures directory
 plots.dir <- "latex-thesis/Figures/"
 
@@ -28,8 +28,9 @@ if(!exists('volume.data')){
 # the average data
 handleMissingData <- function (site.data){
   avg <- mean(site.data) 
-  site.data[site.data==0] <- avg
-  site.data
+  site.data[site.data==0] <- NA
+  # use the forecast package's na.interp
+  return(na.interp(site.data))
 }
 
 getIndexByHF<- function(hfNo){
@@ -84,13 +85,12 @@ plot.xts2 <- function (x, y = NULL, type = "l", auto.grid = TRUE, major.ticks = 
   assign(".plot.xts", recordPlot(), .GlobalEnv)
 }
 
-plot.predictions <- function(actual, predicted, title, filename){
-  n <- 400
-  pdf(paste(plots.dir,filename,'.pdf', sep = ''))
-  plot(1:n, actual[1:400], type='l', col='red', xlab='Test Number', ylab='Traffic Volume (15 min)')
-  lines(1:n, predicted[1:400], type='l',col='blue')
-  legend("topleft",legend=c("Actual",title),col=c('red','blue'),lty=1)
-  dev.off()
+plot.predictions <- function(actual, predicted){
+  n <- length(actual)
+  p <- plot_ly(x = c(1:n), y = actual, name = "Actual") %>%
+    layout(xaxis = list(title = "Test"), yaxis = list(title = "Volume")) %>% 
+    add_trace(x = c(1:n), y = predicted, name = "Predicted")
+  return(p)
 }
 
 source("code/naive.R")
@@ -100,8 +100,10 @@ source("code/arima.R")
 source("code/nnetar.R")
 source("code/exponential_smoothing.R")
 
-index <- getIndexByHF(15773)
-site.data <- handleMissingData(volume.data[,index])
+#VICTORIA STREET 12612     W  BD 16913
+index <- getIndexByHF(16913)
+site.data <- volume.data[,index]
+site.data <- handleMissingData(site.data)
 lambda <- BoxCox.lambda(site.data)
-
+road <- getRoadDetails(16913)
 errors <- read.csv('code/error_metrics.csv')

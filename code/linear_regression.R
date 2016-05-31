@@ -26,7 +26,7 @@ performLinearRegression <- function(horizon){
     test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = freq)
     
     # Linear Regression
-    lmfit <- tslm(train.site.data~trend, lambda = lambda)
+    lmfit <- tslm(train.site.data~season, lambda = lambda)
     fc <- forecast(lmfit, h = test.winsize)
     lm.forecast[i] <- sum(fc$mean[1:test.winsize])
     # Slide the training window
@@ -38,9 +38,5 @@ performLinearRegression <- function(horizon){
     actual[i] <- sum(site.data[test.slices[[i]]])
   }
   
-  plot.predictions(actual,lm.forecast, "Linear Regression", paste("linear",horizon,sep=''))
-  
-  
-  print(accuracy(actual,lm.forecast))
-  
+  return(list(actual,lm.forecast))
 }

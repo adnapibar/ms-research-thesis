@@ -40,9 +40,6 @@ performExpSmoothing <- function(horizon){
     actual[i] <- sum(site.data[test.slices[[i]]])
   }
   
-  plot.predictions(actual,ets.forecast, "Exponential Smoothing", paste("ets",horizon,sep=''))
-  
-  print(accuracy(actual,ets.forecast))
- 
+  return(list(actual,ets.forecast))
   
 }

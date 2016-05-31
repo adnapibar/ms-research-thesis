@@ -36,7 +36,5 @@ performMeanForecast <- function(horizon){
   for(i in 1:n){
     actual[i] <- sum(site.data[test.slices[[i]]])
   }
-  plot.predictions(actual,mean.forecast, "Mean Forecast", paste("meanf",horizon,sep=''))
-  
-  print(accuracy(actual,mean.forecast))
+  return(list(actual, mean.forecast))
 }

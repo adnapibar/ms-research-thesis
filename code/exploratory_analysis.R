@@ -7,48 +7,80 @@ library(scales)
 ########################################
 # Exploratory analysis at a single point
 ########################################
-analyseSite <- function(hf.no){
-  #index <- getIndexByHF(hf.no)
+analyseSite <- function(){
+  index <- getIndexByHF(hf.no)
   
-  #site.data <- handleMissingData(volume.data[,index])
+  site.data <- volume.data[,index]
   
   site.df <- data.frame(interval = seq(ymd_hms('2008-01-01 00:00:00'), 
                                       by = '15 min', length.out=195168), data = site.data)
-
-  road <- hf.ref[hf.ref$HF==hf.no,]
   
   # Create xts object
   site.xts <- xts(site.df$data, order.by=site.df$interval)
   
   # Plot a typical day
-  typd <- index(site.xts)[19201:19296]
+  typd <- index(site.xts)[1:96]
   typd <- site.xts[typd]
-  pdf(paste(plots.dir,'typical-day.pdf', sep = ''))
-  plot.xts2(typd, xlab="", ylab="volume", main='Typical day(19/07/2008)', 
-            major.format="%H:%M", col='blue')
-  dev.off()
+  typd <- as.data.frame(typd)
+  
+  td <- plot_ly(
+    x = rownames(typd),
+    y = typd$V1,
+    name = "Typical day") %>%
+    layout(xaxis = list(title = "Time"), yaxis = list(title = "Volume"))
+  td
+  
   # Plot a typical week (last week of the data 15/07/2013 - 21/07/2013)
   typw <- index(site.xts)[194113:194784]
   typw <- site.xts[typw]
-  pdf(paste(plots.dir,'typical-week.pdf', sep = ''))
-  plot.xts2(typw, xlab="", ylab="volume", main='Typical week(15/07/2013 - 21/07/2013)',
-            major.format="%a", col='blue')
-  dev.off()
+  typw <- as.data.frame(typw)
+  tw <- plot_ly(
+    x = rownames(typw),
+    y = typw$V1,
+    name = "Typical week") %>%
+    layout(xaxis = list(title = "Date"), yaxis = list(title = "Volume"))
+  tw
+  
   
   # Plot daily, weekly, monthly, yearly avarages
   daily.avg <- apply.daily(site.xts, colMeans)
-  weekly.avg <- apply.weekly(site.xts, colMeans)
-  monthly.avg <- apply.monthly(site.xts, colMeans)
-  yearly.avg <- apply.yearly(site.xts,colMeans)
-  pdf(paste(plots.dir,'averages.pdf', sep = ''))
-  par(mfrow=c(2,2))
-  plot.xts2(daily.avg, main = "Daily", xlab='(a)', ylab='volume', col='blue')
-  plot.xts2(weekly.avg, main = "Weekly", xlab = '(b)', ylab='volume', col='blue')
-  plot.xts2(monthly.avg, main = "Monthly", xlab = '(c)', ylab='volume', col='blue')
-  plot.xts2(yearly.avg, main = "Yearly", xlab = '(d)', ylab='volume', col='blue')
-  dev.off()
+  daily.avg <- as.data.frame(daily.avg)
+  ad <- plot_ly(
+    x = rownames(daily.avg),
+    y = daily.avg$V1,
+    name = "Daily average") %>%
+    layout(xaxis = list(title = "Time"), yaxis = list(title = "Average 15 minute volume"))
+  ad
   
-  # Plot typical dayily volume
+  weekly.avg <- apply.weekly(site.xts, colMeans)
+  weekly.avg <- as.data.frame(weekly.avg)
+  aw <- plot_ly(
+    x = rownames(weekly.avg),
+    y = weekly.avg$V1,
+    name = "Weekly average") %>%
+    layout(xaxis = list(title = "Time"), yaxis = list(title = "Average 15 minute volume"))
+  aw
+  
+  monthly.avg <- apply.monthly(site.xts, colMeans)
+  monthly.avg <- as.data.frame(monthly.avg)
+  am <- plot_ly(
+    x = rownames(monthly.avg),
+    y = monthly.avg$V1,
+    name = "Monthly average") %>%
+    layout(xaxis = list(title = "Time"), yaxis = list(title = "Average 15 minute volume"))
+  am
+  
+  yearly.avg <- apply.yearly(site.xts,colMeans)
+  yearly.avg <- as.data.frame(yearly.avg)
+  ay <- plot_ly(
+    x = rownames(yearly.avg),
+    y = yearly.avg$V1,
+    name = "Yearly average") %>%
+    layout(xaxis = list(title = "Time"), yaxis = list(title = "Average 15 minute volume"))
+  ay
+  
+
+  # Plot volume for each day of the week
   site.df <- site.df %>% mutate(DayofWeek = wday(interval,label=T), 
                                 cTime = as.POSIXct(strftime(interval,format="%H:%M:%S"),
                                                   format="%H:%M:%S"))
@@ -57,19 +89,28 @@ analyseSite <- function(hf.no){
   
   days.name <- c("Sunday", "Monday","Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
   
-  createPlot <- function(from, to){
-    for(i in from:to){
-      st <- 1 + 96*(i-1)
-      end <- st + 95
-      t <- alltsdata[st:end,"cTime"]
-      v <- alltsdata[st:end,"meanVol"]
-      day.xts <- xts(v, order.by=t)
-      pdf(paste(plots.dir,'typical',days.name[i],'.pdf', sep = ''))
-      plot.xts2(day.xts, xlab="time", ylab="volume", main=days.name[i], major.format="%H:%M", col='blue')
-      dev.off()
-    }
+  createPlot <- function(i){
+    st <- 1 + 96*(i-1)
+    end <- st + 95
+    t <- alltsdata[st:end,"cTime"]
+    v <- alltsdata[st:end,"meanVol"]
+    daily <- xts(v, order.by=t)
+    daily <- as.data.frame(daily)
+    t <- seq(ymd_hms("2016-06-01 00:00:00"), by = '15 min', length.out=96)
+    ed <- plot_ly(
+      x = format(t, "%H:%M"),
+      y = daily$V1,
+      name = days.name[i]) %>%
+      layout(xaxis = list(title = "", zeroline = TRUE), yaxis = list(title = "Volume"))
+    ed
   }
-  createPlot(1,7)
+  createPlot(1)
+  createPlot(2)
+  createPlot(3)
+  createPlot(4)
+  createPlot(5)
+  createPlot(6)
+  createPlot(7)
   
   #Decompose time series
   site.ts <- ts(site.data, start = c(2008,1), frequency = 96*365)

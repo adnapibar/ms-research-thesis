@@ -1,4 +1,3 @@
-library(plotly)
 errors.15mins <- subset(errors, Window=='15-mins', select = c(Method, MAE, RMSE, MAPE))
 errors.30mins <- subset(errors, Window=='30-mins', select = c(Method, MAE, RMSE, MAPE))
 

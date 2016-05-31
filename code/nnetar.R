@@ -48,8 +48,7 @@ performNNETAR <- function(horizon){
   for(i in 1:n){
     actual[i] <- sum(site.data[test.slices[[i]]])
   }
-  plot.predictions(actual,nn.forecast, "NNAR", paste("nnetar",horizon,sep=''))
   
-  print(accuracy(actual,nn.forecast))
+  return(list(actual,nn.forecast))
   
 }
