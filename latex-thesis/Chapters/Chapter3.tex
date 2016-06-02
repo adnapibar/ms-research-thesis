@@ -84,7 +84,7 @@ of the 1084 locations.
 
 \begin{figure}[htbp]
   \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/missing-days-count.pdf}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Plots/missing-days-count.pdf}
     \rule{35em}{0.5pt}
   \caption[Missing data]{Missing data - number of days when no measurement was recorded at each of
   the 1084 locations in our data. The locations are shown as index numbers.}
@@ -133,7 +133,7 @@ a week. Figure \ref{fig:TypicalDay} shows how traffic volume on a random day loo
 
 \begin{figure}[htbp]
   \centering
-    \includegraphics[width=0.7\textwidth,height=0.7\textheight,keepaspectratio]{Figures/typical-day.pdf}
+    \includegraphics[width=0.7\textwidth,height=0.7\textheight,keepaspectratio]{Plots/typical-day.pdf}
     \rule{35em}{0.5pt}
   \caption[A typical day traffic flow]{Variations in traffic flow on a typical day.}
   \label{fig:TypicalDay}
@@ -147,31 +147,31 @@ in it by time and took an average. In figure \ref{TypicalDayTraffic} We plot the
 \begin{figure}[h]
     \centering
     \subfloat[Monday][Monday]{
-    \includegraphics[width=0.4\textwidth]{Figures/typical-monday.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/typical-monday.pdf}
     \label{fig:typicalMonday}}
     \qquad
     \subfloat[Tuesday][Tuesday]{
-    \includegraphics[width=0.4\textwidth]{Figures/typical-tuesday.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/typical-tuesday.pdf}
     \label{fig:typicalTuesday}}
 
     \subfloat[Wednesday][Wednesday]{
-    \includegraphics[width=0.4\textwidth]{Figures/typical-wednesday.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/typical-wednesday.pdf}
     \label{fig:typicalWednesday}}
     \qquad
     \subfloat[Thursday][Thursday]{
-    \includegraphics[width=0.4\textwidth]{Figures/typical-thursday.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/typical-thursday.pdf}
     \label{fig:typicalThursday}}
 
     \subfloat[Friday][Friday]{
-    \includegraphics[width=0.4\textwidth]{Figures/typical-friday.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/typical-friday.pdf}
     \label{fig:typicalFriday}}
     \qquad
     \subfloat[Saturday][Saturday]{
-    \includegraphics[width=0.4\textwidth]{Figures/typical-saturday.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/typical-saturday.pdf}
     \label{fig:typicalSaturday}}
 
     \subfloat[Sunday][Sunday]{
-    \includegraphics[width=0.4\textwidth]{Figures/typical-sunday.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/typical-sunday.pdf}
     \label{fig:typicalSunday}}
 
     \caption[Traffic grouped by every day of the week]{Traffic grouped by every day of the week.}
@@ -184,7 +184,7 @@ Weekly, monthly and annual variations
 
 \begin{figure}[h]
    \centering
-    \includegraphics[width=0.7\textwidth,height=0.7\textheight,keepaspectratio]{Figures/typical-week.pdf}
+    \includegraphics[width=0.7\textwidth,height=0.7\textheight,keepaspectratio]{Plots/typical-week.pdf}
     \rule{35em}{0.5pt}
   \caption[A typical week traffic flow]{Variations in traffic flow on a typical week.}
   \label{fig:TypicalWeek}
@@ -194,24 +194,34 @@ Weekly, monthly and annual variations
 
 Variations caused by public events or non-recurrent events such as accidents, road work etc.
 
-\begin{table}
-    \centering
-    \begin{tabular}{c}
-        \includegraphics[width=0.5\textwidth,height=0.5\textheight,keepaspectratio]{Figures/holidays-2012.pdf}
-    \end{tabular}
-    \caption[List of public events in 2012 in Victoria]{List of public events in 2012 in Victoria}
-    \label{table:publicEvents}
-\end{table}
+In fig \ref{fig:Holidays}, we can see the variation in traffic flow on public holidays.
 
-\begin{table}
+\begin{figure}[h]
     \centering
-    \begin{tabular}{c}
-        \includegraphics[width=0.5\textwidth,height=0.5\textheight,keepaspectratio]{Figures/accidents.pdf}
-    \end{tabular}
-    \caption[List of accidents at location]{List of accidents at site (HF No. 16913) between 2010 and
-     2013}
-    \label{table:accidents}
-\end{table}
+    \subfloat[Mondays][Mondays]{
+    \includegraphics[width=0.4\textwidth]{Plots/holiday-mondays.pdf}
+    \label{fig:HolidayMondays}}
+    \qquad
+    \subfloat[Tuesdays][Tuesdays]{
+    \includegraphics[width=0.4\textwidth]{Plots/holiday-tuesdays.pdf}
+    \label{fig:HolidayTuesdays}}
+
+    \subfloat[Wednesdays][Wednesdays]{
+    \includegraphics[width=0.4\textwidth]{Plots/holiday-wednesdays.pdf}
+    \label{fig:HolidayWednesdays}}
+    \qquad
+    \subfloat[Thursdays][Thursdays]{
+    \includegraphics[width=0.4\textwidth]{Plots/holiday-thursdays.pdf}
+    \label{fig:HolidayThursdays}}
+
+    \subfloat[Fridays][Fridays]{
+    \includegraphics[width=0.4\textwidth]{Plots/holiday-fridays.pdf}
+    \label{fig:HolidayFridays}}
+
+    \caption[Impact of public holidays on traffic volume]{Variations in traffic volume caused by
+     public holidays}
+   \label{fig:Holidays}
+\end{figure}
 
 \subsection{Secular trends}
 The secular variations in traffic volume data is important from infrastructre planning point of
@@ -223,19 +233,19 @@ volume.
 \begin{figure}[h]
     \centering
     \subfloat[Daily][Daily]{
-    \includegraphics[width=0.4\textwidth]{Figures/averages-daily.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/averages-daily.pdf}
     \label{fig:AverageDaily}}
     \qquad
     \subfloat[Weekly][Weekly]{
-    \includegraphics[width=0.4\textwidth]{Figures/averages-weekly.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/averages-weekly.pdf}
     \label{fig:AverageWeekly}}
 
     \subfloat[Monthly][Monthly]{
-    \includegraphics[width=0.4\textwidth]{Figures/averages-monthly.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/averages-monthly.pdf}
     \label{fig:AverageMonthly}}
     \qquad
     \subfloat[Yearly][Yearly]{
-    \includegraphics[width=0.4\textwidth]{Figures/averages-yearly.pdf}
+    \includegraphics[width=0.4\textwidth]{Plots/averages-yearly.pdf}
     \label{fig:AverageYearly}}
 
     \caption[Average Traffic Volume]{(a) daily, (b) weekly, (c) monthly and (d) yearly average of
