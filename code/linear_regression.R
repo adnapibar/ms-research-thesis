@@ -5,38 +5,36 @@
 # simple time trend and "season" is a factor indicating the season (e.g., the month or the quarter 
 # depending on the frequency of the data).
 ####################################################################################################
-performLinearRegression <- function(horizon){
-  train.winsize = 96*28    # size of the training window, 96 observations per day for 7 days
-  slide.by = 96*5         # slide the training window by 5 days
+performLinearRegression <- function(){
+  
+  
+  forecasted15 <- c()
+  forecasted30 <- c()
+  forecasted45 <- c()
+  
+  train.winsize = 96*151    # size of the training window from 01-01-2013 to 31-05-2013 
   freq <- 96
-  
-  # 1 Step ahead forecast
-  test.winsize = horizon     # forecast window
-  
-  time.slices = createTimeSlices(1:length(site.data), train.winsize, test.winsize, skip = slide.by)
+  time.slices = createTimeSlices(1:length(site.data), train.winsize, 1)
   train.slices = time.slices[[1]]
-  test.slices = time.slices[[2]]
-  train.start.idx <- 1
-  lm.forecast <- c()
+  
+  # test 
   n <- length(train.slices)
-  
   for(i in 1:n){
-    train.site.data <- ts(site.data[train.slices[[i]]], start = c(train.start.idx,1), frequency = freq)
-    test.start.idx <- end(train.site.data)[1]+1
-    test.site.data <- ts(site.data[test.slices[[i]]], start = c(test.start.idx,1), frequency = freq)
+    train.data.ts <- ts(site.data[train.slices[[i]]], start = c(1,1), frequency = freq)
+    lmfit <- tslm(train.data.ts~season, lambda = lambda)
+    fc <- forecast(lmfit, h = 1)
+    forecasted15[i] <- sum(fc$mean)
     
-    # Linear Regression
-    lmfit <- tslm(train.site.data~season, lambda = lambda)
-    fc <- forecast(lmfit, h = test.winsize)
-    lm.forecast[i] <- sum(fc$mean[1:test.winsize])
-    # Slide the training window
-    train.start.idx <- train.start.idx + 1
-  }
-  # Actual observations
-  actual <- c()
-  for(i in 1:n){
-    actual[i] <- sum(site.data[test.slices[[i]]])
+    if(i%%2 != 0){
+      fc <- forecast(lmfit, h = 2)
+      forecasted30[i] <- sum(fc$mean)
+    }
+    if((i-1)%%3 == 0){
+      fc <- forecast(lmfit, h = 3)
+      forecasted45[i] <- sum(fc$mean)
+    }
   }
   
-  return(list(actual,lm.forecast))
+  return(list(forecasted15, forecasted30, forecasted45))
+
 }

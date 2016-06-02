@@ -5,41 +5,49 @@
 # The model is chosen automatically if not specified. This methodology performed extremely well on 
 # the M3-competition data
 ####################################################################################################
-performExpSmoothing <- function(horizon){
-  train.winsize = 96*28    # size of the training window, 96 observations per day for 7 days
-  slide.by = 96*5         # slide the training window by 5 days
-  freq <- 96
+performExpSmoothing <- function(){
   
-  # 1 Step ahead forecast
-  test.winsize = horizon     # forecast window
+  # split the site data into train and test where training window from 01-01-2013 to 31-05-2013
+  # and test data is a sliding window for month of June
+  # list to contain the forecasted values
+  forecasted15 <- c()
+  forecasted30 <- c()
+  forecasted45 <- c()
   
-  time.slices = createTimeSlices(1:length(site.data), train.winsize, test.winsize, skip = slide.by)
-  train.slices = time.slices[[1]]
-  test.slices = time.slices[[2]]
-  train.start.idx <- 1
-  ets.forecast <- c()
-  n <- length(train.slices)
-  mdl <- NULL
-  mdl.data <- NULL
-  for(i in 1:n){
-    train.site.data <- ts(site.data[train.slices[[i]]], start = c(i,1), frequency = freq)
+  # Fit a model, frequency is set to 24 as the ets model is unable to handle high frequency
+  train.data <- site.data[1:(96*151)]
+  train.data.ts <- ts(train.data, start = c(1,1), frequency = 24)
+  mdl <- ets(train.data.ts, lambda = lambda)
+  fc <- forecast(mdl, h = 1)
+  forecasted15[1] <- sum(fc$mean)
+  fc <- forecast(mdl, h = 2)
+  forecasted30[1] <- sum(fc$mean)
+  fc <- forecast(mdl, h = 3)
+  forecasted45[1] <- sum(fc$mean)
+  # test data
+  test.data <- site.data[(96*151+1):length(site.data)]
+  
+  
+  # test 
+  n <- length(test.data)
+  for(i in 2:n){
+    train.data[length(train.data) + 1] <- test.data[i-1]
+    train.data.ts <- ts(train.data, start = c(1,1), frequency = 24)
+    refit <- ets(train.data.ts, model=mdl, lambda = lambda)
     
-    if(is.null(mdl)){
-      mdl <- ets(train.site.data, lambda = lambda)
-      fc <- forecast(mdl, h = test.winsize)
-      mdl.data <- train.site.data
-    }else{
-      ets.model <- ets(c(mdl.data,train.site.data), model=mdl, lambda = lambda)
-      fc <- forecast(ets.model, h = test.winsize)
+    fc <- forecast(refit, h = 1)
+    forecasted15[i] <- sum(fc$mean)
+    
+    if(i%%2 != 0){
+      fc <- forecast(refit, h = 2)
+      forecasted30[i] <- sum(fc$mean)
     }
-    ets.forecast[i] <- sum(fc$mean[1:test.winsize])
-  }
-  # Actual observations
-  actual <- c()
-  for(i in 1:n){
-    actual[i] <- sum(site.data[test.slices[[i]]])
+    if((i-1)%%3 == 0){
+      fc <- forecast(refit, h = 3)
+      forecasted45[i] <- sum(fc$mean)
+    }
   }
   
-  return(list(actual,ets.forecast))
+  return(list(forecasted15, forecasted30, forecasted45, mdl))
   
 }

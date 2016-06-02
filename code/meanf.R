@@ -3,14 +3,13 @@
 # Y[n+h]=mu where mu is estimated by the sample mean.
 ####################################################################################################
 performMeanForecast <- function(horizon){
-  train.winsize = 96*28    # size of the training window, 96 observations per day for 7 days
-  slide.by = 96*5         # slide the training window by 5 days
-  freq <- 96
+  train.winsize = 96*151    # size of the training window from 01-01-2013 to 31-05-2013
+  freq <- 12   # Set the fequency to last 12 observartions, as 96 will predict the mean of each day
   
   # 1 Step ahead forecast
   test.winsize = horizon     # forecast window
   
-  time.slices = createTimeSlices(1:length(site.data), train.winsize, test.winsize, skip = slide.by)
+  time.slices = createTimeSlices(1:length(site.data), train.winsize, test.winsize, skip = horizon-1)
   train.slices = time.slices[[1]]
   test.slices = time.slices[[2]]
   
@@ -31,10 +30,5 @@ performMeanForecast <- function(horizon){
     train.start.idx <- train.start.idx + 1
   }
   
-  # Actual observations
-  actual <- c()
-  for(i in 1:n){
-    actual[i] <- sum(site.data[test.slices[[i]]])
-  }
-  return(list(actual, mean.forecast))
+  return(mean.forecast)
 }

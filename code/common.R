@@ -85,11 +85,16 @@ plot.xts2 <- function (x, y = NULL, type = "l", auto.grid = TRUE, major.ticks = 
   assign(".plot.xts", recordPlot(), .GlobalEnv)
 }
 
-plot.predictions <- function(actual, predicted){
-  n <- length(actual)
-  p <- plot_ly(x = c(1:n), y = actual, name = "Actual") %>%
-    layout(xaxis = list(title = "Test"), yaxis = list(title = "Volume")) %>% 
-    add_trace(x = c(1:n), y = predicted, name = "Predicted")
+# Plot predictions for the motnh of June 2013 = 96 * 30 observations
+plot.predictions <- function(actual, predicted, step){
+  by <- 15 * step
+  by <- paste(by,'min')
+  print(by)
+  t <- seq(ymd_hms("2013-06-01 00:00:00"), by = by, length.out=length(actual))
+  print(paste(step, '=', by, '-',length(actual), '=', length(t)))
+  p <- plot_ly(x = t, y = actual, name = "Actual") %>%
+    layout(xaxis = list(title = "Time"), yaxis = list(title = "Volume")) %>% 
+    add_trace(x = t, y = predicted, name = "Predicted")
   return(p)
 }
 
@@ -103,7 +108,11 @@ source("code/exponential_smoothing.R")
 #VICTORIA STREET 12612     W  BD 16913
 index <- getIndexByHF(16913)
 site.data <- volume.data[,index]
+# For time series methods use a small subset of this data
+# Jan - May 2013 for modelling and predict for June (181 days)
+# end = 195168 - 26 * 96 = 192672
+# start = 192672 - 181 * 96 + 1 = 175297
+site.data <- site.data[175297:192672]
 site.data <- handleMissingData(site.data)
 lambda <- BoxCox.lambda(site.data)
 road <- getRoadDetails(16913)
-errors <- read.csv('code/error_metrics.csv')
