@@ -7,7 +7,7 @@ library(caret)
 library(ggplot2)
 library(plotly)
 # Figures directory
-plots.dir <- "latex-thesis/Figures/"
+plots.dir <- "latex-thesis/Plots/"
 
 # The VicRoads volume data is a time series data that is 
 # collected using road traffic sensors at a 15 minutes interval. 
@@ -93,7 +93,8 @@ plot.predictions <- function(actual, predicted, step){
   t <- seq(ymd_hms("2013-06-01 00:00:00"), by = by, length.out=length(actual))
   print(paste(step, '=', by, '-',length(actual), '=', length(t)))
   p <- plot_ly(x = t, y = actual, name = "Actual") %>%
-    layout(xaxis = list(title = "Time"), yaxis = list(title = "Volume")) %>% 
+    layout(xaxis = list(title = "Time"), yaxis = list(title = "Volume"), 
+           width = 600, height = 350) %>% 
     add_trace(x = t, y = predicted, name = "Predicted")
   return(p)
 }
