@@ -25,3 +25,19 @@ p3 <- add_trace(
   name = "MAPE",
   type = "bar")
 p3
+
+# Plot computatiion time 
+time <- c(0.173,1060.10,10.02,238.94,15.24,17808.57,304.84,1153.33,1952.54,825.69,2895.62,3465.49)
+methods <- c("LR", "ARIMA", "ES",
+             "NNAR", "KNN", "SVR","RNN", "GRU",
+             "LSTM", "RNN(Multi)","GRU(Multi)",
+             "LSTM(Multi)")
+
+p <- plot_ly(
+  x = methods,
+  y = time,
+  name = "computation time",
+  type = "bar")%>%
+  layout(xaxis = list(title = "", tickfont = list(size=10)), 
+         yaxis = list(title = "Time (Seconds)"),width = 800, height = 450)
+p
