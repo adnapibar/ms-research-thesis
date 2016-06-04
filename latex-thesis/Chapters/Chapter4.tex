@@ -1,11 +1,11 @@
 % Chapter 4
 
-\chapter{A Deep LSTM Network for Short Term Traffic Prediction} % Main chapter title
+\chapter{Deep Neural Networks for Short Term Traffic Prediction} % Main chapter title
 
 \label{Chapter4} % For referencing the chapter elsewhere, use \ref{Chapter4}
 
 % This is for the header on each page - perhaps a shortened title
-\lhead{Chapter 4. \emph{A Deep LSTM Network for Short Term Traffic Prediction}}
+\lhead{Chapter 4. \emph{Deep Neural Networks for Short Term Traffic Prediction}}
 
 % Quotation
 {``I am a brain, Watson. The rest of me is a mere appendix."}
@@ -23,9 +23,9 @@ Arthur Conan Doyle, \textit{The Adventure of the Mazarin Stone} (1921)
 
 In section \ref{subsec:neuralNetworksTrafficPred}, we presented a brief introduction to artificial
 neural networks and reviewed existing literature in short term traffic prediction that used
-various types of neural networks. In the following sections we present a bried overview of deep
+various types of neural networks. In the following sections we present a brief overview of deep
 learning. We then describe deep feedforward networks, deep recurrent networks with emphasis on
-the Long Short Term Memory(LSTM) networks which are a redesigned version of recurrent networks.
+the Long Short Term Memory (LSTM) networks which are a redesigned version of recurrent networks.
 Later we present how we can we can use these kind of networks for short term traffic prediction.
 
 \section{Introduction}
@@ -34,20 +34,20 @@ form of computing. Computers have become an inseparable part of human lives. In 
 when computers were built, people began to ponder whether they could achieve human level
 of intelligence. Even though at that point the answers seemed optimistic, it has taken quite
 some time and understanding on our part to make significant achievements in the field of
-artificial intelligence. One of the approaches was to use knowldge base systems, where computers
-reason about real world concepts, that were defined in hard-coded formal langauges, using logical
-inference rules. These systems led to little success. The difficulties faced in the knwoledge
-based appproach made us built computers to learn automatically from data, an approach we know as
+artificial intelligence. One of the approaches was to use knowledge base systems, where computers
+reason about real world concepts, that were defined in hard-coded formal languages, using logical
+inference rules. These systems led to little success. The difficulties faced in the knowledge
+based approach made us built computers to learn automatically from data, an approach we know as
 machine learning.
 
-A large number of real world problems could eaily be tackled using machine leraning. However for
-the machine learning algorithms to perorm well they need to be provided with proper representaion
+A large number of real world problems could easily be tackled using machine learning. However for
+the machine learning algorithms to perform well they need to be provided with proper representation
 of data. For example, in a problem where we would like to detect humans in images, it is
 difficult to represent various shapes of human body in terms of raw pixels. Finding a proper
 representation from data is a challenge and sometimes become very difficult. A class of machine
 learning algorithms called representation learning, tackles this problem by learning the
-representaions as well. Autoencodes are such types of algorithms. Again the problem with
-representation learing is that it is not easy to find the representations due to the presence of
+representations as well. Autoencoders are such types of algorithms. Again the problem with
+representation learning is that it is not easy to find the representations due to the presence of
 various factors of influence (\citet{bengio2015deep}). Deep learning solves this problem in
 representation learning by taking a layered approach by expressing representations in terms of
 simpler representations. The mapping from the input to output is done through a series of hidden
@@ -80,7 +80,7 @@ Multilayer perceptrons are good at classification.
         {Figures/mlp.pdf}
         \rule{35em}{0.5pt}
     \caption[Multilayer perceptron]
-    {A feedforward neural netwrok with two hidden layers, this network is also known as a
+    {A feedforward neural network with two hidden layers, this network is also known as a
     multilayer perceptron. The S-shaped curves denote the sigmoidal function.}
     \label{fig:ffnnetwork}
     \end{figure}
@@ -99,7 +99,7 @@ $a_{h}$ is then applied to an activation function $\theta_{h}$ to produce the ac
     \end{equation}
 
 There are several choices for the activation functions with sigmoidal and hyperbolic tan
-fucntions are the most common choices. The reason of these choices is nonlinearity of
+functions are the most common choices. The reason of these choices is nonlinearity of
 these functions. Recently the recommended activation function for feedforward neural networks is
 the \emph{rectified linear unit} or ReLU (\citet{nair2010rectified}), defined as $f(x) = max{0,x}$,
 as they allow faster and efficient training of deep neural network architectures.
@@ -131,9 +131,9 @@ where the output layer consists of 10 units.
 \section{Recurrent neural networks}
 As mentioned earlier, we can create a recurrent neural network by adding feedback connections to
 a feedforward network. Several types of recurrent neural networks have been proposed over the
-years, some of which are - \emph{echo state networks, time delay networks, jordan networks}. At
+years, some of which are - \emph{echo state networks, time delay networks, Jordan networks}. At
 first the difference between a feedforward and a recurrent network may not be obvious and seem
-trvial but recurrent networks are very powerful in the sense that they can retain the history and
+trivial but recurrent networks are very powerful in the sense that they can retain the history and
 thus forming a memory in their feedback connections.
 
 \begin{figure}[htbp]
@@ -152,18 +152,18 @@ function and gradient descent algorithm. However the difficulty is that the non-
 characteristics of neural networks causes to the loss functions to become non-convex. So the
 training procedure usually involves small iterative gradient descent algorithm to get a very low
 value of the cost function. For feedforward networks the weights are initialised with very small
-random numbers and the biased may be initilised to zero or very small values as well.
+random numbers and the biased may be initialised to zero or very small values as well.
 
 The choice of a cost function is somehow important and usually these are same as the linear models.
 
 \section{LSTM networks}
 In previous section we learn that using a recurrent neural networks we can store information in
-form of activations in the feedback connnections. The major disadvantage with recurrent neural
-networks is their inability to ratain information for a long period of time. This is caused by an
-effect known as \emph{vanishing gradient problem}(\citet{bengio1994learning},
+form of activations in the feedback connections. The major disadvantage with recurrent neural
+networks is their inability to retain information for a long period of time. This is caused by an
+effect known as \emph{vanishing gradient problem} (\citet{bengio1994learning},
 \citet{hochreiter2001gradient}). The vanishing gradient problem is depicted in the figure
 \ref{fig:vanishingGradient}. Number of attempts were made in the 1990's to resolve this issue.
-\citet{hochreiter1997long} proposed a redesigned network called Long Short Term Momory(LSTM) to
+\citet{hochreiter1997long} proposed a redesigned network called Long Short Term Memory (LSTM) to
 address this problem.
 
 \begin{figure}[htbp]
@@ -190,7 +190,7 @@ is shown in figure \ref{fig:lstmNetwork}, the hidden layers contains the LSTM bl
     \rule{35em}{0.5pt}
   \caption[An LSTM block with one cell]
 {An LSTM block with one cell. The three units collect activations from both inside and outside of
-the block. The small black circles represents mulitipications by which the gates control the
+the block. The small black circles represents mulitiplications by which the gates control the
 memory cell. The gate activation function is f, usually a logistic sigmoid. The cell input and
 output functions are g and h, usually tanh or logistic sigmoid. The dashed lines represent the
 weighted peephole connections from the cell to the gates. All other connections are not weighted.
@@ -211,6 +211,4 @@ shown in the figure. There is only one output from the block.}
 
 \subsection{Training}
 
-\section{A Stacked LSTM network for short term traffic prediction}
-\label{sec:stackedLSTMTrafficPred}
 

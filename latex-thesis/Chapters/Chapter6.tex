@@ -20,8 +20,32 @@ Albert Einstein
 
 \section{Conclusions}
 
-In this work, we reviewed the existing literature on short term traffic prediction and proposed
-how a long short term momory recurrent neural network can be used for this task.
+The objective of this work was to use deep neural networks in the field of short term traffic
+prediction. Deep neural networks have been used recently to solve various complex tasks in the
+field of computer vision, speech recognition and natural language modelling, however they can be
+used to solve other problems. We presented the state of the art of various traffic prediction
+methods and reviewed some of the works in short term traffic prediction. Most of the available
+methods can be categorised into four groups - naive, parametric, non-parametric and hybrid
+methodologies. We presented a high level theoretical comparison of these methods, however a fair
+comparison of these methods using the existing literature is difficult. This is mainly due to the
+significant differences in the experimental studies presented in these works, which used datasets
+from different locations and time.
 
+We analysed the traffic volume data collected by VicRoads using vehicle loop detectors. A suitable
+traffic region was selected based on the data of number of missing days count. We presented the
+variations in daily traffic flow at a homogeneous road segment in this selected region. We found
+that the traffic variations on a day is largely influenced by the location and day of the week.
+We also analysed the influence of public events on traffic flow data. Both the temporal and
+spatial relations in traffic flow data were analysed. The temporal characteristics are found in the
+traffic flow data by using autocorrelations. The presence of spatial relations of traffic flow
+data from current location with upstream locations and adjacent locations were detected using the
+cross correlations.
+
+We also briefly introduced the deep neural networks especially the Long Short Term Memory recurrent
+neural networks. The architecture and training of LSTM models were presented. We used the traffic
+flow volume data for our experiments and model evaluations. A range of existing methods were used
+for a broad comparison.
 
 \section{Future directions}
+The application of deep neural networks to solve various problems are still at infancy. We believe in
+coming years their use will increase to solve a range of other problems.
