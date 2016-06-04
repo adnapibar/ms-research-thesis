@@ -3,7 +3,7 @@
 # Y[n+h]=mu where mu is estimated by the sample mean.
 ####################################################################################################
 performMeanForecast <- function(horizon){
-  train.winsize = 96*151    # size of the training window from 01-01-2013 to 31-05-2013
+  train.winsize = 96*151    # size of the training window from 01-01-2012 to 31-05-2012
   freq <- 12   # Set the fequency to last 12 observartions, as 96 will predict the mean of each day
   
   # 1 Step ahead forecast

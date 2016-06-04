@@ -14,7 +14,7 @@
 ####################################################################################################
 performNNETAR <- function(){
   
-  # split the site data into train and test where training window from 01-01-2013 to 31-05-2013
+  # split the site data into train and test where training window from 01-01-2012 to 31-05-2012
   # and test data is a sliding window for month of June
   # list to contain the forecasted values
   forecasted15 <- c()

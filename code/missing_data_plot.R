@@ -2,7 +2,7 @@ missingData <- function(){
   missing.days.count <- c()
   for (i in 1:1084){
     sd <- volume.data[,i]
-    site.df <- data.frame(interval = seq(ymd_hms('2008-01-01 00:00:00'), 
+    site.df <- data.frame(interval = seq(ymd_hms('2007-01-01 00:00:00'), 
                                          by = '15 min', length.out=195168), data = sd)
     # Create xts object
     site.xts <- xts(site.df$data, order.by=site.df$interval)

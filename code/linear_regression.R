@@ -12,7 +12,7 @@ performLinearRegression <- function(){
   forecasted30 <- c()
   forecasted45 <- c()
   
-  train.winsize = 96*151    # size of the training window from 01-01-2013 to 31-05-2013 
+  train.winsize = 96*151    # size of the training window from 01-01-2012 to 31-05-2012 
   freq <- 96
   time.slices = createTimeSlices(1:length(site.data), train.winsize, 1)
   train.slices = time.slices[[1]]

@@ -7,8 +7,7 @@ print("Done!")
 # Keep the actual values for reuse
 actual15 <- site.data[(96*151+1):length(site.data)]
 actual30 <- actual15[seq(1,length(actual15),2)] + actual15[seq(2,length(actual15),2)]
-actual45 <- actual15[seq(1,length(actual15),3)] + actual15[seq(2,length(actual15),3)] 
-+ actual15[seq(3,length(actual15),3)] 
+actual45 <- actual15[seq(1,length(actual15),3)] + actual15[seq(2,length(actual15),3)] + actual15[seq(3,length(actual15),3)] 
 
 ################################################################################
 print("Naive...")

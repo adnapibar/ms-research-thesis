@@ -12,7 +12,7 @@ plots.dir <- "latex-thesis/Plots/"
 # The VicRoads volume data is a time series data that is 
 # collected using road traffic sensors at a 15 minutes interval. 
 # The data we have is for 1084 site locations over the period 
-# starting from 2008-01-01 to 2013-07-26, a total of 195168 observations.
+# starting from 2007-01-01 to 2012-07-25, a total of 195168 observations.
 
 # Read the volume data from the csv into a dataframe, where
 # rows as observations and columns as locations.
@@ -20,7 +20,7 @@ if(!exists('volume.data')){
   # volume.data <- read.csv('data/volume_data.csv', header = FALSE)
   # hf.list <- read.csv('data/hf_list.csv')
   # hf.ref <- read.csv('data/hf_ref.csv')
-  load("saved_data.RData")
+  load("traffic.RData")
 }
 
 # Handle Missing Data - one way of doing this is to fill the missing
@@ -85,12 +85,12 @@ plot.xts2 <- function (x, y = NULL, type = "l", auto.grid = TRUE, major.ticks = 
   assign(".plot.xts", recordPlot(), .GlobalEnv)
 }
 
-# Plot predictions for the motnh of June 2013 = 96 * 30 observations
+# Plot predictions for the motnh of June 2012 = 96 * 30 observations
 plot.predictions <- function(actual, predicted, step){
   by <- 15 * step
   by <- paste(by,'min')
   print(by)
-  t <- seq(ymd_hms("2013-06-01 00:00:00"), by = by, length.out=length(actual))
+  t <- seq(ymd_hms("2012-06-01 00:00:00"), by = by, length.out=length(actual))
   print(paste(step, '=', by, '-',length(actual), '=', length(t)))
   p <- plot_ly(x = t, y = actual, name = "Actual") %>%
     layout(xaxis = list(title = "Time"), yaxis = list(title = "Volume"), 
@@ -110,10 +110,10 @@ source("code/exponential_smoothing.R")
 index <- getIndexByHF(16913)
 site.data <- volume.data[,index]
 # For time series methods use a small subset of this data
-# Jan - May 2013 for modelling and predict for June (181 days)
-# end = 195168 - 26 * 96 = 192672
-# start = 192672 - 181 * 96 + 1 = 175297
-site.data <- site.data[175297:192672]
+# Jan - May 2012 for modelling and predict for June (181 days)
+# end = 195168 - 25 * 96 = 192768
+# start = 192768 - 181 * 96 + 1 = 175393
+site.data <- site.data[175393:192768]
 site.data <- handleMissingData(site.data)
 lambda <- BoxCox.lambda(site.data)
 road <- getRoadDetails(16913)

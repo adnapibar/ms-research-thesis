@@ -23,7 +23,7 @@ site.data[site.data==0] <- avg
 ```
 
 # DATA
-The VicRoads volume data is a time series data that is collected using road traffic sensors at a 15 minutes interval. The data we have is for 1084 locations over the period starting from 2008-01-01 to 2013-07-26, a total of 195168 observations. 
+The VicRoads volume data is a time series data that is collected using road traffic sensors at a 15 minutes interval. The data we have is for 1084 locations over the period starting from 2007-01-01 to 2012-07-25, a total of 195168 observations.
 
 ```{r}
 train.winsize = 96 * 28  # size of the training window, 96 observations per day for 28 days
