@@ -1,5 +1,4 @@
-methods <- c("Naive","LR", "ARIMA", "ES","NNAR", "KNN", "SVR","RNN", "GRU",
-             "LSTM", "RNN(Multi)","GRU(Multi)","LSTM(Multi)")
+methods <- c("LR", "ARIMA", "ES","NNAR", "KNN", "SVR","RNN", "GRU","LSTM", "RNN(Multi)","GRU(Multi)","LSTM(Multi)")
 
 # MAPE error measures
 errors.15mins <- c(13.62,29.00,12.33,12.74,11.42,13.37,11.51,11.84,11.25,11.57,11.71,10.68,11.14)

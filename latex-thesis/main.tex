@@ -130,7 +130,7 @@ due reference is not made in the text.
 \item[\tiny{$\blacksquare$}] where necessary I have received clearance for this research from the
 University's Ethics Committee and have submitted all required data to the Department.
 
-\item[\tiny{$\blacksquare$}] the thesis is approximately 16000 words in length (excluding text in
+\item[\tiny{$\blacksquare$}] the thesis is approximately 17000 words in length (excluding text in
 images, tables, bibliographies and appendices).
 \end{itemize}
 
@@ -154,7 +154,7 @@ Date: 06/06/2016\\
 Road traffic congestion is a global issue that results in significant wastage of time and resources.
 Rising population, urbanisation, growing economies and affordable personal vehicles aggravate the
 issue. Many urban cities have been trying to mitigate this by expanding and modernising the
-transporation infrastructure. Even though increasing the road capacity accomodates the travel demands,
+transportation infrastructure. Even though increasing the road capacity accommodates the travel demands,
 studies have shown this does not eliminate the congestion problem. Hence, since 1970's advanced
 traffic management systems have been used to address the issue of congestion. But for these systems to increase their
 operational efficiencies and fully realise their effectiveness, they need to have the predictive capabilities
@@ -162,18 +162,20 @@ in the short term, usually ranging between few seconds to few hours. The researc
 has been active since the 1970's. Numerous models have been proposed to use the traffic data collected
 by inductive loop detectors for short term traffic prediction. Most of the works have shown promising
 results through experiments at particular locations, however we are still to find a robust and globally
-adaptable solution. In last decade the attention have shifted from theroitically well established
+adaptable solution. In last decade the attention have shifted from theoretically well established
 parametric methods to non parametric data driven algorithms. This work is an extension to that.
 
 Neural networks have always been one of the most capable mathematical models that can
-model complex non-linear relations. Upto 2006, their use have been hindered by practical issues
+model complex non-linear relations. Up to 2006, their use have been hindered by practical issues
 related to the training. But recent breakthroughs in new ways of training deep neural architectures
-have made them reemerged as victors by realising the capabilities the had promised. In this thesis
-we study and extend their application to short term traffic predictions. We used a deep Long Short
-Term Memory neural network to predict the short term traffic volumes at a wider multivariate setting.
+have made them reemerged as victors by realising the capabilities they had promised. In this thesis
+we study and extend their applications to short term traffic predictions. We applied three deep
+recurrent neural networks (Simple RNN, LSTM and GRU) in predicting the short term traffic volumes.
 The goal was to use both the temporal and spatial relationships that are present in the traffic flow data.
-We used the volume data collected by Vicroads in Melbourne. We compared the results of our work with several
-existing methods and found some promising results.
+We used these networks at univariate and multivariate settings to make predictions at single location
+and multiple locations respectively.
+For this work we used the volume data collected by VicRoads in Melbourne. We compared the results of our work with several
+existing methods and found promising results.
 }
 \clearpage % Start a new page
 
