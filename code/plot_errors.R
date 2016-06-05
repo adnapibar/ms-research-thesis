@@ -2,9 +2,9 @@ methods <- c("Naive","LR", "ARIMA", "ES","NNAR", "KNN", "SVR","RNN", "GRU",
              "LSTM", "RNN(Multi)","GRU(Multi)","LSTM(Multi)")
 
 # MAPE error measures
-errors.15mins <- c()
-errors.30mins <- c()
-errors.45mins <- c()
+errors.15mins <- c(13.62,29.00,12.33,12.74,11.42,13.37,11.51,11.84,11.25,11.57,11.71,10.68,11.14)
+errors.30mins <- c(13.83,27.91,11.75,12.74,10.09,12.36,9.00,9.72,10.14,9.39,9.93,8.51,8.38)
+errors.45mins <- c(15.24,27.50,12.30,13.78,9.95,9.72,8.45,8.90,8.83,8.36,10.17,7.59,7.30)
 
 
 

@@ -143,7 +143,24 @@ a feedforward network. Several types of recurrent neural networks have been prop
 years, some of which are - \emph{echo state networks, time delay networks, Jordan networks}. At
 first the difference between a feedforward and a recurrent network may not be obvious and seem
 trivial but recurrent networks are very powerful in the sense that they can retain the history and
-thus forming a memory in their feedback connections.
+thus forming a memory in their feedback connections. Similar to the MLP, the forward pass of the
+RNN the information propagates from the input layer to the output layer through the hidden layers.
+The only difference is that the input to the hidden layers consists of both the external input and
+the activations from the previous step. For a sequence of inputs $x={x_{1},...x_{T}}$, the
+activation of the hidden unit j at time step t is calculated as
+
+
+                \[
+                 h^j_{t} =
+                  \begin{cases}
+                   0    & \text{if } t = 0 \\
+                   \phi(h^j_{t-1},x_{t})    & \text{if } t > 0
+                  \end{cases}
+                \]
+
+where $\phi$ is a non-linear function such as a logistic sigmoid function.
+In the backward pass, the gradients of the weights are calculated, using one of the two
+algorithms - Real Time Recurrent Learning (RTRL) or Back propagation Through Time (BPTT).
 
 \begin{figure}[htbp]
   \centering
@@ -155,7 +172,7 @@ thus forming a memory in their feedback connections.
   \label{fig:unfoldedRNN}
 \end{figure}
 
-\section{LSTM networks}
+\subsection{LSTM networks}
 In previous section we learn that using a recurrent neural networks we can store information in
 form of activations in the feedback connections. The major disadvantage with recurrent neural
 networks is their inability to retain information for a long period of time. This is caused by an
@@ -208,7 +225,37 @@ shown in the figure. There is only one output from the block.}
 \end{figure}
 
 Like other neural networks, the LSTM is trained using the gradient descent. The training algorithms
-that were initially proposed are Real Time Recurrent Learning and Back-propagation Through Time.
+that was initially proposed used a variant of Real Time Recurrent Learning (RTRL). In the forward pass
+the hidden layer activations are recursively calculated starting at time step t=1 to t=T, where T
+is the length of the sequence. But unlike RNN the activation of a hidden unit is not a simple non-linear
+function. As the an LSTM unit has a memory cell $c^j_{t}$ at time t, the activation of this unit at
+time t is calculated as
+
+    \begin{equation}
+        h^j_{t} = o^j_{t}tanh(c^j_{t})
+    \end{equation}
+
+where $o^j_{t}$ is the output gate of the unit j, which controls the amount of exposed memory.
+The memory $c^j_{t}$ is updated by the forget gate $f^j_{t}$ by forgetting some of its content and
+adding new memory contents. The amount of new memory content is controlled by the input gate
+$i^j_{t}$
+
+In the backward pass the training algorithm is used to repeatedly apply the chain rules to calculate
+the gradients. The difference is that the activations from hidden layer not only influence the
+output layer but also the hidden layer in the next time step.
+
+\subsection{GRU networks}
+The Gated Recurrent Unit network was proposed by \citet{cho2014properties} is a simpler version of
+the LSTMs. Unlike LSTMs, in the GRUs the gated units did not require a memory cell. The output and
+forget gates are replaced with a single update gate. The activation at time step t is updated by
+interpolations between previous and current activations. The amount of update to the activation is
+decided by the update gate. The activation of the hidden unit j is given by
+
+     \begin{equation}
+        h^j_{t} = (1 - u^j_{t}) h^j_{t-1} +  u^j_{t}h^j_{t}
+    \end{equation}
+
+where $u^j_{t}$ is the update gate that controls how much update is done to the activation.
 
 \subsection{Applying LSTM to short term traffic prediction}
 LSTMs were designed to address the issue of vanishing gradient that is observed in RNNs. The design
@@ -233,3 +280,7 @@ architecture for such a network.
   \label{fig:lstmTraffiPrediction}
 \end{figure}
 
+The network has one input layer and one output layers. The number of hidden layers and the number
+of units in them can be found by experiments. In chapter \ref{Chapter5}, we present these details.
+The input dataset consists of a set of sequences, where each sequence is $m \times n$; m is the
+number of time steps and n is the number of locations. The output layer has linear activations.

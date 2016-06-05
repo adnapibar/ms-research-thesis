@@ -257,30 +257,26 @@ values.
     \label{fig:mapeErrors}
 \end{figure}
 
-%\begin{wrapfigure}{r}{0.5\textwidth}
-%  \vspace{-20pt}
-%  \begin{center}
-%    \includegraphics[width=0.60\textwidth]{Plots/mape-errors.pdf}
-%  \end{center}
-%  \vspace{-20pt}
-%   \caption[MAPE scores for the methods]{MAPE scores for the methods}
-%  \vspace{-10pt}
-%   \label{fig:mapeErrors}
-%\end{wrapfigure}
-
 In table \ref{table:accuracyScores}, the accuracies are presented in terms of the above mentioned
 error measures for the methods presented in this experiment. The error measures are presented for
-the predictions for 1 step-ahead (15 minutes), 2 steps-ahead (30 minutes) and 3-steps ahead (45 minutes).
+the predictions for 1 step-ahead (15-minutes), 2 steps-ahead (30-minutes) and 3-steps ahead (45-minutes).
 
-The linear regression has the worst performance among all the methods including the baseline naive
-method.
+The accuracy of the naive method for 15-minutes predictions was about 86.4\%, which is very good
+considering no computations are required.
+The linear regression has the worst performance among all the methods, with only 71\% of accuracy for
+15-minutes predictions, including the baseline naive method. All other methods had better performance
+than the naive method. Among the exisiting methods, neural network autoregression has the best
+performance with an accuracy of about 89.6\%.
 
-All other methods performed better than the baseline. For both one step-ahead and multi
-step-ahead predictions, the deep LSTM network with multivariate modelling had the best performance.
-In figure \ref{fig:mapeErrors}, the MAPEs of the methods for 15, 30 and 45 minutes predictions
-are shown.
+Overall the best accuracies in both one-step and multi-steps predictions were achieved by the deep
+LSTM and GRU networks with multivariate modelling. For 15-minutes prediction, the best performance
+was achieved by the deep GRU (multivariate) with about 89.3\% accuracy, while for 30 and 45-minutes
+predictions the best performance was by the LSTM (multivariate) network with accuracies of about
+91.6\% and 92.7\%.
+In figure \ref{fig:mapeErrors}, the mean absolute percentage errors of all the methods for 15, 30
+and 45 minutes predictions are plotted.
 
-Another advantage of the deep networks used in the multivariate settings is that the predictions of
+The advantage of the deep networks used in the multivariate settings is that the predictions of
 all the 11 locations were done at the same time. In table \ref{table:locationErrors}, we present the
 error measures for these locations of the deep LSTM network.
 
@@ -298,8 +294,9 @@ error measures for these locations of the deep LSTM network.
     \begin{tabular}{c}
         \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/errors-locations-table.pdf}
     \end{tabular}
-    \caption[Prediction errors across all the locations for the deep LSTM network]{Prediction
-    errors across all the locations for the deep LSTM network}
+    \caption[Simultaneous predictions across all the locations]{Simultaneous predictions across all
+    the locations using the deep LSTM network. The network models the spatio-temporal characteristics
+    from the traffic volume data.}
     \label{table:locationErrors}
 \end{table}
 
@@ -312,17 +309,6 @@ error measures for these locations of the deep LSTM network.
    \caption[Comparison of training time of the models]{Comparison of training time of the models}
     \label{fig:trainingTime}
 \end{figure}
-
-%\begin{wrapfigure}{r}{0.5\textwidth}
-%  \vspace{-20pt}
-%  \begin{center}
-%    \includegraphics[width=0.60\textwidth]{Plots/training-time.pdf}
-%  \end{center}
-%  \vspace{-20pt}
-%  \caption[Comparison of training time of the models]{Comparison of training time of the models}
-%  \vspace{-10pt}
-%   \label{fig:trainingTime}
-%\end{wrapfigure}
 
 For all these experiments we used a home computer with Intel i7-4770 CPU, 16GB RAM, GeForce GTX 960
 GPU. The operating system used was Ubuntu 14.04 and for data processing and modelling we used R and
