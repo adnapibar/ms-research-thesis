@@ -128,6 +128,15 @@ classification with k > 2 classes, k output units are used and the outputs are n
 the \emph{softmax} function. A very common example of this is the hand-written digits classification,
 where the output layer consists of 10 units.
 
+\subsection {Network training using gradient descent}
+Training neural networks is no different than any other machine learning models with a loss
+function and gradient descent algorithm. However the difficulty is that the non-linear
+characteristics of neural networks causes to the loss functions to become non-convex. So the
+training procedure usually involves small iterative gradient descent algorithm to get a very low
+value of the cost function. For feedforward networks the weights are initialised with very small
+random numbers and the biased may be initialised to zero or very small values as well.The choice
+of a cost function is somehow important and usually these are same as the linear models.
+
 \section{Recurrent neural networks}
 As mentioned earlier, we can create a recurrent neural network by adding feedback connections to
 a feedforward network. Several types of recurrent neural networks have been proposed over the
@@ -145,16 +154,6 @@ thus forming a memory in their feedback connections.
   connections. }
   \label{fig:unfoldedRNN}
 \end{figure}
-
-\section {Network training using gradient descent}
-Training neural networks is no different than any other machine learning models with a loss
-function and gradient descent algorithm. However the difficulty is that the non-linear
-characteristics of neural networks causes to the loss functions to become non-convex. So the
-training procedure usually involves small iterative gradient descent algorithm to get a very low
-value of the cost function. For feedforward networks the weights are initialised with very small
-random numbers and the biased may be initialised to zero or very small values as well.
-
-The choice of a cost function is somehow important and usually these are same as the linear models.
 
 \section{LSTM networks}
 In previous section we learn that using a recurrent neural networks we can store information in
@@ -176,7 +175,6 @@ address this problem.
 \end{figure}
 
 
-\subsection{Architecture}
 An LSTM network is a set of recurrently connected LSTM blocks, also known as memory blocks, where
 each memory block has one or more memory cells and three units (input, output and forget gates)
 that perform the read, write and reset operations. A basic LSTM block with one memory cell is
@@ -190,7 +188,7 @@ is shown in figure \ref{fig:lstmNetwork}, the hidden layers contains the LSTM bl
     \rule{35em}{0.5pt}
   \caption[An LSTM block with one cell]
 {An LSTM block with one cell. The three units collect activations from both inside and outside of
-the block. The small black circles represents mulitiplications by which the gates control the
+the block. The small black circles represents multiplications by which the gates control the
 memory cell. The gate activation function is f, usually a logistic sigmoid. The cell input and
 output functions are g and h, usually tanh or logistic sigmoid. The dashed lines represent the
 weighted peephole connections from the cell to the gates. All other connections are not weighted.
@@ -209,6 +207,29 @@ shown in the figure. There is only one output from the block.}
   \label{fig:lstmNetwork}
 \end{figure}
 
-\subsection{Training}
+Like other neural networks, the LSTM is trained using the gradient descent. The training algorithms
+that were initially proposed are Real Time Recurrent Learning and Back-propagation Through Time.
 
+\subsection{Applying LSTM to short term traffic prediction}
+LSTMs were designed to address the issue of vanishing gradient that is observed in RNNs. The design
+of the LSTM's allowed them to store information in the memory cell, and thus make able to remember
+long range information. Earlier in chapter \ref{Chapter3} we analysed the traffic volume data and
+observed that traffic volume at any particular location and time has dependencies on the both the
+earlier observations at that location and observations at neighbourhood locations. These dependencies
+can be modelled using an LSTM network. In figure \ref{fig:lstmTraffiPrediction} we present an
+architecture for such a network.
+
+
+\begin{figure}[htbp]
+  \centering
+    \includegraphics[width=0.5\textwidth,height=0.5\textheight,keepaspectratio]{Figures/lstm-traffic-pred.pdf}
+    \rule{35em}{0.5pt}
+  \caption[Block diagram of an LSTM network for short term traffic prediction]
+          {Block diagram of an LSTM network for short term traffic prediction. Each input sequence
+          has m vectors, where each vector contains the observations at n locations. The output is
+          a sequence of length n, which contains prediction at time t for each of the n locations. The
+          Dense input and output layers are fully connected regular NN layers. The output layer units
+          have linear activation functions.}
+  \label{fig:lstmTraffiPrediction}
+\end{figure}
 

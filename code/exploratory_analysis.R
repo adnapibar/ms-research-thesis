@@ -161,7 +161,7 @@ tw
 ############################################################################################
 # Variations on public evetns in 2011
 pedays = c("2011-01-03","2011-01-26","2011-03-14","2011-04-22","2011-04-26",
-           "2011-04-25","2011-06-13","2011-11-01","2011-12-26","2011-12-27")
+           "2011-04-25","2011-06-13","2011-11-01","2011-12-26","2011-12-27", "2011-10-01")
 
 newyears.day <- as.data.frame(site.xts[pedays[1]])
 aus.day <- as.data.frame(site.xts[pedays[2]])
@@ -173,7 +173,7 @@ queens.bday <- as.data.frame(site.xts[pedays[7]])
 cup.day <- as.data.frame(site.xts[pedays[8]])
 xmas.day <- as.data.frame(site.xts[pedays[9]])
 boxing.day <- as.data.frame(site.xts[pedays[10]])
-
+gf.day <- as.data.frame(site.xts[pedays[11]])
 t <- seq(ymd_hms("2016-06-01 00:00:00"), by = '15 min', length.out=96)
 p <- plot_ly(x = format(t, "%H:%M"), 
              y = site.xts.day.avg[["Monday"]], 
@@ -188,13 +188,11 @@ p <- plot_ly(x = format(t, "%H:%M"),
 p
 
 p <- plot_ly(x = format(t, "%H:%M"), 
-             y = site.xts.day.avg[["Tuesday"]], 
-             name = "Average Tuesday") %>%
+             y = site.xts.day.avg[["Saturday"]], 
+             name = "Average Saturday") %>%
   layout(xaxis = list(title = "", tickfont = list(size=11)), 
          yaxis = list(title = "Volume"), width = 800, height = 350) %>% 
-  add_trace(x = format(t, "%H:%M"), y = cup.day$V1, name = "Melbourne cup") %>% 
-  add_trace(x = format(t, "%H:%M"), y = easter.mon$V1, name = "Easter Monday (in lieu)") %>% 
-  add_trace(x = format(t, "%H:%M"), y = boxing.day$V1, name = "Boxing day") 
+  add_trace(x = format(t, "%H:%M"), y = gf.day$V1, name = "Grand Final")  
   
 p
 

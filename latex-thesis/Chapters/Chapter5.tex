@@ -62,6 +62,40 @@ required for calculating the prediction values.
 Once the baseline is set, we used the comparing models to find out their performance. The results of
 the comparing models are presented in figure \ref{fig:comparedModels}.
 
+\begin{figure}[h]
+    \centering
+    \subfloat[Linear Regression][Linear Regression]{
+    \includegraphics[width=0.4\textwidth]{Plots/linear1.pdf}
+    \label{fig:lm1ActualPredicted}}
+    \qquad
+    \subfloat[ARIMA][ARIMA]{
+    \includegraphics[width=0.4\textwidth]{Plots/arima1.pdf}
+    \label{fig:arima1ActualPredicted}}
+
+    \subfloat[Exponential smoothing state space model][Exponential smoothing state space model]{
+    \includegraphics[width=0.4\textwidth]{Plots/ets1.pdf}
+    \label{fig:ets1ActualPredicted}}
+    \qquad
+    \subfloat[Neural Network AutoRegression][Neural Network AutoRegression]{
+    \includegraphics[width=0.4\textwidth]{Plots/nnetar1.pdf}
+    \label{fig:nnetar1ActualPredicted}}
+
+    \subfloat[K-Nearest Neighbour][K-Nearest Neighbour]{
+    \includegraphics[width=0.4\textwidth]{Plots/knn1.pdf}
+    \label{fig:knn1ActualPredicted}}
+    \qquad
+    \subfloat[Support Vector Regression][Support Vector Regression]{
+    \includegraphics[width=0.4\textwidth]{Plots/svm1.pdf}
+    \label{fig:svm1ActualPredicted}}
+
+    \caption[Actual vs Predictions, using currently popular methods]{Actual vs Predictions -
+    naive, linear regression, ARIMA, simple feed forward neural network with one hidden layer, exponential
+    smoothing using state space model, k-nearest neighbour and support vector regression.
+    The models were trained on traffic data from one homogeneous road segment. The plots show the
+    actual vs predictions (15 mins) for the month of June 2012.}
+    \label{fig:comparedModels}
+\end{figure}
+
 
 \begin{itemize}
 
@@ -99,44 +133,11 @@ The input data was standardised to mean 0 and variance 1.
 
 \end{itemize}
 
-\begin{figure}[h]
-    \centering
-    \subfloat[Linear Regression][Linear Regression]{
-    \includegraphics[width=0.4\textwidth]{Plots/linear1.pdf}
-    \label{fig:lm1ActualPredicted}}
-    \qquad
-    \subfloat[ARIMA][ARIMA]{
-    \includegraphics[width=0.4\textwidth]{Plots/arima1.pdf}
-    \label{fig:arima1ActualPredicted}}
-
-    \subfloat[Exponential smoothing state space model][Exponential smoothing state space model]{
-    \includegraphics[width=0.4\textwidth]{Plots/ets1.pdf}
-    \label{fig:ets1ActualPredicted}}
-    \qquad
-    \subfloat[Neural Network AutoRegression][Neural Network AutoRegression]{
-    \includegraphics[width=0.4\textwidth]{Plots/nnetar1.pdf}
-    \label{fig:nnetar1ActualPredicted}}
-
-    \subfloat[K-Nearest Neighbour][K-Nearest Neighbour]{
-    \includegraphics[width=0.4\textwidth]{Plots/knn1.pdf}
-    \label{fig:knn1ActualPredicted}}
-    \qquad
-    \subfloat[Support Vector Regression][Support Vector Regression]{
-    \includegraphics[width=0.4\textwidth]{Plots/svm1.pdf}
-    \label{fig:svm1ActualPredicted}}
-
-    \caption[Actual vs Predictions, using currently popular methods]{Actual vs Predictions -
-    naive, linear regression, ARIMA, simple feed forward neural network with one hidden layer, exponential
-    smoothing using state space model, k-nearest neighbour and support vector regression.
-    The models were trained on traffic data from one homogeneous road segment. The plots show the
-    actual vs predictions (15 mins) for the month of June 2012.}
-    \label{fig:comparedModels}
-\end{figure}
-
 \section{Deep neural network models}
 The experiment details of the three used models are presented below.
 We used these models on two sets of data. First dataset is from a single location as mentioned earlier.
-The second dataset contains volume data from the location of interest and its neighbourhood locations.
+The second dataset consisted of the traffic volume data from the location of interest along with data
+from 10 other locations in the neighbourhood.
 The input data used were standardised to mean zero and variance 1. We used various setting for
 length of the sequence, number of hidden layers and number of units in those layers and optimisation
 algorithms used for optimising the gradients. We present the final settings of these models below.
@@ -154,24 +155,22 @@ optimising gradients, the RMSprop algorithm, which was proposed by Geoff Hinton,
 The RMSprop is an adaptive learning rate algorithm. The input data was a set of sequences, where
 each sequence was created with 50 time steps. We trained the model for 30 epochs.
 For multivariate modelling three hidden layers with number of units [100,200,200] were used.
-The input data consisted of the traffic volume data from the location of interest along with data
-from 10 other locations in the neighbourhood. The weight initialisations, optimising algorithm and
-error functions were same as the univariate model.
+The weight initialisations, optimising algorithm and error functions were same as the univariate model.
 
 \item \textbf{GRU}: Gated Recurrent Unit is a simple version of LSTM and was recently proposed.
 Similar to the simple RNN modelling, we used GRU to model both univariate and multivariate datasets.
 For univariate model, the network consisted of two hidden layers with 100 units in each of them.
-We used the RMSprop algorithm for gradient optimastion. The number of epochs used was 30. Simlilar to
+We used the RMSprop algorithm for gradient optimisation. The number of epochs used was 30. Similar to
 the RNN network input data was a set of sequences, where each sequence was created with 50 time steps.
 For multivariate modelling we used three hidden layers with number of units [100,200,200].
 
 \item \textbf{LSTM}: An LSTM model was also implemented for modelling both univariate and multivariate
 traffic volume datasets, similar to the above RNN and GRU networks. For univariate modelling number
 of combinations of hidden layers and units in those were used. The final univariate model consisted
-of two hidden layers with 100 and 200 units in them. The output layer had an linear acivation function.
+of two hidden layers with 100 and 200 units in them. The output layer had an linear activation function.
 Different sequence lengths were used and a final length of 50 was selected. For optimisation purpose
 we tried both the RMSprop and Adaptive Moment Estimation (ADAM) algorithms. We found that the
-ADAM algorithm outperformed the RMSprop. We trained the netowrk for 20 epochs. For multivariate
+ADAM algorithm outperformed the RMSprop. We trained the network for 20 epochs. For multivariate
 modelling we used three hidden layer with [100,200,200] units. Again we compared the RMSprop and ADAM
 optimisation algorithms and found the later outperformed the former again.
 
@@ -192,15 +191,15 @@ optimisation algorithms and found the later outperformed the former again.
     \subfloat[RNN - single location][RNN - single location]{
     \includegraphics[width=0.4\textwidth]{Plots/rnn-single1.pdf}
     \label{fig:RNNActualPredicted1}}
-
+    \qquad
     \subfloat[LSTM - multiple locations][LSTM - multiple locations]{
     \includegraphics[width=0.4\textwidth]{Plots/lstm-multi1.pdf}
     \label{fig:LSTMMultiActualPredicted1}}
-    \qquad
+
     \subfloat[GRU - multiple locations][GRU - multiple locations]{
     \includegraphics[width=0.4\textwidth]{Plots/gru-multi1.pdf}
     \label{fig:GRUMultiActualPredicted1}}
-
+    \qquad
     \subfloat[RNN - multiple locations][RNN - multiple locations]{
     \includegraphics[width=0.4\textwidth]{Plots/rnn-multi1.pdf}
     \label{fig:RNNMultiActualPredicted1}}
@@ -214,6 +213,8 @@ optimisation algorithms and found the later outperformed the former again.
 \end{figure}
 
 \section{Comparisons}
+
+\subsection{Prediction accuracies}
 For model comparison we used three accuracy measures - mean absolute error (MAE), root mean squared
 error (RMSE) and mean absolute percentage error (MAPE). In below sections we briefly describe
 the accuracy measures.
@@ -248,22 +249,80 @@ There are however few shortcomings of the MAPE, for instance when $x_{i}$ is 0 o
 Another shortcoming is that they put heavier penalty on negative error values than positive error
 values.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Plots/mape-errors.pdf}
+    \rule{35em}{0.5pt}
+    \caption[MAPE scores for the methods]{MAPE scores for the methods}
+    \label{fig:mapeErrors}
+\end{figure}
+
+%\begin{wrapfigure}{r}{0.5\textwidth}
+%  \vspace{-20pt}
+%  \begin{center}
+%    \includegraphics[width=0.60\textwidth]{Plots/mape-errors.pdf}
+%  \end{center}
+%  \vspace{-20pt}
+%   \caption[MAPE scores for the methods]{MAPE scores for the methods}
+%  \vspace{-10pt}
+%   \label{fig:mapeErrors}
+%\end{wrapfigure}
+
 In table \ref{table:accuracyScores}, the accuracies are presented in terms of the above mentioned
-error measures for the methods presented in this expriment. The error measurea are presented for
+error measures for the methods presented in this experiment. The error measures are presented for
 the predictions for 1 step-ahead (15 minutes), 2 steps-ahead (30 minutes) and 3-steps ahead (45 minutes).
+
 The linear regression has the worst performance among all the methods including the baseline naive
-method. All other methods performed better than the baseline. For both one step-ahead and multi
-step-ahead predictions, deep LSTM netork with multivariate modelling had the best performance.
+method.
+
+All other methods performed better than the baseline. For both one step-ahead and multi
+step-ahead predictions, the deep LSTM network with multivariate modelling had the best performance.
+In figure \ref{fig:mapeErrors}, the MAPEs of the methods for 15, 30 and 45 minutes predictions
+are shown.
+
+Another advantage of the deep networks used in the multivariate settings is that the predictions of
+all the 11 locations were done at the same time. In table \ref{table:locationErrors}, we present the
+error measures for these locations of the deep LSTM network.
 
 \begin{table}
     \begin{tabular}{c}
         \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/errors-table.pdf}
     \end{tabular}
     \caption[Model comparisons]{Accuracy measures for the evaluated models. The scores are
-    calculated for prediction horizon of 15-minutes and 30-minutes. Mean 15-minutes traffic
-    volume is 224.1}
+    calculated for prediction horizon of 15, 30 and 45 minutes. Mean 15-minutes traffic
+    volume is 224.10}
     \label{table:accuracyScores}
 \end{table}
+
+\begin{table}
+    \begin{tabular}{c}
+        \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{Figures/errors-locations-table.pdf}
+    \end{tabular}
+    \caption[Prediction errors across all the locations for the deep LSTM network]{Prediction
+    errors across all the locations for the deep LSTM network}
+    \label{table:locationErrors}
+\end{table}
+
+\subsection{Computational time}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{Plots/training-time.pdf}
+    \rule{35em}{0.5pt}
+   \caption[Comparison of training time of the models]{Comparison of training time of the models}
+    \label{fig:trainingTime}
+\end{figure}
+
+%\begin{wrapfigure}{r}{0.5\textwidth}
+%  \vspace{-20pt}
+%  \begin{center}
+%    \includegraphics[width=0.60\textwidth]{Plots/training-time.pdf}
+%  \end{center}
+%  \vspace{-20pt}
+%  \caption[Comparison of training time of the models]{Comparison of training time of the models}
+%  \vspace{-10pt}
+%   \label{fig:trainingTime}
+%\end{wrapfigure}
 
 For all these experiments we used a home computer with Intel i7-4770 CPU, 16GB RAM, GeForce GTX 960
 GPU. The operating system used was Ubuntu 14.04 and for data processing and modelling we used R and
@@ -271,14 +330,7 @@ Python languages. The training time of all the above mentioned models (except Na
 the figure \ref{fig:trainingTime}. However not all of the algorithms were used optimised to reduce
 the training time, so the figures could vary in small amounts.
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.7\textwidth]{Plots/training-time.pdf}
-    \rule{35em}{0.5pt}
-    \caption[Comparison of training time of the models]{Comparison of training time of the models}
-    \label{fig:trainingTime}
-\end{figure}
 
-In this chapter we presented the results of our expeiments in short term traffic prediction using
-several meodels. We compared the results and found that the performance of deep neural networks
-outperform all the exisitng methods.
+In this chapter we presented the results of our experiments in short term traffic prediction using
+several models. We compared the results and found that the performance of deep neural networks
+outperform all the existing methods.

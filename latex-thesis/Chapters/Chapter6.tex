@@ -20,11 +20,17 @@ Albert Einstein
 
 \section{Conclusions}
 
-The objective of this work was to use deep neural networks in the field of short term traffic
-prediction. Deep neural networks have been used recently to solve various complex tasks in the
-field of computer vision, speech recognition and natural language modelling, however they can be
-used to solve other problems. We presented the state of the art of various traffic prediction
-methods and reviewed some of the works in short term traffic prediction. Most of the available
+The objective of this work was two fold; first to find out whether we can use the large amount of available
+traffic volume data for short term traffic flow predictions. By reviewing existing literature,
+we understood that the data driven algorithms are capable of handling large amount of traffic volume
+data. Secondly we wanted to find out whether the application of deep neural networks can use the
+spatio-temporal relations
+in such data to provide better results. We have seen that deep neural networks have been used
+recently to solve various complex tasks in the field of computer vision, speech recognition
+and natural language modelling, however can they be used to solve other problems.
+
+We presented the state of the art of various traffic prediction methods and reviewed existing literature
+in short term traffic prediction. We found that most of the available
 methods can be categorised into four groups - naive, parametric, non-parametric and hybrid
 methodologies. We presented a high level theoretical comparison of these methods, however a fair
 comparison of these methods using the existing literature is difficult. This is mainly due to the
@@ -32,7 +38,7 @@ significant differences in the experimental studies presented in these works, wh
 from different locations and time.
 
 We analysed the traffic volume data collected by VicRoads using vehicle loop detectors. A suitable
-traffic region was selected based on the data of number of missing days count. We presented the
+traffic region was selected based on the number of missing days. We presented the
 variations in daily traffic flow at a homogeneous road segment in this selected region. We found
 that the traffic variations on a day is largely influenced by the location and day of the week.
 We also analysed the influence of public events on traffic flow data. Both the temporal and
@@ -41,11 +47,22 @@ traffic flow data by using autocorrelations. The presence of spatial relations o
 data from current location with upstream locations and adjacent locations were detected using the
 cross correlations.
 
-We also briefly introduced the deep neural networks especially the Long Short Term Memory recurrent
-neural networks. The architecture and training of LSTM models were presented. We used the traffic
-flow volume data for our experiments and model evaluations. A range of existing methods were used
-for a broad comparison.
+We briefly introduced the deep neural networks especially the Long Short Term Memory networks.
+We conducted the experiments to find out the performance of deep neural networks in predicting traffic
+flow. For comparison purpose we used a range of existing methods to set up benchmarks. The experiments
+were done in both univariate setting, where only data form one location was used for modelling, and
+in multivariate setting where data from multiple locations were used for modelling the spatio-temporal
+characteristics. The results were promising, indicating that deep neural networks can model
+the traffic characteristics better than the existing methods.
 
 \section{Future directions}
 The application of deep neural networks to solve various problems are still at infancy. We believe in
-coming years their use will increase to solve a range of other problems.
+coming years their use will increase to solve a range of other problems. This work may provide a basis
+for further experiments of deep neural networks in short term traffic predictions. The network topologies
+used in this work can be modified for achieving better results. Implementation of such a network at much
+larger scale that spans hundreds of locations is computationally very expensive and may not generalise
+well as the spatial information will get lost in such large scale. In this work we manually handpicked
+a region and used traffic data from nearby locations. This can be automated by using clustering
+to partition the traffic volume data of the entire transportation network into several clusters
+based on strong spatial correlations. Then each of these clusters can be modelled using a deep
+neural network as presented in this work.
